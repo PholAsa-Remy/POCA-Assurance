@@ -10,6 +10,7 @@
   * [Rémy Pholasa](https://gaufre.informatique.univ-paris-diderot.fr/pholasa)
   * [Natacha Guijarro](https://gaufre.informatique.univ-paris-diderot.fr/guijarro)
   * [Thierry Chhoa](https://gaufre.informatique.univ-paris-diderot.fr/chhoa)
+  * [Robin Arnoux](https://gaufre.informatique.univ-paris-diderot.fr/arnoux)
 * SCRUM master: Diane Delaunay
 
 ## Types of gitlab issues
