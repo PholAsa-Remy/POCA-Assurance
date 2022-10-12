@@ -56,7 +56,7 @@ npm run containers:db:erase
 # With docker
 
 ```
-docker build -t poca/poca-2022:latest .
+docker build -t kevindang01/poca-team-galaxy:latest .
 docker image ls
 ```
 
@@ -65,14 +65,14 @@ docker image ls
 Assuming a database is ready:
 
 ```
-docker run --net=host --env NODE_ENV=development poca/poca-2022:latest
+docker run --net=host --env NODE_ENV=development kevindang01/poca-team-galaxy:latest
 ```
 
 ## Publish the image
 
 ```
 docker login
-docker push poca/poca-2022:latest
+docker push kevindang01/poca-team-galaxy:latest
 ```
 
 ## Remove old images
