@@ -30,13 +30,14 @@ build-dockerimage:
     # With vanilla docker you would be using:
     # docker build --tag poca/poca-2022:latest .
     - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"`echo -n poca:$CI_REGISTRY_TOKEN | base64`\"}}}" > /kaniko/.docker/config.json
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"`echo -n kevindang01:$CI_REGISTRY_TOKEN | base64`\"}}}" > /kaniko/.docker/config.json
     - mkdir image-digest
-    - /kaniko/executor --build-arg HTTP_PROXY=$HTTP_PROXY --build-arg HTTPS_PROXY=$HTTPS_PROXY --context "${CI_PROJECT_DIR}" --digest-file image-digest/content --dockerfile "${CI_PROJECT_DIR}"/Dockerfile --destination poca/poca-2022:latest
+    - /kaniko/executor --build-arg HTTP_PROXY=$HTTP_PROXY --build-arg HTTPS_PROXY=$HTTPS_PROXY --context "${CI_PROJECT_DIR}" --digest-file image-digest/content --dockerfile "${CI_PROJECT_DIR}"/Dockerfile --destination kevindang01/poca-team-galaxy:latest
     - cat image-digest/content
   only:
     refs:
       - main
+      - kevin-docker
   artifacts:
     paths:
       - image-digest/content
