@@ -32,7 +32,7 @@
         ],
         "secrets": [{
             "name": "DATABASE_PASSWORD",
-            "valueFrom": "arn:aws:ssm:eu-west-3:238927141026:parameter/database/password"
+            "valueFrom": "arn:aws:ssm:eu-west-3:601086061783:parameter/database/password"
         }]
     }
 ]

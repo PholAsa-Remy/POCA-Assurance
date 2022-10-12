@@ -133,8 +133,8 @@ terraform destroy --var-file=staging.tfvars
 
 ## Use the software online
 
-Go to http://13.36.80.41/front
+Go to http://52.47.117.181/front
 
 ## Logs
 
-Logs are stored on AWS Cloudwatch: https://eu-west-3.console.aws.amazon.com/cloudwatch/home?region=eu-west-3#logsV2:log-groups/log-group/poca-web/log-events
+Logs are stored on AWS Cloudwatch: https://eu-west-3.console.aws.amazon.com/cloudwatch/home?region=eu-west-3#logsV2:log-groups/log-group/poca-web/log-events/ecs-poca$252Fpoca-webserver$252F47ff978ecca3412b8fb3b186531c3d03
