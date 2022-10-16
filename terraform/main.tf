@@ -4,7 +4,6 @@ The AWS user used by terraform is granted the AWS managed policy AdministratorAc
 
 terraform {
   backend "s3" {
-    profile = "poca"
     bucket = "poca-team-galaxy"
     key = "poca-2022"
     region = "eu-west-3"
@@ -19,8 +18,6 @@ terraform {
 }
 
 provider "aws" {
-  profile = "poca"
-  shared_credentials_files = ["~/.aws/credentials"]
   region = "eu-west-3"  # Europe (Paris)
 }
 
