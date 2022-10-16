@@ -1,7 +1,7 @@
 [
     {
         "name": "poca-webserver",
-        "image": "poca/poca-2022:latest${IMAGE_DIGEST}",
+        "image": "kevindang01/poca-team-galaxy:latest${IMAGE_DIGEST}",
         "memoryReservation": 950,
         "portMappings": [
             {

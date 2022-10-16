@@ -137,4 +137,4 @@ Go to http://52.47.117.181/front
 
 ## Logs
 
-Logs are stored on AWS Cloudwatch: https://eu-west-3.console.aws.amazon.com/cloudwatch/home?region=eu-west-3#logsV2:log-groups/log-group/poca-web/log-events/ecs-poca$252Fpoca-webserver$252F47ff978ecca3412b8fb3b186531c3d03
+Logs are stored on AWS Cloudwatch: https://eu-west-3.console.aws.amazon.com/cloudwatch/home?region=eu-west-3#logsV2:log-groups/log-group/poca-web

@@ -38,6 +38,7 @@ build-dockerimage:
     refs:
       - main
       - kevin-docker
+      - kevin-terraform
   artifacts:
     paths:
       - image-digest/content
@@ -56,8 +57,9 @@ deploy:
     - cd ../terraform
     - export TF_IN_AUTOMATION=1
     - export TF_VAR_image_digest="@`cat ../image-digest/content`"
-    - terraform init -input=false
-    - terraform apply -input=false -auto-approve --var-file=staging.tfvars
+    - terraform init --reconfigure -input=false -backend-config="access_key=${AWS_ACCESS_KEY}" -backend-config="secret_key=${AWS_SECRET_KEY}" -backend-config="region=${AWS_REGION}"
+    - terraform apply -input=false -auto-approve --var-file=staging.tfvars --var="db_password=${DB_PASSWORD}"
   only:
     refs:
       - main
+      - kevin-terraform
