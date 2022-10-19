@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { QuoteApi } from './quote.api';
 import { QuoteUsecase } from './quote.usecase';
 import { Quote } from './quote.entity';
+import { QuoteSimulator } from './quote.simulator';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Quote])],
   controllers: [QuoteApi],
-  providers: [QuoteUsecase],
+  providers: [QuoteUsecase, QuoteSimulator],
   exports: [QuoteUsecase],
 })
 export class QuoteModule {}

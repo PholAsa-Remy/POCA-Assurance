@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateQuoteCommand {
   @IsString()
@@ -11,4 +12,15 @@ export class CreateQuoteCommand {
 
   @IsEmail()
   public email: string;
+}
+
+export class SimulateQuoteCommand {
+  @IsNotEmpty()
+  @Type(() => Number)
+  @IsNumber()
+  public ageSpaceship: number;
+
+  @IsNotEmpty()
+  @IsString()
+  public lightspeed: string;
 }
