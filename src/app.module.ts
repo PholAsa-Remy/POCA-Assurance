@@ -6,6 +6,8 @@ import { getEnvPath } from './common/helper/env.helper';
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
 import { ApiModule } from './api/api.module';
 import { QuoteModule } from './api/quote/quote.module';
+import { UserhomeModule } from './userhome/userhome.module';
+import { UserhomeController } from './userhome/userhome.controller';
 import { AuthModule } from './api/auth/auth.module';
 import { UsersModule } from './api/users/users.module';
 import { AuthApi } from "./api/auth/auth.api";
@@ -18,10 +20,11 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
     ApiModule,
     QuoteModule,
+    UserhomeModule,
     AuthModule,
     UsersModule,
   ],
-  controllers: [QuoteController,AuthApi],
+  controllers: [QuoteController, UserhomeController, AuthApi],
   providers: [],
 })
 export class AppModule {}
