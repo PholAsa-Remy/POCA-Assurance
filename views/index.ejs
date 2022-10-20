@@ -3,18 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <title>Super Insurance</title>
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <%= message %>
 
-    <form action=/front/subscribe method="post">
-      <label for="username">Name :</label><br>
-      <input type="text" name="name"></input><br>
-      <label for="username">Address :</label><br>
-      <input type="text" name="address"></input><br>
-      <label for="username">Email :</label><br>
-      <input type="text" name="email"></input><br>
-      <input type="submit">
-  </form>
+    <div class="buttons">
+      <button onClick = "home(event)">Home</button>
+      <button onClick = "login(event)">Login</button>
+      <button onClick = "list(event)">List</button>
+    </div>
+
+    <script>
+      const home = e => {
+        e.preventDefault();
+        location.href = 'https://www.google.com/';
+      }
+
+      const login = e => {
+        e.preventDefault();
+        location.href = '/front';
+      }
+
+      const list = e => {
+        e.preventDefault();
+        location.href = '/front/list';
+      }
+    </script>
   </body>
 </html>
