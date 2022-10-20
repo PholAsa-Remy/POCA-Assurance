@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Super Insurance</title>
+  </head>
+  <body>
+  <H1>HOMEPAGE USER</H1>
+    <div><%= data.message %></div>
+    <div><%- data.profile %></div>
+  <H2>Your quotes : </H2>
+    <% for (quote of list_quote) { %>
+      <li> <%= quote.name %>, <%= quote.address %>  </li>
+      <% } %>
+  </body>
+</html>
