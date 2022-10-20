@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Super Insurance</title>
+  </head>
+  <body>
+    <%= message %>
+    <form action=/quotes/simulate method="post">
+      <label for="ageSpaceship">How old is your spaceship :</label><br>
+      <input type="number" name="ageSpaceship" min="1" required></input><br>
+      <fieldset>
+        <legend>Usage of lightspeed travel :</legend>
+        <input type="radio"  name="lightspeed"  id="sizeSmall"
+               value="regular"  checked="checked" />
+        <label for="sizeSmall">regular</label>
+        <input type="radio"  name="lightspeed"  id="sizeMed"
+               value="exceptional" />
+        <label for="sizeMed">exceptional</label>
+        <input type="radio"  name="lightspeed"  id="sizeLarge"
+               value="nohyperdrive" />
+        <label for="sizeLarge">no hyperdrive installed ( lightspeed travel impossible )</label>
+      </fieldset>
+      <input type="submit">
+    </form>
+    <% if (typeof simulatedQuote !== 'undefined') { %>
+
+      <%- simulatedQuote %>
+
+    <% } %>
+  </body>
+</html>

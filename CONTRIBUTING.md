@@ -10,7 +10,7 @@
   * [Rémy Pholasa](https://gaufre.informatique.univ-paris-diderot.fr/pholasa)
   * [Natacha Guijarro](https://gaufre.informatique.univ-paris-diderot.fr/guijarro)
   * [Thierry Chhoa](https://gaufre.informatique.univ-paris-diderot.fr/chhoa)
-  * [Robin Arnoux](https://gaufre.informatique.univ-paris-diderot.fr/arnoux
+  * [Robin Arnoux](https://gaufre.informatique.univ-paris-diderot.fr/arnoux)
   * [Alexandre Sabri](https://gaufre.informatique.univ-paris-diderot.fr/asabri)
 * SCRUM master: Diane Delaunay
 

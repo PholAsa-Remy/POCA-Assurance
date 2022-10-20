@@ -15,9 +15,7 @@ export class QuoteController {
   @Post('subscribe')
   @Render('quote')
   async subscribe(@Body() data: CreateQuoteCommand) {
-    const quote = await this.quoteUsecase.create(data);
-
-    return quote;
+    return await this.quoteUsecase.create(data);
   }
 
   @Get('list')
