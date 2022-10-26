@@ -9,8 +9,9 @@ import { QuoteModule } from './api/quote/quote.module';
 import { UserhomeModule } from './front/userhome/userhome.module';
 import { UserhomeController } from './front/userhome/userhome.controller';
 import { AuthModule } from './api/auth/auth.module';
-import { UsersModule } from './api/users/users.module';
+import { CustomerModule } from './api/customer/customer.module';
 import { AuthApi } from './api/auth/auth.api';
+import { CustomerController } from './api/customer/controller/customer.controller';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -22,9 +23,14 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     QuoteModule,
     UserhomeModule,
     AuthModule,
-    UsersModule,
+    CustomerModule,
   ],
-  controllers: [QuoteController, UserhomeController, AuthApi],
+  controllers: [
+    QuoteController,
+    UserhomeController,
+    AuthApi,
+    CustomerController,
+  ],
   providers: [],
 })
 export class AppModule {}
