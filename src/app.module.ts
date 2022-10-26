@@ -6,11 +6,11 @@ import { getEnvPath } from './common/helper/env.helper';
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
 import { ApiModule } from './api/api.module';
 import { QuoteModule } from './api/quote/quote.module';
-import { UserhomeModule } from './userhome/userhome.module';
-import { UserhomeController } from './userhome/userhome.controller';
+import { UserhomeModule } from './front/userhome/userhome.module';
+import { UserhomeController } from './front/userhome/userhome.controller';
 import { AuthModule } from './api/auth/auth.module';
 import { UsersModule } from './api/users/users.module';
-import { AuthApi } from "./api/auth/auth.api";
+import { AuthApi } from './api/auth/auth.api';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
