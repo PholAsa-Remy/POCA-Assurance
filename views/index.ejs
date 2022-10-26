@@ -12,6 +12,7 @@
       <button onClick = "home(event)">Home</button>
       <button onClick = "login(event)">Login</button>
       <button onClick = "list(event)">List</button>
+      <button onClick = "aboutus(event)">About Us</button>
     </div>
 
     <script>
@@ -29,6 +30,12 @@
         e.preventDefault();
         location.href = '/front/list';
       }
+
+      const aboutus = e => {
+        e.preventDefault();
+        location.href = '/about';
+      }
+
     </script>
   </body>
 </html>
