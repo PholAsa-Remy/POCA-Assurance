@@ -13,7 +13,7 @@ import { CustomerModule } from './api/customer/customer.module';
 import { AuthApi } from './api/auth/auth.api';
 import { CustomerController } from './api/customer/controller/customer.controller';
 import{AboutusModule} from "./api/aboutus/aboutus.module" ;
-
+import{AboutusApi} from "./api/aboutus/aboutus.api" ;
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
 @Module({
@@ -25,13 +25,14 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     UserhomeModule,
     AuthModule,
     CustomerModule,
+    AboutusModule
   ],
   controllers: [
     QuoteController,
     UserhomeController,
     AuthApi,
     CustomerController,
-    AboutusModule
+    AboutusApi
   ],
   providers: [],
 })
