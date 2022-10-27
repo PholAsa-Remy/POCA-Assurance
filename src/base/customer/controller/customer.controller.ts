@@ -12,7 +12,7 @@ import { Customer } from '../entity/customer.entity';
 import {
   CreateCustomerCommand,
   UpdateCustomerCommand,
-} from '../Command/customer.command';
+} from '../command/customer.command';
 
 @Controller('customer')
 export class CustomerController {

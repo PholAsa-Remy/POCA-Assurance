@@ -4,8 +4,8 @@ import {
   Request,
   Post,
   UseGuards,
-  Inject,
   Render,
+  Inject,
 } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import { LocalAuthGuard } from './local/local-auth.guard';
@@ -13,12 +13,13 @@ import { AuthUseCase } from './auth.usecase';
 
 /* Auth Controller manage the routes for authentication */
 @Controller()
-export class AuthApi {
+export class AuthController {
   @Inject(AuthUseCase)
   private authUseCase: AuthUseCase;
 
   @Get('auth/login')
   @Render('login')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   async loginPage() {}
 
   @UseGuards(LocalAuthGuard)

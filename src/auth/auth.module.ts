@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AuthUseCase } from './auth.usecase';
 import { LocalStrategy } from './local/local.strategy';
 import { JwtStrategy } from './jwt/jwt.strategy';
-import { CustomerModule } from '../customer/customer.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './jwt/jwt.constants';
+import { CustomerModule } from '../base/customer/customer.module';
 
 @Module({
   imports: [

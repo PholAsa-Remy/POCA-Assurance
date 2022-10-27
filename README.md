@@ -133,7 +133,7 @@ terraform destroy --var-file=staging.tfvars
 
 ## Use the software online
 
-Go to http://52.47.117.181/front
+Go to http://52.47.117.181
 
 ## Logs
 
