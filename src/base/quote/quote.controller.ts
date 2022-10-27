@@ -10,13 +10,13 @@ import {
 } from '@nestjs/common';
 import { CreateQuoteCommand, SimulateQuoteCommand } from './quote.command';
 import { Quote } from './quote.entity';
-import { QuoteUsecase } from './quote.usecase';
+import { QuoteUseCase } from './quote.usecase';
 import { QuoteSimulator } from './quote.simulator';
 
-@Controller('quotes')
-export class QuoteApi {
-  @Inject(QuoteUsecase)
-  private readonly quoteUsecase: QuoteUsecase;
+@Controller('quote')
+export class QuoteController {
+  @Inject(QuoteUseCase)
+  private readonly quoteUseCase: QuoteUseCase;
   @Inject(QuoteSimulator)
   private readonly quoteSimulator: QuoteSimulator;
 
@@ -45,13 +45,21 @@ export class QuoteApi {
     };
   }
 
-  @Get(':id')
-  public async get(@Param('id', ParseIntPipe) id: number): Promise<Quote> {
-    return await this.quoteUsecase.get(id);
+  @Post('subscribe')
+  @Render('quote')
+  async subscribe(@Body() quote: CreateQuoteCommand) {
+    return await this.quoteUseCase.create(quote);
   }
 
-  @Post()
-  public async create(@Body() quote: CreateQuoteCommand): Promise<Quote> {
-    return await this.quoteUsecase.create(quote);
+  @Get('list')
+  @Render('list')
+  async list() {
+    const quotes = await this.quoteUseCase.findAll();
+    return { quotes: quotes };
+  }
+
+  @Get(':id')
+  public async get(@Param('id', ParseIntPipe) id: number): Promise<Quote> {
+    return await this.quoteUseCase.get(id);
   }
 }

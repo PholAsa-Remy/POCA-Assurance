@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class UserhomeService {
+export class UserHomeService {
   public users = [
     {
       userId: 1,

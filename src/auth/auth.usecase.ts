@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CustomerUseCase } from '../customer/useCase/customer.usecase';
 import { JwtService } from '@nestjs/jwt';
-import { Customer } from '../customer/entity/customer.entity';
+import { CustomerUseCase } from '../base/customer/useCase/customer.usecase';
+import { Customer } from '../base/customer/entity/customer.entity';
 
 /* Auth Service provide the operation for authentication */
 @Injectable()

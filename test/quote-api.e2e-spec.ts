@@ -3,14 +3,13 @@ import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApiModule } from '../src/api/api.module';
-import { QuoteModule } from '../src/api/quote/quote.module';
+import { QuoteModule } from '../src/base/quote/quote.module';
 import { TypeOrmConfigService } from '../src/shared/typeorm/typeorm.service';
 import { getEnvPath } from '../src/common/helper/env.helper';
 
 const envFilePath = getEnvPath(`${__dirname}/../src/common/envs`);
 
-describe('QuoteApi (e2e)', () => {
+describe('QuoteController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -18,7 +17,6 @@ describe('QuoteApi (e2e)', () => {
       imports: [
         ConfigModule.forRoot({ envFilePath, isGlobal: true }),
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
-        ApiModule,
         QuoteModule,
       ],
     }).compile();
@@ -33,7 +31,7 @@ describe('QuoteApi (e2e)', () => {
 
   it('/probes (GET)', async () => {
     return request(app.getHttpServer())
-      .get('/quotes/probes')
+      .get('/quote/probes')
       .expect(200)
       .expect('up');
   });

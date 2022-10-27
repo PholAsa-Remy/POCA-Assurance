@@ -1,39 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { QuoteController } from './front/quote.controller';
+import { AppController } from './app.controller';
 import { getEnvPath } from './common/helper/env.helper';
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
-import { ApiModule } from './api/api.module';
-import { QuoteModule } from './api/quote/quote.module';
-import { UserhomeModule } from './front/userhome/userhome.module';
-import { UserhomeController } from './front/userhome/userhome.controller';
-import { AuthModule } from './api/auth/auth.module';
-import { CustomerModule } from './api/customer/customer.module';
-import { AuthApi } from './api/auth/auth.api';
-import { CustomerController } from './api/customer/controller/customer.controller';
-import{AboutusModule} from "./api/aboutus/aboutus.module" ;
-import{AboutusApi} from "./api/aboutus/aboutus.api" ;
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { BaseModule } from './base/base.module';
+
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath, isGlobal: true }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
-    ApiModule,
-    QuoteModule,
-    UserhomeModule,
+    BaseModule,
     AuthModule,
-    CustomerModule,
-    AboutusModule
   ],
-  controllers: [
-    QuoteController,
-    UserhomeController,
-    AuthApi,
-    CustomerController,
-    AboutusApi
-  ],
+  controllers: [AppController, AuthController],
   providers: [],
 })
 export class AppModule {}

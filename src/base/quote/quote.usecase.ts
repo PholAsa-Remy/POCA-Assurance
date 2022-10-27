@@ -5,7 +5,7 @@ import { CreateQuoteCommand } from './quote.command';
 import { Quote } from './quote.entity';
 
 @Injectable()
-export class QuoteUsecase {
+export class QuoteUseCase {
   @InjectRepository(Quote)
   private readonly repository: Repository<Quote>;
 
