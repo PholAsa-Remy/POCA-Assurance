@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="html">
   <head>
     <meta charset="utf-8" />
     <title>Super Insurance</title>
@@ -7,26 +7,77 @@
   <body>
     <%= message %>
     <form action=/quote/simulate method="post">
+      <input type="number" name="ageSpaceship" min="1" required><br>
       <label for="ageSpaceship">How old is your spaceship :</label><br>
-      <input type="number" name="ageSpaceship" min="1" required></input><br>
       <fieldset>
         <legend>Usage of lightspeed travel :</legend>
-        <input type="radio"  name="lightspeed"  id="sizeSmall"
-               value="regular"  checked="checked" />
-        <label for="sizeSmall">regular</label>
-        <input type="radio"  name="lightspeed"  id="sizeMed"
+        <input type="radio"  name="lightspeed"  id="regular"
+               value="regular"  required />
+        <label for="regular">regular</label>
+        <input type="radio"  name="lightspeed"  id="exceptional"
                value="exceptional" />
-        <label for="sizeMed">exceptional</label>
-        <input type="radio"  name="lightspeed"  id="sizeLarge"
+        <label for="exceptional">exceptional</label>
+        <input type="radio"  name="lightspeed"  id="noHyperdrive"
                value="nohyperdrive" />
-        <label for="sizeLarge">no hyperdrive installed ( lightspeed travel impossible )</label>
+        <label for="noHyperdrive">no hyperdrive installed ( lightspeed travel impossible )</label>
+      </fieldset>
+      <fieldset>
+        <legend>Do you regularly travel to outer rim systems ? :</legend>
+        <input type="radio"  name="outerRimTravel"  id="yes"
+               value="true"  required/>
+        <label for="yes">Yes</label>
+        <input type="radio"  name="outerRimTravel"  id="no"
+               value="false" />
+        <label for="no">No</label>
+      </fieldset>
+      <fieldset>
+        <legend>Do you need a breakdown&rescue service in the event of being stranded in an outer rim system ? :</legend>
+        <input type="radio"  name="strandedOuterRim"  id="yes"
+               value="true" required/>
+        <label for="yes">Yes</label>
+        <input type="radio"  name="strandedOuterRim"  id="no"
+               value="false" />
+        <label for="no">No</label>
       </fieldset>
       <input type="submit">
     </form>
     <% if (typeof simulatedQuote !== 'undefined') { %>
-
-      <%- simulatedQuote %>
-
+      <h3>Base price</h3>
+      <%= simulatedQuote.baseMonthlyPrice %> galactic credits/month
+      <br/>
+      <h3>Damage to third party</h3>
+      <p>
+        <% if (simulatedQuote.damageToThirdParty.included) {%>
+          <strong>Included</strong> : V
+          <br/>
+          <strong>Deductible</strong> : <%=simulatedQuote.damageToThirdParty.deductible%> galactic credit
+        <% } else { %>
+          <strong>Included</strong> : X
+          <br/>
+        <% } %>
+      </p>
+      <h3>Damage to self</h3>
+      <p>
+        <% if (simulatedQuote.damageToSelf.included) {%>
+        <strong>Included</strong> : V
+        <br/>
+        <strong>Deductible</strong> : <%=simulatedQuote.damageToSelf.deductible%> galactic credit
+        <% } else { %>
+          <strong>Included</strong> : X
+          <br/>
+        <% } %>
+      </p>
+      <h3>Breakdown&Rescue in outer rim systems</h3>
+      <p>
+        <% if (simulatedQuote.strandedOuterRimGuarantee.included) {%>
+        <strong>Included</strong> : V
+        <br/>
+        <strong>Supplement</strong> : <%=simulatedQuote.strandedOuterRimGuarantee.supplementMonthlyPrice%> galactic credit/month
+        <% } else { %>
+          <strong>Included</strong> : X
+          <br/>
+        <% } %>
+      </p>
     <% } %>
   </body>
 </html>

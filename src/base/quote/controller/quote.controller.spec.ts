@@ -1,7 +1,7 @@
 import { QuoteController } from './quote.controller';
-import { QuoteUseCase } from './quote.usecase';
+import { QuoteUseCase } from '../usecase/quote.usecase';
 import { Test } from '@nestjs/testing';
-import { QuoteSimulator } from './quote.simulator';
+import { QuoteSimulator } from '../simulator/quote.simulator';
 
 describe('QuoteController', () => {
   let quoteController: QuoteController;
