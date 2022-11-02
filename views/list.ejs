@@ -5,6 +5,7 @@
     <title>Super Insurance</title>
   </head>
   <body>
+    <%- include('partials/navbar.ejs') %>
     <ul>
         <% for (quote of quotes) { %>
             <li> <%= quote.name %>, <%= quote.address %>  </li>
