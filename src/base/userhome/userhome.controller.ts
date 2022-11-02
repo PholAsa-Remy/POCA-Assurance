@@ -1,6 +1,6 @@
 import { Controller, Get, Inject, Post, Render, Request } from '@nestjs/common';
 import { UserHomeService } from './userhome.service';
-import { QuoteUseCase } from '../quote/quote.usecase';
+import { QuoteUseCase } from '../quote/usecase/quote.usecase';
 
 @Controller('userhome')
 export class UserHomeController {

@@ -8,10 +8,13 @@ import {
   Post,
   Render,
 } from '@nestjs/common';
-import { CreateQuoteCommand, SimulateQuoteCommand } from './quote.command';
-import { Quote } from './quote.entity';
-import { QuoteUseCase } from './quote.usecase';
-import { QuoteSimulator } from './quote.simulator';
+import {
+  CreateQuoteCommand,
+  SimulateQuoteCommand,
+} from '../command/quote.command';
+import { Quote } from '../entity/quote.entity';
+import { QuoteUseCase } from '../usecase/quote.usecase';
+import { QuoteSimulator } from '../simulator/quote.simulator';
 
 @Controller('quote')
 export class QuoteController {
