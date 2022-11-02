@@ -5,6 +5,7 @@
     <title>Super Insurance</title>
   </head>
   <body>
+    <%- include('partials/navbar.ejs') %>
     <%= message %>
     <form action=/quote/simulate method="post">
       <input type="number" name="ageSpaceship" min="1" required><br>
