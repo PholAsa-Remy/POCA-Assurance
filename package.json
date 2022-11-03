@@ -20,8 +20,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
-  },
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "dryrun": "./node_modules/typeorm/cli.js migration:generate --dr  . ",
+    "dryrun2": "./node_modules/typeorm/cli.js migration:generate --dr  --dataSource ./src/shared/typeorm/typeorm.service.ts  . "
+
+},
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^9.0.0",
