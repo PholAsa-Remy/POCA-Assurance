@@ -46,16 +46,12 @@ export class CustomerUseCase {
     return await this.repository.save(user);
   }
 
-  async update(body: UpdateCustomerCommand): Promise<Customer> {
-    const user: Customer = new Customer();
-
-    user.id = body.id;
-    user.username = body.username;
-    user.password = body.password;
-    user.address = body.address;
-    user.email = body.email;
-    user.phoneNumber = body.phoneNumber;
-
-    return await this.repository.save(user);
+  async update(body: UpdateCustomerCommand): Promise<void> {
+    await this.repository
+      .createQueryBuilder()
+      .update(Customer)
+      .set({ email: body.email })
+      .where('id = :id', { id: body.id })
+      .execute();
   }
 }

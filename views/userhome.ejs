@@ -6,21 +6,44 @@
 </head>
 <body>
 <%- include('partials/navbar.ejs') %>
+
 <H1>HOMEPAGE USER</H1>
-<div><%= data.message %></div>
-<div><%- data.profile %></div>
+<p id="username"></p>
+<p id="profile"></p>
+
 <div class="buttons">
   <button onClick = "modification (event)">Modification profile</button>
 </div>
+
+<H2>Your quotes : </H2>
+<% for (quote of list_quote) { %>
+  <li> <%= quote.name %>, <%= quote.address %>  </li>
+<% } %>
+
+<script>
+  const response = fetch("/profile", {
+    method: 'GET',
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+  }).then(response => {
+    if(!response.ok){
+      location.href = "/";
+    }
+    return response.json();
+  }).then(data => {
+    document.getElementById("username").innerHTML = "HELLO " + data.username;
+    document.getElementById("profile").innerHTML = "Your profile is : " + "<br>" + "UserName : " + data.username + "<br>"
+            + "Email : " + data.email + "<br>" + "Address : " + data.address + "<br>" + "Phone Number : " + data.phoneNumber;
+
+  }).catch(err => {
+  });
+</script>
+
 <script>
   const modification = e => {
     e.preventDefault();
     location.href = 'userhome/modification/profile';
   }
 </script>
-<H2>Your quotes : </H2>
-<% for (quote of list_quote) { %>
-  <li> <%= quote.name %>, <%= quote.address %>  </li>
-<% } %>
+
 </body>
 </html>

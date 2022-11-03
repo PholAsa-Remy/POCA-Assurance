@@ -23,6 +23,7 @@ export class CreateCustomerCommand {
 }
 
 export class UpdateCustomerCommand {
+  @IsNotEmpty()
   public id: number;
 
   @IsString()
