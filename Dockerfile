@@ -9,6 +9,7 @@ RUN npm install
 
 COPY src ./src
 COPY views ./views
+COPY public ./public
 COPY *.json ./
 
 RUN npm run build
