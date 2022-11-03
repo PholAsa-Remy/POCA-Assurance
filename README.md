@@ -1,3 +1,9 @@
+# Galaxy Insurance
+
+|      | Pipeline                                                                                                                                                                                           | Coverage                                                                                                                                                                                           |
+|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| main | [![pipeline status](https://gaufre.informatique.univ-paris-diderot.fr/team-galaxy/poca/badges/main/pipeline.svg)](https://gaufre.informatique.univ-paris-diderot.fr/team-galaxy/poca/commits/main) | [![coverage report](https://gaufre.informatique.univ-paris-diderot.fr/team-galaxy/poca/badges/main/coverage.svg)](https://gaufre.informatique.univ-paris-diderot.fr/team-galaxy/poca/commits/main) |
+
 # Description
 
 ACME software™ plans to revolutionise the insurance industry by building an insurance software that enables a potential client to get a quote for an insurance policy ; manage the life of the policy (sign a policy, receive payments, send contractual documents to the client and so on) ; and allow the client to declare claims.
