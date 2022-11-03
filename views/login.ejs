@@ -8,17 +8,30 @@
 <body>
 <%- include('partials/navbar.ejs') %>
 <main id="main-holder">
-  <h1 id="login-header">Login</h1>
-  <form id="login-form">
-    <input type="text" name="username" id="username" class="login-form-field" placeholder="Username">
-    <input type="password" name="password" id="password" class="login-form-field" placeholder="Password">
-    <input type="submit" value="Login" id="login-form-submit">
-  </form>
+  <div>
+    <h1 id="login-header">Login</h1>
+    <form id="login-form">
+      <input type="text" name="username" id="username" class="login-form-field" placeholder="Username">
+      <input type="password" name="password" id="password" class="login-form-field" placeholder="Password">
+      <input type="submit" value="Login" id="login-form-submit">
+    </form>
+  </div>
+  <a href="/auth/signup">No account ? Sign up here !</a>
 </main>
-  <button id="show_profile">Show profile</button>
-  <button id="log_out">Log out</button>
 </body>
 </html>
+<script>
+  /* If user is already connected, redirect to user profile */
+  const response = fetch("/profile", {
+    method: 'GET',
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+  }).then(response => {
+    if(response.ok){
+      location.href = "/userhome";
+    }
+  });
+</script>
+
 <script>
   /* Set up la connection */
   const loginButton = document.getElementById("login-form-submit");
@@ -33,32 +46,11 @@
     });
     if (response.ok) {
       const data = await response.json()
-      console.log(data.access_token);
       sessionStorage.setItem("team_galaxy_access_token",data.access_token);
-      alert("Vous êtes désormais connecter avec l'accès token " + data.access_token)
+      location.href = "/userhome";
+    }else{
+      alert("The username or the password is wrong");
     }
   });
 
-  /* Exemple pour savoir si quelqu'un est connecter */
-  const showProfileButton = document.getElementById("show_profile");
-  showProfileButton.addEventListener("click", async (e) => {
-    const response = await fetch("/profile", {
-      method: 'GET',
-      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
-    });
-    if (response.ok) {
-      const data = await response.json()
-      console.log(data.username);
-      alert("Bonjour " + data.username);
-    }else{
-      alert("Merci de d'abord vous connecter !!!!");
-    }
-  })
-
-  /* Exemple pour savoir si quelqu'un est connecter */
-  const logOutButton = document.getElementById("log_out");
-  logOutButton.addEventListener("click", async (e) => {
-    sessionStorage.removeItem("team_galaxy_access_token");
-    alert("Vous êtes déconnecté !");
-  })
 </script>

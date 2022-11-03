@@ -22,10 +22,14 @@ export class AuthController {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async loginPage() {}
 
+  @Get('auth/signup')
+  @Render('signup')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async signUpPage() {}
+
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    console.log('Connexion ...');
     return this.authUseCase.login(req.user);
   }
 
