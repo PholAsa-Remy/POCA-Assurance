@@ -9,25 +9,64 @@
 <H1>PROFILE MODIFICATION</H1>
 <form id="modification-profile">
   <label for="username">User Name :</label>
-  <input type="text" id="username" name="username" value="<%= username %>" required>
+  <input type="text" id="username" name="username" required readonly>
   <label for="email">E-mail&nbsp;:</label>
-  <input type="email" id="email" name="email" value="<%= mail %>" required>
+  <input type="email" id="email" name="email" required>
   <input type="submit" value="Modification confirmed" id="modification-profile-submit">
 </form>
+
 <script>
-  const modificationProfileButton = document.getElementById("modification-profile-submit");
-  modificationProfileButton.addEventListener("click", async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('modification-profile').username.value;
-    const email = document.getElementById('modification-profile').email.value;
-    const response = await fetch("/userhome", {
-      method: 'POST',
-      body: JSON.stringify({ "username": username, "email": email }),
-      headers: { "Content-Type": "application/json" }
-    });
-    if (response.ok) {
-      location.href = '/userhome';
+  const response = fetch("/profile", {
+    method: 'GET',
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+  }).then(response => {
+    if(!response.ok){
+      location.href = "/";
     }
+    return response.json();
+  }).then(data => {
+    document.getElementById("username").value = data.username;
+    document.getElementById("email").value = data.email;
+  }).catch(err => {
+  });
+</script>
+
+<script>
+
+  const response2 = fetch("/profile", {
+    method: 'GET',
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+  }).then(response2 => {
+    if(!response2.ok){
+      location.href = "/";
+    }
+    return response2.json();
+  }).then(data => {
+    const modificationProfileButton = document.getElementById("modification-profile-submit");
+    modificationProfileButton.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const response = await fetch("/customer/update", {
+        method: 'POST',
+        body: JSON.stringify({
+          "id": data.id,
+          "username": String(data.username),
+          "password": String(data.password),
+          "address" : String(data.address),
+          "phoneNumber" : String(data.phoneNumber),
+          "email" : String(document.getElementById("email").value)
+        }),
+        headers: { "Content-Type": "application/json" }
+      });
+      if (response.ok) {
+        alert("Your information has been modified, please reconnect");
+        sessionStorage.removeItem("team_galaxy_access_token");
+        location.href = "/auth/login";
+      }else{
+        console.log(response.status)
+      }
+    });
+  }).catch(err => {
   });
 </script>
 

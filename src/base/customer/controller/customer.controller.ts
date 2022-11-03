@@ -44,12 +44,12 @@ export class CustomerController {
   }
 
   @Post()
-  public async create(@Body() quote: CreateCustomerCommand): Promise<Customer> {
-    return await this.customerUseCase.create(quote);
+  public async create(@Body() customer: CreateCustomerCommand): Promise<Customer> {
+    return await this.customerUseCase.create(customer);
   }
 
   @Post('update')
-  public async update(@Body() quote: UpdateCustomerCommand): Promise<Customer> {
-    return await this.customerUseCase.update(quote);
+  public async update(@Body() customer: UpdateCustomerCommand): Promise<void> {
+    await this.customerUseCase.update(customer);
   }
 }
