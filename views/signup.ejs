@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+  <%- include('partials/navbar.ejs') %>
+  <main id="main-holder">
+    <div>
+      <h1>Sign Up</h1>
+      <form id="signup-form" action=/customer method="post">
+        <label for="username">Username :</label><br>
+        <input type="text" name="username"/><br>
+        <label for="password">Password :</label><br>
+        <input type="password" name="password"/><br>
+        <label for="address">Address :</label><br>
+        <input type="text" name="address"/><br>
+        <label for="email">Email :</label><br>
+        <input type="text" name="email"/><br>
+        <label for="phoneNumber"/>PhoneNumber :</label><br>
+        <input type="text" name="phoneNumber"/><br>
+        <input id="signup-form-submit" type="submit">
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+
+<script>
+  /* Set up la connection */
+  const signUpButton = document.getElementById("signup-form-submit");
+  signUpButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('signup-form').username.value;
+    const password = document.getElementById('signup-form').password.value;
+    const address = document.getElementById('signup-form').address.value;
+    const email = document.getElementById('signup-form').email.value;
+    const phoneNumber = document.getElementById('signup-form').phoneNumber.value;
+
+    const response = await fetch("/customer", {
+      method: 'POST',
+      body: JSON.stringify({
+        "username": username,
+        "password": password ,
+        "address" : address,
+        "email" : email,
+        "phoneNumber" : phoneNumber
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    if(response.ok){
+      alert("You account has been created ! You can now login with it");
+      location.href = "/auth/login";
+    }else{
+      alert("Failure in the creation of your account");
+    }
+  });
+</script>
