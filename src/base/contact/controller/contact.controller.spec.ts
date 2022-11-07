@@ -1,22 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ContactController } from './contact.controller';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerService } from '@nestjs-modules/mailer';
 
 describe('ContactController', () => {
   let controller: ContactController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        MailerModule.forRoot({
-          transport: {
-            host: '',
-            auth: {
-              user: '',
-              pass: '',
-            },
+      providers: [
+        MailerService,
+        {
+          provide: MailerService,
+          useValue: {
+            sendMail: jest.fn(),
           },
-        }),
+        },
       ],
       controllers: [ContactController],
     }).compile();

@@ -20,6 +20,7 @@
     <h3>Subscribed Quotes :</h3>
 <% for (quote of subscribe_quote) { %>
   <li>
+      ID N°: <%= quote.id %>
       Base price : <%= quote.basePrice %>,
       Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,
       Deduction damage to self : <%= quote.deductionDamageToSelf %>,
@@ -33,6 +34,7 @@
     <h3>Unsubscribed Quotes :</h3>
 <% for (quote of unsubscribe_quote) { %>
         <li>
+            ID N°: <%= quote.id %>
             Base price : <%= quote.basePrice %>,
             Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,
             Deduction damage to self : <%= quote.deductionDamageToSelf %>,
