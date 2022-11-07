@@ -7,18 +7,45 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ParseBoolean } from '../../../shared/decorators/parse.boolean';
+import { Column } from 'typeorm';
+import { ParseIntPipe } from '@nestjs/common';
 
 export class CreateQuoteCommand {
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  public name: string;
+  public basePrice: number;
 
-  @IsString()
+  @ParseBoolean()
+  @IsBoolean()
   @IsNotEmpty()
-  public address: string;
+  public includeDamageFromThirdParty: boolean;
 
-  @IsEmail()
-  public email: string;
+  @IsNumber()
+  @IsNotEmpty()
+  public deductionDamageFromThirdParty: number;
+
+  @ParseBoolean()
+  @IsBoolean()
+  @IsNotEmpty()
+  public includeDamageToSelf: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  public deductionDamageToSelf: number;
+
+  @ParseBoolean()
+  @IsBoolean()
+  @IsNotEmpty()
+  public includeBreakDownAndRescue: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  public priceBreakDownAndRescue: number;
+
+  @ParseBoolean()
+  @IsBoolean()
+  @IsNotEmpty()
+  public isSubscribe: boolean;
 }
 
 export class SimulateQuoteCommand {

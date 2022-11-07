@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <title>Super Insurance</title>
   </head>
-  <body>
     <%- include('partials/navbar.ejs') %>
     <%= message %>
     <form action=/quote/simulate method="post">
@@ -80,5 +79,62 @@
         <% } %>
       </p>
     <% } %>
+  <% if (typeof simulatedQuote !== 'undefined') { %>
+    <label for="subscribe_now">Subscribe</label>
+    <input type="checkbox" id="subscribe_now">
+    <button id="save_quote">Save quote</button>
+    <span id="basePrice" hidden><%= simulatedQuote.baseMonthlyPrice %></span>
+    <span id="includeDamageFromThirdParty" hidden><%= simulatedQuote.damageToThirdParty.included%></span>
+    <span id="deductionDamageFromThirdParty" hidden><%=simulatedQuote.damageToThirdParty.deductible%></span>
+    <span id="includeDamageToSelf" hidden><%= simulatedQuote.damageToSelf.included %></span>
+    <span id="deductionDamageToSelf" hidden><%=simulatedQuote.damageToSelf.deductible%></span>
+    <span id="includeBreakDownAndRescue" hidden><%= simulatedQuote.strandedOuterRimGuarantee.included %></span>
+    <span id="priceBreakDownAndRescue" hidden><%=simulatedQuote.strandedOuterRimGuarantee.supplementMonthlyPrice%></span>
+  <% } %>
   </body>
 </html>
+
+<script>
+  const saveButton = document.getElementById("save_quote");
+  saveButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    let customerId;
+    let isConnected = false;
+
+    /* Check if user is already connected */
+    const response = await fetch("/profile", {
+      method: 'GET',
+      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+    }).then(async response => {
+      if(response.ok){
+        isConnected = true;
+        const data = await response.json()
+        customerId = data.id;
+      }else{
+        alert("Merci de vous connecter avant de savegarder cette quote !");
+      }
+    });
+    if(!isConnected){
+      return;
+    }
+    const responseCreateQuote = await fetch("/quote/create", {
+      method: 'POST',
+      body: JSON.stringify({
+        "basePrice":parseInt(document.getElementById("basePrice").innerHTML),
+        "includeDamageFromThirdParty":document.getElementById("includeDamageFromThirdParty").innerHTML,
+        "deductionDamageFromThirdParty":parseInt(document.getElementById("deductionDamageFromThirdParty").innerHTML),
+        "includeDamageToSelf":document.getElementById("includeDamageToSelf").innerHTML,
+        "deductionDamageToSelf":parseInt(document.getElementById("deductionDamageToSelf").innerHTML),
+        "includeBreakDownAndRescue":document.getElementById("includeBreakDownAndRescue").innerHTML,
+        "priceBreakDownAndRescue":parseInt(document.getElementById("priceBreakDownAndRescue").innerHTML),
+        "isSubscribe": document.getElementById("subscribe_now").checked.toString(),
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    if (responseCreateQuote.ok) {
+      alert("Quote registered");
+    }else{
+      alert("Error");
+    }
+  })
+</script>

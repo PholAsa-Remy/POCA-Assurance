@@ -6,7 +6,9 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Redirect,
   Render,
+  Session,
 } from '@nestjs/common';
 import {
   CreateQuoteCommand,
@@ -49,9 +51,18 @@ export class QuoteController {
   }
 
   @Post('subscribe')
-  @Render('quote')
-  async subscribe(@Body() quote: CreateQuoteCommand) {
-    return await this.quoteUseCase.create(quote);
+  @Redirect('back')
+  async subscribe(@Body() quote) {
+    return await this.quoteUseCase.subscribeQuote(quote.id);
+  }
+
+  @Post('create')
+  @Redirect('back')
+  async create(
+    @Body() quote: CreateQuoteCommand,
+    @Session() session: Record<string, any>,
+  ) {
+    return await this.quoteUseCase.create(quote, session.customerId);
   }
 
   @Get('list')

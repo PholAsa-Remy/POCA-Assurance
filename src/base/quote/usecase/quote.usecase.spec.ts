@@ -1,8 +1,9 @@
 import { QuoteUseCase } from './quote.usecase';
 import { Quote } from '../entity/quote.entity';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { Column, ManyToOne, Repository } from 'typeorm';
+import { Customer } from '../../customer/entity/customer.entity';
 
 describe('QuoteUseCase', () => {
   let quoteUseCase: QuoteUseCase;
@@ -63,24 +64,80 @@ describe('QuoteUseCase', () => {
       }
     });
   });
+
+  describe('findAllQuotesFromCustomer', () => {
+    it('it should return 2 items', async () => {
+      jest.spyOn(quoteRepository, 'findBy').mockResolvedValueOnce(ITEMS);
+      const result = await quoteUseCase.findAllQuotesFromCustomer(1);
+      expect(result.length).toEqual(2);
+    });
+  });
+
+  describe('findAllSubscribeQuotesFromCustomer', () => {
+    it('it should return 1 items', async () => {
+      jest.spyOn(quoteRepository, 'findBy').mockResolvedValueOnce(ITEMS);
+      const result = await quoteUseCase.findAllSubscribeQuotesFromCustomer(1);
+      expect(result.length).toEqual(2);
+    });
+  });
+
+  describe('findAllUnsubscribeQuotesFromCustomer', () => {
+    it('it should return 0 items', async () => {
+      jest.spyOn(quoteRepository, 'findBy').mockResolvedValueOnce([]);
+      const result = await quoteUseCase.findAllUnsubscribeQuotesFromCustomer(1);
+      expect(result.length).toEqual(0);
+    });
+  });
+
+  describe('findAllUnsubscribeQuotesFromCustomer', () => {
+    it('it should return 0 items', async () => {
+      jest.spyOn(quoteRepository, 'save').mockResolvedValueOnce(ITEMS[0]);
+      const result = await quoteUseCase.create(
+        {
+          basePrice: 1,
+          includeDamageFromThirdParty: true,
+          deductionDamageFromThirdParty: 1,
+          includeDamageToSelf: true,
+          deductionDamageToSelf: 1,
+          includeBreakDownAndRescue: true,
+          priceBreakDownAndRescue: 1,
+          isSubscribe: true,
+        },
+        1,
+      );
+      expect(result).toBeDefined();
+    });
+  });
 });
 
 const ITEMS: Quote[] = [
   {
     id: 1,
-    address: 'test',
-    premium: 1,
-    name: 'test',
-    email: 'test',
+    customer: null,
+    customerId: 1,
+    basePrice: 1,
+    includeDamageFromThirdParty: true,
+    deductionDamageFromThirdParty: 1,
+    includeDamageToSelf: true,
+    deductionDamageToSelf: 1,
+    includeBreakDownAndRescue: true,
+    priceBreakDownAndRescue: 1,
+    isSubscribe: true,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: 2,
-    address: 'test',
-    premium: 1,
-    name: 'test',
-    email: 'test',
+    customer: null,
+    customerId: 1,
+    basePrice: 1,
+    includeDamageFromThirdParty: true,
+    deductionDamageFromThirdParty: 1,
+    includeDamageToSelf: true,
+    deductionDamageToSelf: 1,
+    includeBreakDownAndRescue: true,
+    priceBreakDownAndRescue: 1,
+    isSubscribe: true,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
