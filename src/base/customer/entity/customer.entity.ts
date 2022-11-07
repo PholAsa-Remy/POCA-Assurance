@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Quote } from '../../quote/entity/quote.entity';
 
 @Entity()
 export class Customer {
@@ -19,4 +20,7 @@ export class Customer {
 
   @Column({ type: 'varchar', length: 120 })
   public phoneNumber: string;
+
+  @OneToMany(() => Quote, (quote) => quote.customerId)
+  public quotes: Quote[];
 }

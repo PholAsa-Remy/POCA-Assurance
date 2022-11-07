@@ -19,18 +19,26 @@ export class AuthController {
 
   @Get('auth/login')
   @Render('login')
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async loginPage() {}
+  async loginPage() {
+    return;
+  }
 
   @Get('auth/signup')
   @Render('signup')
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async signUpPage() {}
+  async signUpPage() {
+    return;
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    return this.authUseCase.login(req.user);
+    const login = await this.authUseCase.login(req.user);
+    req.session.customerId = login.id;
+    req.session.username = login.username;
+    req.session.email = login.email;
+    req.session.address = login.address;
+    req.session.phoneNumber = login.phoneNumber;
+    return login;
   }
 
   @UseGuards(JwtAuthGuard)

@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
   Post,
   Render,
   Request,
@@ -18,9 +19,18 @@ export class UserHomeController {
   public quoteUseCase: QuoteUseCase;
   @Render('userhome')
   @Get()
-  async index() {
-    const list_quote = await this.quoteUseCase.findAll();
-    return { list_quote: list_quote };
+  async index(@Session() session: Record<string, any>) {
+    const promise_subscribe =
+      this.quoteUseCase.findAllSubscribeQuotesFromCustomer(session.customerId);
+    const promise_unsubscribe =
+      this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
+        session.customerId,
+      );
+    const [subscribe, unsubscribe] = await Promise.all([
+      promise_subscribe,
+      promise_unsubscribe,
+    ]);
+    return { subscribe_quote: subscribe, unsubscribe_quote: unsubscribe };
   }
 
   @Get('modification/profile')

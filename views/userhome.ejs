@@ -16,9 +16,37 @@
 </div>
 
 <H2>Your quotes : </H2>
-<% for (quote of list_quote) { %>
-  <li> <%= quote.name %>, <%= quote.address %>  </li>
+<div id="_quotes">
+    <h3>Subscribed Quotes :</h3>
+<% for (quote of subscribe_quote) { %>
+  <li>
+      Base price : <%= quote.basePrice %>,
+      Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,
+      Deduction damage to self : <%= quote.deductionDamageToSelf %>,
+      Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,
+  </li>
 <% } %>
+
+</div>
+
+<div id="unsubscribe_quotes">
+    <h3>Unsubscribed Quotes :</h3>
+<% for (quote of unsubscribe_quote) { %>
+        <li>
+            Base price : <%= quote.basePrice %>,
+            Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,
+            Deduction damage to self : <%= quote.deductionDamageToSelf %>,
+            Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,
+        </li>
+    <% if (!quote.isSubscribe) { %>
+      <form action=/quote/subscribe method="post">
+        <input name="id" value="<%= quote.id %>" hidden>
+        <button type="submit">Subscribe</button>
+      </form>
+    <% } %>
+  </li>
+<% } %>
+</div>
 
 <script>
   const response = fetch("/profile", {

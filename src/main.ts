@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { join } from 'path';
+import * as session from 'express-session';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -14,6 +15,13 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
+  app.use(
+    session({
+      secret: 'lnZyUo@OS2kOG7I03ZS%ad6pH#uGS%k@pn#CzHCI',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
   await app.listen(port, () => {
     console.log('[WEB]', config.get<string>('BASE_URL'));
   });

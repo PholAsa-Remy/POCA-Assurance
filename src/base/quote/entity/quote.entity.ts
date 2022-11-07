@@ -4,24 +4,44 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Customer } from '../../customer/entity/customer.entity';
 
 @Entity()
 export class Quote {
   @PrimaryGeneratedColumn()
   public id!: number;
 
-  @Column({ type: 'varchar', length: 120 })
-  public address: string;
+  @ManyToOne(() => Customer, (customer) => customer.quotes)
+  public customer: Customer;
 
-  @Column({ type: 'integer', nullable: true })
-  public premium!: number;
+  @Column()
+  public customerId: number;
 
-  @Column({ type: 'varchar', length: 120 })
-  public name: string;
+  @Column()
+  public basePrice: number;
 
-  @Column({ type: 'varchar', length: 120 })
-  public email: string;
+  @Column()
+  public includeDamageFromThirdParty: boolean;
+
+  @Column()
+  public deductionDamageFromThirdParty: number;
+
+  @Column()
+  public includeDamageToSelf: boolean;
+
+  @Column()
+  public deductionDamageToSelf: number;
+
+  @Column()
+  public includeBreakDownAndRescue: boolean;
+
+  @Column()
+  public priceBreakDownAndRescue: number;
+
+  @Column()
+  public isSubscribe: boolean;
 
   /*
    * Create and Update Date Columns
