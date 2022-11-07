@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { QuoteModule } from '../src/base/quote/quote.module';
 import { TypeOrmConfigService } from '../src/shared/typeorm/typeorm.service';
 import { getEnvPath } from '../src/common/helper/env.helper';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 const envFilePath = getEnvPath(`${__dirname}/../src/common/envs`);
 
@@ -17,6 +18,15 @@ describe('QuoteController (e2e)', () => {
       imports: [
         ConfigModule.forRoot({ envFilePath, isGlobal: true }),
         TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
+        MailerModule.forRoot({
+          transport: {
+            host: 'smtp.sendgrid.net',
+            auth: {
+              user: 'apikey',
+              pass: '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',
+            },
+          },
+        }),
         QuoteModule,
       ],
     }).compile();

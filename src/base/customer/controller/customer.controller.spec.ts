@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CustomerController } from './customer.controller';
 import { CustomerUseCase } from '../useCase/customer.usecase';
+import { MailerService } from '@nestjs-modules/mailer';
 
 describe('CustomerController', () => {
   let controller: CustomerController;
@@ -19,6 +20,13 @@ describe('CustomerController', () => {
             findAll: jest.fn(),
             create: jest.fn(),
             update: jest.fn(),
+          },
+        },
+        MailerService,
+        {
+          provide: MailerService,
+          useValue: {
+            sendMail: jest.fn(),
           },
         },
       ],

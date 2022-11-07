@@ -2,6 +2,7 @@ import { QuoteController } from './quote.controller';
 import { QuoteUseCase } from '../usecase/quote.usecase';
 import { Test } from '@nestjs/testing';
 import { QuoteSimulator } from '../simulator/quote.simulator';
+import { MailerService } from '@nestjs-modules/mailer';
 
 describe('QuoteController', () => {
   let quoteController: QuoteController;
@@ -20,6 +21,13 @@ describe('QuoteController', () => {
             get: jest.fn(),
             findAll: jest.fn(),
             create: jest.fn(),
+          },
+        },
+        MailerService,
+        {
+          provide: MailerService,
+          useValue: {
+            sendMail: jest.fn(),
           },
         },
       ],
