@@ -89,6 +89,24 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/app.module.ts",
+      "<rootDir>/main.ts",
+      "<rootDir>/auth/auth.module.ts",
+      "<rootDir>/migrations/MigrationCustomer.ts",
+      "<rootDir>/migrations/MigrationQuote.ts",
+      "<rootDir>/auth/jwt/jwt.constants.ts",
+      "<rootDir>/auth/jwt/jwt-auth.guard.ts",
+      "<rootDir>/auth/local/local-auth.guard.ts",
+      "<rootDir>/base/base.module.ts",
+      "<rootDir>/base/aboutus/aboutus.module.ts",
+      "<rootDir>/base/contact/contact.module.ts",
+      "<rootDir>/base/customer/customer.module.ts",
+      "<rootDir>/base/quote/quote.module.ts",
+      "<rootDir>/base/userhome/userhome.module.ts",
+      "<rootDir>/common/helper/env.helper.ts",
+      "<rootDir>/shared/typeorm/typeorm.service.ts"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

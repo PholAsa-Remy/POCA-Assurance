@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CustomerUseCase } from '../base/customer/useCase/customer.usecase';
-import { Customer } from '../base/customer/entity/customer.entity';
-import { userInformation } from './auth.command';
+import { CustomerUseCase } from '../../base/customer/useCase/customer.usecase';
+import { Customer } from '../../base/customer/entity/customer.entity';
+import { userInformation } from '../command/auth.command';
 
 /* Auth Service provide the operation for authentication */
 @Injectable()
 export class AuthUseCase {
   constructor(
-    private usersService: CustomerUseCase,
+    private customerUseCase: CustomerUseCase,
     private jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<Customer> {
-    const user = await this.usersService.findOneByName(username);
+    const user = await this.customerUseCase.findOneByName(username);
     if (user && user.password === pass) {
       return user;
     }
@@ -24,6 +24,7 @@ export class AuthUseCase {
     const payload = {
       id: user.id,
       username: user.username,
+      sub: user.id,
       email: user.email,
       address: user.address,
       phoneNumber: user.phoneNumber,

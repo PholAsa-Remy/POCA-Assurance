@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthUseCase } from './auth.usecase';
+import { AuthUseCase } from './usecase/auth.usecase';
 import { LocalStrategy } from './local/local.strategy';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
