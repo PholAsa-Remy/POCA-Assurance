@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import { getEnvPath } from './common/helper/env.helper';
 import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
 import { AuthModule } from './auth/auth.module';
-import { AuthController } from './auth/auth.controller';
+import { AuthController } from './auth/controller/auth.controller';
 import { BaseModule } from './base/base.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 

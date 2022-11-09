@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AboutUsController } from './aboutus.controller';
 
-describe('AboutusApi', () => {
+describe('AboutUsController', () => {
   let app: TestingModule;
 
   beforeAll(async () => {

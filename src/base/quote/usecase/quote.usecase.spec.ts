@@ -1,9 +1,8 @@
 import { QuoteUseCase } from './quote.usecase';
 import { Quote } from '../entity/quote.entity';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { Column, ManyToOne, Repository } from 'typeorm';
-import { Customer } from '../../customer/entity/customer.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 describe('QuoteUseCase', () => {
   let quoteUseCase: QuoteUseCase;
