@@ -13,7 +13,7 @@ import { CustomerModule } from '../base/customer/customer.module';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '300s' },
     }),
   ],
   providers: [AuthUseCase, LocalStrategy, JwtStrategy],

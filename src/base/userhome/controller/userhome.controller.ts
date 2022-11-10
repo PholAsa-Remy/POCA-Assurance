@@ -1,4 +1,13 @@
-import { Controller, Get, Inject, Render, Session } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Render,
+  Request,
+  Session,
+} from '@nestjs/common';
 import { UserHomeService } from '../service/userhome.service';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 
@@ -23,9 +32,12 @@ export class UserHomeController {
     ]);
     return { subscribe_quote: subscribe, unsubscribe_quote: unsubscribe };
   }
-  /* istanbul ignore next */
+
   @Get('modification/profile')
   @Render('modification_profile')
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async modification_profile() {}
+  async modification_profile() {
+    return {
+      message: "this is the user's profile modification page",
+    };
+  }
 }
