@@ -47,4 +47,12 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
+
+  @Get('logout')
+  @Render('logout')
+  async logout() {
+    return {
+      message: 'deconnection...',
+    };
+  }
 }

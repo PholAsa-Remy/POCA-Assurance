@@ -59,8 +59,10 @@ export class CustomerController {
   }
 
   @Post('update')
-  public async update(@Body() customer: UpdateCustomerCommand): Promise<void> {
-    await this.customerUseCase.update(customer);
+  public async update(
+    @Body() customer: UpdateCustomerCommand,
+  ): Promise<Customer> {
+    return await this.customerUseCase.update(customer);
   }
 
   private sendConfirmationNewAccountEmail(

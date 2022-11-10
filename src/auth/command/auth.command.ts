@@ -5,6 +5,7 @@ export class userInformation {
   @IsString()
   public access_token: string;
 
+  @IsNotEmpty()
   @IsNumber()
   public id: number;
 
