@@ -4,6 +4,7 @@ import { QuoteModule } from './quote/quote.module';
 import { CustomerModule } from './customer/customer.module';
 import { AboutUsModule } from './aboutus/aboutus.module';
 import { ContactModule } from './contact/contact.module';
+import { PaymentModule } from "./payment/payment.module";
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ContactModule } from './contact/contact.module';
     CustomerModule,
     AboutUsModule,
     ContactModule,
+    PaymentModule,
   ],
   controllers: [],
 })
