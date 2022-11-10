@@ -5,6 +5,8 @@ import { CustomerModule } from './customer/customer.module';
 import { AboutUsModule } from './aboutus/aboutus.module';
 import { ContactModule } from './contact/contact.module';
 import { PaymentModule } from "./payment/payment.module";
+import { reportsinisterModule } from './reportsinister/reportsinister.module';
+
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { PaymentModule } from "./payment/payment.module";
     AboutUsModule,
     ContactModule,
     PaymentModule,
+    reportsinisterModule
   ],
   controllers: [],
 })
