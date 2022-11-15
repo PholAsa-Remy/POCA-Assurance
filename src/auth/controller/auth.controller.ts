@@ -52,7 +52,7 @@ export class AuthController {
   @Render('logout')
   async logout() {
     return {
-      message: 'deconnection...',
+      message: 'Disconnection...',
     };
   }
 }

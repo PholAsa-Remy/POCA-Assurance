@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  CreateQuoteCommand,
-  SimulatedQuoteCommand,
-} from '../command/quote.command';
+import { CreateQuoteCommand } from '../command/quote.command';
 import { Quote } from '../entity/quote.entity';
-import { Customer } from '../../customer/entity/customer.entity';
 
 @Injectable()
 export class QuoteUseCase {

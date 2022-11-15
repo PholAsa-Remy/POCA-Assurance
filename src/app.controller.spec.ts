@@ -14,7 +14,7 @@ describe('AppController', () => {
     it('should return a catchphrase', () => {
       const quoteController = app.get<AppController>(AppController);
       expect(quoteController.index()).toEqual({
-        message: 'Get your home insured within 3 minutes!',
+        message: 'Get your spaceship insured within 3 minutes!',
       });
     });
   });

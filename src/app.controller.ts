@@ -5,6 +5,6 @@ export class AppController {
   @Get()
   @Render('index')
   index() {
-    return { message: 'Get your home insured within 3 minutes!' };
+    return { message: 'Get your spaceship insured within 3 minutes!' };
   }
 }

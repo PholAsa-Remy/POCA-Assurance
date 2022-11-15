@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Inject,
-  Param,
-  Post,
-  Render,
-  Request,
-  Session,
-} from '@nestjs/common';
+import { Controller, Get, Inject, Render, Session } from '@nestjs/common';
 import { UserHomeService } from '../service/userhome.service';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 
@@ -37,7 +28,7 @@ export class UserHomeController {
   @Render('modification_profile')
   async modification_profile() {
     return {
-      message: "this is the user's profile modification page",
+      message: "This is the user's profile modification page",
     };
   }
 }

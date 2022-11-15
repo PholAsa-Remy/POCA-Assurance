@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="html">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Super Insurance</title>
@@ -7,8 +7,9 @@
     <%- include('partials/navbar.ejs') %>
     <%= message %>
     <form action=/quote/simulate method="post">
+      <label for="ageSpaceship">How old is your spaceship :
       <input type="number" name="ageSpaceship" min="1" required><br>
-      <label for="ageSpaceship">How old is your spaceship :</label><br>
+      </label><br>
       <fieldset>
         <legend>Usage of lightspeed travel :</legend>
         <input type="radio"  name="lightspeed"  id="regular"
@@ -111,7 +112,7 @@
         const data = await response.json()
         customerId = data.id;
       }else{
-        alert("Merci de vous connecter avant de savegarder cette quote !");
+        alert("Please, load into your account to save this quote.");
       }
     });
     if(!isConnected){
