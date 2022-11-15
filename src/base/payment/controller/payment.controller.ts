@@ -1,21 +1,13 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Render
-} from "@nestjs/common";
+import { Body, Controller, Get, Post, Render } from '@nestjs/common';
 import { SendPaymentCommand } from '../command/payment.command';
 
 @Controller('payment')
 export class PaymentController {
-
   @Get()
   @Render('payment')
   async paymentForm() {
     return {
-      message:
-        'Please enter your card information.',
+      message: 'Please enter your card information.',
     };
   }
 
