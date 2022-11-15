@@ -1,12 +1,36 @@
 <link href="/css/navbar.css" rel="stylesheet" type="text/css">
 <nav class="menu">
     <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/auth/login">Login</a></li>
-        <li><a href="/quote/simulate">Quote Generator</a></li>
-        <li><a href="/about">About Us</a></li>
-        <li><a href="/contact">Contact Us</a></li>
-        <li><a href="/logout">Logout</a></li>
-        <li><a href="/report_sinister">Sinister ?</a></li>
+        <li id="menu-home-btn"><a href="/">Home</a></li>
+        <li id="menu-login-btn"><a href="/auth/login">Login</a></li>
+        <li id="menu-userhome-btn"><a href="/userhome">Userhome</a></li>
+        <li id="menu-simulate-btn"><a href="/quote/simulate">Quote Generator</a></li>
+        <li id="menu-aboutus-btn"><a href="/about">About Us</a></li>
+        <li id="menu-contact-btn"><a href="/contact">Contact Us</a></li>
+        <li id="menu-logout-btn"><a href="/logout">Logout</a></li>
+        <li id="menu-sinister-btn"><a href="/report_sinister">Sinister ?</a></li>
     </ul>
 </nav>
+<script>
+  function profileApiCall() {
+    return fetch("/profile", {
+      method: 'GET',
+      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+    });
+  }
+  async function modifyMenuFromConnection() {
+    const result = await profileApiCall();
+    if(result.ok){
+      // User is connected
+      document.getElementById('menu-login-btn').style.display = 'none';
+      document.getElementById('menu-userhome-btn').style.display = 'block';
+      document.getElementById('menu-logout-btn').style.display = 'block';
+    }else{
+      // User is not connected
+      document.getElementById('menu-login-btn').style.display = 'block';
+      document.getElementById('menu-userhome-btn').style.display = 'none';
+      document.getElementById('menu-logout-btn').style.display = 'none';
+    }
+  }
+  modifyMenuFromConnection();
+</script>
