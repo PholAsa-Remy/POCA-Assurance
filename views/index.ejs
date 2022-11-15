@@ -10,11 +10,12 @@
     <%= message %>
 
     <div class="buttons">
-      <button onClick = "redirect(event, '/auth/login')">Login</button>
-      <button onClick = "redirect(event, '/quote/simulate')">Quote Generator</button>
-      <button onClick = "redirect(event, '/about')">About Us</button>
-      <button onClick = "redirect(event, '/contact')">Contact Us</button>
-      <button onClick = "redirect(event, '/report_sinister')">REPORT A SINISTER</button>
+      <button id="login_btn" onClick = "redirect(event, '/auth/login')">Login</button>
+      <button id="userhome_btn" onClick = "redirect(event, '/userhome')">Userhome</button>
+      <button id="quote_btn" onClick = "redirect(event, '/quote/simulate')">Quote Generator</button>
+      <button id="about_btn" onClick = "redirect(event, '/about')">About Us</button>
+      <button id="contact_btn" onClick = "redirect(event, '/contact')">Contact Us</button>
+      <button id="report_btn" onClick = "redirect(event, '/report_sinister')">REPORT A SINISTER</button>
     </div>
 
     <script>
@@ -22,6 +23,20 @@
         e.preventDefault();
         location.href = url;
       }
+
+      async function hideLogin() {
+        const result = await profileApiCall();
+        if(result.ok){
+          // User is connected
+          document.getElementById('login_btn').style.display = 'none';
+          document.getElementById('userhome_btn').style.display = 'block';
+        }else{
+          // User is not connected
+          document.getElementById('login_btn').style.display = 'block';
+          document.getElementById('userhome_btn').style.display = 'none';
+        }
+      }
+      hideLogin()
     </script>
   </body>
 </html>
