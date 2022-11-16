@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class userInformation {
   @IsNotEmpty()
@@ -6,8 +6,8 @@ export class userInformation {
   public access_token: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  public id: number;
+  @IsString()
+  public id: string;
 
   @IsNotEmpty()
   @IsString()

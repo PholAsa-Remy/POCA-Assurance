@@ -10,8 +10,8 @@ import { Customer } from '../../customer/entity/customer.entity';
 
 @Entity()
 export class Quote {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id!: string;
 
   @ManyToOne(() => Customer, (customer) => customer.quotes)
   public customer: Customer;
