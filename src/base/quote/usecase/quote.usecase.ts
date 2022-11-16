@@ -9,7 +9,7 @@ export class QuoteUseCase {
   @InjectRepository(Quote)
   private readonly repository: Repository<Quote>;
 
-  public async get(id: number): Promise<Quote> {
+  public async get(id: string): Promise<Quote> {
     return await this.repository.findOneBy({ id });
   }
 
@@ -50,7 +50,7 @@ export class QuoteUseCase {
     return await this.repository.save(quote);
   }
 
-  public async subscribeQuote(quoteId: number): Promise<Quote> {
+  public async subscribeQuote(quoteId: string): Promise<Quote> {
     await this.repository
       .createQueryBuilder()
       .update(Quote)

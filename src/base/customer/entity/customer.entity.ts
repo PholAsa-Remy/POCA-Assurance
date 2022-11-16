@@ -3,8 +3,8 @@ import { Quote } from '../../quote/entity/quote.entity';
 
 @Entity()
 export class Customer {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column({ type: 'varchar', length: 120 })
   public username: string;

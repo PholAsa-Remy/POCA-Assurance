@@ -12,7 +12,7 @@ export class CustomerUseCase {
   @InjectRepository(Customer)
   private readonly repository: Repository<Customer>;
 
-  async findOneById(id: number): Promise<Customer> {
+  async findOneById(id: string): Promise<Customer> {
     return await this.repository.findOneBy({
       id,
     });

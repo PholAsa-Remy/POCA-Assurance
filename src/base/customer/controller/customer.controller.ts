@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Param,
-  ParseIntPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { CustomerUseCase } from '../useCase/customer.usecase';
 import { Customer } from '../entity/customer.entity';
 import {
@@ -29,9 +21,7 @@ export class CustomerController {
   }
 
   @Get('id/:id')
-  public async getById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<Customer> {
+  public async getById(@Param('id') id: string): Promise<Customer> {
     return await this.customerUseCase.findOneById(id);
   }
 
@@ -76,10 +66,10 @@ export class CustomerController {
       text: `Hi, we are glad that you join us \n
       Please find here all of your information : \n
       - Customer ID : ${createdCustomer.id} \n
-      - Username : ${createdCustomer.id} \n
-      - Address : ${createdCustomer.id} \n
-      - Email : ${createdCustomer.id} \n
-      - Phone number : ${createdCustomer.id} \n
+      - Username : ${createdCustomer.username} \n
+      - Address : ${createdCustomer.address} \n
+      - Email : ${createdCustomer.email} \n
+      - Phone number : ${createdCustomer.phoneNumber} \n
       You can now login at : http://52.47.117.181/auth/login \n
       And use our quote generator at : http://52.47.117.181/quote/simulate \n
       For any questions please join us at : http://52.47.117.181/contact \n

@@ -49,15 +49,15 @@ describe('QuoteUseCase', () => {
   describe('get', () => {
     it('it should return 1 items', async () => {
       jest.spyOn(quoteRepository, 'findOneBy').mockResolvedValueOnce(ITEMS[1]);
-      const result = await quoteUseCase.get(2);
-      expect(result).toHaveProperty('id', 2);
+      const result = await quoteUseCase.get('b');
+      expect(result).toHaveProperty('id', 'b');
     });
     it('it must generate an error, get return an error', async () => {
       jest.spyOn(quoteRepository, 'findOneBy').mockImplementation(() => {
         throw new Error('async error');
       });
       try {
-        await quoteUseCase.get(3);
+        await quoteUseCase.get('c');
       } catch (err) {
         expect(err.message).toContain('async error');
       }
@@ -111,7 +111,7 @@ describe('QuoteUseCase', () => {
 
 const ITEMS: Quote[] = [
   {
-    id: 1,
+    id: 'a',
     customer: null,
     customerId: 1,
     basePrice: 1,
@@ -126,7 +126,7 @@ const ITEMS: Quote[] = [
     updatedAt: new Date(),
   },
   {
-    id: 2,
+    id: 'b',
     customer: null,
     customerId: 1,
     basePrice: 1,

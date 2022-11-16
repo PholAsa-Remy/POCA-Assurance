@@ -4,7 +4,6 @@ import {
   Get,
   Inject,
   Param,
-  ParseIntPipe,
   Post,
   Redirect,
   Render,
@@ -20,7 +19,7 @@ import { QuoteSimulator } from '../simulator/quote.simulator';
 import { MailerService } from '@nestjs-modules/mailer';
 
 interface SubscribeParams {
-  id: number;
+  id: string;
 }
 
 @Controller('quote')
@@ -95,7 +94,7 @@ export class QuoteController {
   }
 
   @Get(':id')
-  public async get(@Param('id', ParseIntPipe) id: number): Promise<Quote> {
+  public async get(@Param('id') id: string): Promise<Quote> {
     return await this.quoteUseCase.get(id);
   }
 
