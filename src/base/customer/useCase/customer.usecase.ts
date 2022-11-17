@@ -46,7 +46,10 @@ export class CustomerUseCase {
     return await this.repository.save(user);
   }
 
-  async update(body: UpdateCustomerCommand): Promise<Customer> {
+  async update(
+    body: UpdateCustomerCommand,
+    customerId: string,
+  ): Promise<Customer> {
     await this.repository
       .createQueryBuilder()
       .update(Customer)
@@ -57,12 +60,12 @@ export class CustomerUseCase {
         address: body.address,
         phoneNumber: body.phoneNumber,
       })
-      .where('id = :id', { id: body.id })
+      .where('id = :id', { id: customerId })
       .execute();
 
     return await this.repository.findOne({
       where: {
-        id: body.id,
+        id: customerId,
       },
     });
   }

@@ -17,11 +17,21 @@ export class UserHomeController {
       this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
         session.customerId,
       );
-    const [subscribe, unsubscribe] = await Promise.all([
+    const promise_sinister =
+      //FIXME wait function get list sinister
+      this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
+        session.customerId,
+      );
+    const [subscribe, unsubscribe, list_sinister] = await Promise.all([
       promise_subscribe,
       promise_unsubscribe,
+      promise_sinister,
     ]);
-    return { subscribe_quote: subscribe, unsubscribe_quote: unsubscribe };
+    return {
+      subscribe_quote: subscribe,
+      unsubscribe_quote: unsubscribe,
+      list_sinister: list_sinister,
+    };
   }
 
   @Get('modification/profile')
