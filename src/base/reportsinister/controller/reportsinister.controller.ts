@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Render } from '@nestjs/common';
-import { SendSinisterReportCommand } from '../command/contact.command';
+import { CreateSinisterReportCommand } from '../command/sinister.command';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Controller('report_sinister')
 export class reportsinisterController {
@@ -14,8 +15,11 @@ export class reportsinisterController {
 
   @Post('report')
   @Render('reportsinister')
-  async checkvalidity(@Body() data: SendSinisterReportCommand) {
-    console.log(data);
+
+  async checkvalidity(@Body() data: CreateSinisterReportCommand) {
+
+    //console.log(data)
+    
     return {
       message: 'Please fill this form to report us a sinister',
       notification:

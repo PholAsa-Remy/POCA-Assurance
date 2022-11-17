@@ -107,8 +107,10 @@
       "<rootDir>/base/quote/quote.module.ts",
       "<rootDir>/base/userhome/userhome.module.ts",
       "<rootDir>/common/helper/env.helper.ts",
-      "<rootDir>/shared/typeorm/typeorm.service.ts"
-    ],
+      "<rootDir>/shared/typeorm/typeorm.service.ts",
+      "<rootDir>/auth/local/local.strategy.ts",
+      "<rootDir>/auth/jwt/jwt.strategy.ts"
+],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
