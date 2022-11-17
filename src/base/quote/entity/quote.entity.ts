@@ -5,17 +5,22 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany
 } from 'typeorm';
 import { Customer } from '../../customer/entity/customer.entity';
+import { Sinister } from '../../reportsinister/entity/sinister.entity';
 
-@Entity()
+@Entity() 
 export class Quote {
   @PrimaryGeneratedColumn('uuid')
   public id!: string;
 
   @ManyToOne(() => Customer, (customer) => customer.quotes)
   public customer: Customer;
-
+/*
+  @OneToMany(() => Sinister, (sinister) => sinister.quoteId)
+  public sinisters:Sinister[];
+*/
   @Column()
   public customerId: number;
 
