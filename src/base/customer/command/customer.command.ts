@@ -25,10 +25,6 @@ export class CreateCustomerCommand {
 export class UpdateCustomerCommand {
   @IsString()
   @IsNotEmpty()
-  public id: string;
-
-  @IsString()
-  @IsNotEmpty()
   public username: string;
 
   @IsString()

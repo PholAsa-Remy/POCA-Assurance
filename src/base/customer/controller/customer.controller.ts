@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Redirect,
+  Session,
+} from '@nestjs/common';
 import { CustomerUseCase } from '../useCase/customer.usecase';
 import { Customer } from '../entity/customer.entity';
 import {
@@ -49,10 +58,12 @@ export class CustomerController {
   }
 
   @Post('update')
+  @Redirect('/logout')
   public async update(
     @Body() customer: UpdateCustomerCommand,
+    @Session() session: Record<string, any>,
   ): Promise<Customer> {
-    return await this.customerUseCase.update(customer);
+    return await this.customerUseCase.update(customer, session.customerId);
   }
 
   private sendConfirmationNewAccountEmail(
