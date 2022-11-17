@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class SendPaymentCommand {
+export class CreatePaymentCommand {
+  @IsNumber()
+  @IsNotEmpty()
+  public price: number;
+
   @IsString()
   @IsNotEmpty()
   public card_number: string;
