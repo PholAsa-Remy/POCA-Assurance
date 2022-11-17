@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Galaxy Insurance</title>
+</head>
+<body>
+<%- include('partials/navbar.ejs') %>
+<ul>
+    <% for (payment of payments) { %>
+        <li> <%= payment.price %> €, date: <%= payment.createdAt %>  </li>
+    <% } %>
+</ul>
+
+<script>
+  const response = fetch("/profile", {
+    method: 'GET',
+    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+  }).then(async response => {
+    if(!response.ok){
+      location.href = "/";
+    }
+    await response.json();
+  })
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { PaymentController } from './payment.controller';
+import { PaymentUseCase } from '../usecase/payment.useCase';
 
 describe('Payment', () => {
   let paymentController: PaymentController;
@@ -7,6 +8,18 @@ describe('Payment', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [PaymentController],
+      providers: [
+        PaymentUseCase,
+        {
+          provide: PaymentUseCase,
+          useValue: {
+            get: jest.fn(),
+            findAll: jest.fn(),
+            findAllPaymentsFromCustomer: jest.fn(),
+            create: jest.fn()
+          },
+        },
+      ]
     }).compile();
 
     paymentController = moduleRef.get<PaymentController>(PaymentController);
@@ -21,4 +34,5 @@ describe('Payment', () => {
       );
     });
   });
+
 });
