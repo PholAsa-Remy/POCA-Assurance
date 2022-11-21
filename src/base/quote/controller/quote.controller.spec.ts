@@ -8,6 +8,8 @@ import {
   SimulateQuoteCommand,
 } from '../command/quote.command';
 import { MailerService } from '@nestjs-modules/mailer';
+import { PdfService } from '../../pdf/service/pdf.service';
+import { CustomerUseCase } from '../../customer/useCase/customer.usecase';
 
 describe('QuoteController', () => {
   let quoteController: QuoteController;
@@ -21,6 +23,8 @@ describe('QuoteController', () => {
         QuoteUseCase,
         QuoteSimulator,
         MailerService,
+        PdfService,
+        CustomerUseCase,
         {
           provide: QuoteUseCase,
           useValue: {
@@ -41,7 +45,20 @@ describe('QuoteController', () => {
             simulateQuote: jest.fn(),
           },
         },
+        {
+          provide: PdfService,
+          useValue: {
+            generateContract: jest.fn(),
+          },
+        },
+        {
+          provide: CustomerUseCase,
+          useValue: {
+            findOneById: jest.fn(),
+          },
+        },
       ],
+      imports: [],
     }).compile();
 
     quoteUseCase = moduleRef.get<QuoteUseCase>(QuoteUseCase);
