@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/controller/auth.controller';
 import { BaseModule } from './base/base.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { MulterModule } from '@nestjs/platform-express';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -23,6 +24,9 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
           pass: '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',
         },
       },
+    }),
+    MulterModule.register({
+      dest: './upload',
     }),
     BaseModule,
     AuthModule,
