@@ -43,12 +43,10 @@
             Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>
             Created at : <%= quote.createdAt %>
         </li>
-    <% if (!quote.isSubscribe) { %>
       <form action=/quote/subscribe method="post">
         <input name="id" value="<%= quote.id %>" hidden>
         <button type="submit">Subscribe</button>
       </form>
-    <% } %>
   </li>
 <% } %>
 </div>

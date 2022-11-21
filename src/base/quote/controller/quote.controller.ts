@@ -17,6 +17,8 @@ import { Quote } from '../entity/quote.entity';
 import { QuoteUseCase } from '../usecase/quote.usecase';
 import { QuoteSimulator } from '../simulator/quote.simulator';
 import { MailerService } from '@nestjs-modules/mailer';
+import { PdfService } from '../../pdf/service/pdf.service';
+import { CustomerUseCase } from '../../customer/useCase/customer.usecase';
 
 interface SubscribeParams {
   id: string;
@@ -30,6 +32,10 @@ export class QuoteController {
   private readonly quoteSimulator: QuoteSimulator;
   @Inject(MailerService)
   private readonly mailerService: MailerService;
+  @Inject(PdfService)
+  private readonly pdfService: PdfService;
+  @Inject(CustomerUseCase)
+  private readonly customerUseCase: CustomerUseCase;
 
   @Get('probes')
   public async probes(): Promise<string> {
@@ -57,16 +63,21 @@ export class QuoteController {
   }
 
   @Post('subscribe')
-  @Redirect('back')
+  @Redirect('/payment')
   async subscribe(
-    @Body() quote: SubscribeParams,
+    @Body() body: SubscribeParams,
     @Session() session: Record<string, any>,
   ) {
-    const subscribedQuote = await this.quoteUseCase.subscribeQuote(quote.id);
-
-    this.sendConfirmationSubscriptionMail(session, subscribedQuote);
-
-    return subscribedQuote;
+    const customerPromise = this.customerUseCase.findOneById(
+      session.customerId,
+    );
+    const quotePromise = this.quoteUseCase.get(body.id);
+    const [customer, quote] = await Promise.all([
+      customerPromise,
+      quotePromise,
+    ]);
+    this.pdfService.generateContract(customer, quote);
+    return quote;
   }
 
   @Post('create')

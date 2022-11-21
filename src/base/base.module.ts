@@ -4,9 +4,9 @@ import { QuoteModule } from './quote/quote.module';
 import { CustomerModule } from './customer/customer.module';
 import { AboutUsModule } from './aboutus/aboutus.module';
 import { ContactModule } from './contact/contact.module';
-import { PaymentModule } from "./payment/payment.module";
+import { PaymentModule } from './payment/payment.module';
 import { reportsinisterModule } from './reportsinister/reportsinister.module';
-
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -16,7 +16,8 @@ import { reportsinisterModule } from './reportsinister/reportsinister.module';
     AboutUsModule,
     ContactModule,
     PaymentModule,
-    reportsinisterModule
+    reportsinisterModule,
+    PdfModule,
   ],
   controllers: [],
 })
