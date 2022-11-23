@@ -2,29 +2,57 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
   Post,
-  Render,
+  Req,
+  Res,
+  Session,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { PaymentUseCase } from '../usecase/payment.useCase';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Request } from 'express';
+import { Response } from 'express';
+import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
+import { Quote } from '../../quote/entity/quote.entity';
+import { UUID } from '../../../shared/type';
+import * as path from 'path';
 
 @Controller('payment')
 export class PaymentController {
-  @Inject(PaymentUseCase)
-  private readonly paymentUseCase: PaymentUseCase;
+  @Inject(QuoteUseCase)
+  private readonly quoteUseCase: QuoteUseCase;
 
-  @Get()
-  @Render('payment')
-  async paymentForm() {
-    return {
-      message: 'Please provide your payment information.',
-    };
+  @Get('/:quoteId')
+  async paymentForm(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Session() session: Record<string, any>,
+    @Param('quoteId') quoteId: UUID,
+  ) {
+    try {
+      const quote = await this.quoteUseCase.get(quoteId);
+      const QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid =
+        !quote ||
+        (quote && quote.customerId !== session.customerId) ||
+        quote.isSubscribe;
+
+      if (QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid) {
+        return res.redirect('/userhome');
+      }
+      return res.render(`payment`, {
+        message: 'Please provide your payment information.',
+        quoteId: quoteId,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.redirect('/userhome');
+    }
   }
 
-  @Post('upload')
+  /* istanbul ignore next */
+  @Post('upload/:quoteId')
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -33,12 +61,18 @@ export class PaymentController {
       ],
       {
         storage: diskStorage({
-          destination: './upload',
+          destination: './customers',
           filename: (req, file, callback) => {
-            console.log((req.session as any).customerId as string);
-            const uniqueSuffix =
-              Date.now() + '-' + Math.round(Math.random() * 1e9);
-            const filename = `${uniqueSuffix}.pdf`;
+            const customerId: UUID = (req.session as any).customerId as string;
+            const quoteId: UUID = req.params.quoteId as string;
+            let filename: string;
+            if (file.fieldname === 'contract') {
+              const ext = path.extname(file.originalname);
+              filename = `${customerId}/${quoteId}/${customerId}_${quoteId}_signed${ext}`;
+            } else if (file.fieldname === 'rib') {
+              const ext = path.extname(file.originalname);
+              filename = `${customerId}/${quoteId}/${customerId}_${quoteId}_rib${ext}`;
+            }
             callback(null, filename);
           },
         }),
@@ -51,8 +85,18 @@ export class PaymentController {
       contract: Express.Multer.File[];
       rib: Express.Multer.File[];
     },
-  ): Promise<{ contract: Express.Multer.File[]; rib: Express.Multer.File[] }> {
+    @Param('quoteId') quoteId: UUID,
+    @Res() res: Response,
+  ): Promise<{
+    subscribedQuote: Quote;
+    files: {
+      contract: Express.Multer.File[];
+      rib: Express.Multer.File[];
+    };
+  }> {
     console.log(files);
-    return files;
+    const subscribedQuote = await this.quoteUseCase.subscribeQuote(quoteId);
+    res.redirect('/userhome');
+    return { subscribedQuote, files };
   }
 }

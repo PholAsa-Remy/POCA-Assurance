@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Quote } from '../../quote/entity/quote.entity';
-import { Payment } from "../../payment/entity/payment.entity";
 
 @Entity()
 export class Customer {
@@ -24,7 +23,4 @@ export class Customer {
 
   @OneToMany(() => Quote, (quote) => quote.customerId)
   public quotes: Quote[];
-
-  @OneToMany(() => Payment, (payment) => payment.customerId)
-  public payments: Payment[];
 }

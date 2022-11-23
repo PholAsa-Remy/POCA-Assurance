@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { PaymentController } from './payment.controller';
-import { PaymentUseCase } from '../usecase/payment.useCase';
+import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 
 describe('Payment', () => {
   let paymentController: PaymentController;
@@ -9,14 +9,12 @@ describe('Payment', () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [PaymentController],
       providers: [
-        PaymentUseCase,
+        QuoteUseCase,
         {
-          provide: PaymentUseCase,
+          provide: QuoteUseCase,
           useValue: {
             get: jest.fn(),
-            findAll: jest.fn(),
-            findAllPaymentsFromCustomer: jest.fn(),
-            create: jest.fn(),
+            subscribeQuote: jest.fn(),
           },
         },
       ],
@@ -25,13 +23,7 @@ describe('Payment', () => {
     paymentController = moduleRef.get<PaymentController>(PaymentController);
   });
 
-  describe('paymentForm', () => {
-    it('should return a message"', async () => {
-      expect.assertions(1);
-      await expect(paymentController.paymentForm()).resolves.toHaveProperty(
-        'message',
-        'Please provide your payment information.',
-      );
-    });
+  it('should be defined', () => {
+    expect(paymentController).toBeDefined();
   });
 });

@@ -13,12 +13,11 @@ describe('UserHomeService', () => {
     email: 'test',
     phoneNumber: 'test',
     quotes: null,
-    payments: null,
   };
   const quote: Quote = {
     id: 'test',
     customer: null,
-    customerId: 1,
+    customerId: '1',
     basePrice: 1,
     includeBreakDownAndRescue: true,
     includeDamageToSelf: true,

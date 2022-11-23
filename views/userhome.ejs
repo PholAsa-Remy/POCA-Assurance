@@ -20,13 +20,13 @@
     <h3>Subscribed Quotes :</h3>
 <% for (quote of subscribe_quote) { %>
   <li>
-      ID N°: <%= quote.id %>
-      Base price : <%= quote.basePrice %>,
-      Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,
-      Deduction damage to self : <%= quote.deductionDamageToSelf %>,
-      Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,
-      Created at : <%= quote.createdAt %>
-      Paid : <%= quote.updatedAt %>
+      ID N°: <%= quote.id %>, <br/>
+      Base price : <%= quote.basePrice %>,<br/>
+      Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,<br/>
+      Deduction damage to self : <%= quote.deductionDamageToSelf %>,<br/>
+      Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,<br/>
+      Created at : <%= quote.createdAt %><br/>
+      Paid at: <%= quote.updatedAt %>
   </li>
 <% } %>
 
@@ -36,18 +36,17 @@
     <h3>Unsubscribed Quotes :</h3>
 <% for (quote of unsubscribe_quote) { %>
         <li>
-            ID N°: <%= quote.id %>
-            Base price : <%= quote.basePrice %>,
-            Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,
-            Deduction damage to self : <%= quote.deductionDamageToSelf %>,
-            Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>
+            ID N°: <%= quote.id %>, <br/>
+            Base price : <%= quote.basePrice %>, <br/>
+            Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>, <br/>
+            Deduction damage to self : <%= quote.deductionDamageToSelf %>, <br/>
+            Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %> <br/>
             Created at : <%= quote.createdAt %>
         </li>
       <form action=/quote/subscribe method="post">
         <input name="id" value="<%= quote.id %>" hidden>
         <button type="submit">Subscribe</button>
       </form>
-  </li>
 <% } %>
 </div>
 <!-- FIXME wait function get list sinister -->

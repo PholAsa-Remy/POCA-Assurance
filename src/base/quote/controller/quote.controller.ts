@@ -7,6 +7,7 @@ import {
   Post,
   Redirect,
   Render,
+  Res,
   Session,
 } from '@nestjs/common';
 import {
@@ -19,6 +20,9 @@ import { QuoteSimulator } from '../simulator/quote.simulator';
 import { MailerService } from '@nestjs-modules/mailer';
 import { PdfService } from '../../pdf/service/pdf.service';
 import { CustomerUseCase } from '../../customer/useCase/customer.usecase';
+import { join } from 'path';
+import { Response } from 'express';
+import { UUID } from '../../../shared/type';
 
 interface SubscribeParams {
   id: string;
@@ -63,10 +67,10 @@ export class QuoteController {
   }
 
   @Post('subscribe')
-  @Redirect('/payment')
   async subscribe(
     @Body() body: SubscribeParams,
     @Session() session: Record<string, any>,
+    @Res() res: Response,
   ) {
     const customerPromise = this.customerUseCase.findOneById(
       session.customerId,
@@ -77,23 +81,35 @@ export class QuoteController {
       quotePromise,
     ]);
     this.pdfService.generateContract(customer, quote);
+    this.sendConfirmationSubscriptionMail(session, quote);
+    res.redirect(`/payment/${quote.id}`);
     return quote;
   }
 
   @Post('create')
   @Redirect('back')
   async create(
-    @Body() quote: CreateQuoteCommand,
+    @Body() body: CreateQuoteCommand,
     @Session() session: Record<string, any>,
   ) {
-    const createdQuote = await this.quoteUseCase.create(
-      quote,
+    return await this.quoteUseCase.create(body, session.customerId);
+  }
+
+  @Post('createAndSubscribe')
+  async createAndSubscribe(
+    @Body() body: CreateQuoteCommand,
+    @Session() session: Record<string, any>,
+  ): Promise<Quote> {
+    const customerPromise = this.customerUseCase.findOneById(
       session.customerId,
     );
-
-    if (createdQuote.isSubscribe)
-      this.sendConfirmationSubscriptionMail(session, createdQuote);
-
+    const quotePromise = this.quoteUseCase.create(body, session.customerId);
+    const [customer, createdQuote] = await Promise.all([
+      customerPromise,
+      quotePromise,
+    ]);
+    this.pdfService.generateContract(customer, createdQuote);
+    this.sendConfirmationSubscriptionMail(session, createdQuote);
     return createdQuote;
   }
 
@@ -105,7 +121,7 @@ export class QuoteController {
   }
 
   @Get(':id')
-  public async get(@Param('id') id: string): Promise<Quote> {
+  public async get(@Param('id') id: UUID): Promise<Quote> {
     return await this.quoteUseCase.get(id);
   }
 
@@ -116,14 +132,27 @@ export class QuoteController {
     this.mailerService.sendMail({
       to: session.email,
       from: '"Galaxy Support" <kevin.dang01@proton.me>',
-      subject: 'You have subscribe to a new insurance',
-      text: `Hi, we are glad to know that you have subscribe to our insurance, 
+      subject: 'Your new contract',
+      text: `Hi, we are glad that you want subscribe to our insurance. \n
+      Please find in attached file your contract. \n
+      You need to sign it and provides us a RIB here : http://52.47.117.181:3000/payment/${quote.id} \n
       please find here a resume of your policy : \n 
-      N°: ${quote.id} \n 
+      Contract ID: ${quote.id} \n 
       Base price : ${quote.basePrice} \n 
       Deduction damage from third party : ${quote.deductionDamageFromThirdParty} \n
       Deduction damage to self : ${quote.deductionDamageToSelf} \n
       Price breakdown and rescue : ${quote.priceBreakDownAndRescue}`,
+      attachments: [
+        {
+          path: join(
+            './',
+            `customers/${session.customerId}/${quote.id}`,
+            `${session.customerId}_${quote.id}.pdf`,
+          ),
+          filename: `${session.customerId}_${quote.id}.pdf`,
+          contentDisposition: 'attachment',
+        },
+      ],
     });
   }
 }
