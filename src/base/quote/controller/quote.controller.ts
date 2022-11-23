@@ -147,7 +147,7 @@ export class QuoteController {
       subject: 'Your new contract',
       text: `Hi, we are glad that you want subscribe to our insurance. \n
       Please find in attached file your contract. \n
-      You need to sign it and provides us a RIB here : http://52.47.117.181:3000/payment/${quote.id} \n
+      You need to sign it and provides us a RIB here : http://52.47.117.181/payment/${quote.id} \n
       please find here a resume of your policy : \n 
       Contract ID: ${quote.id} \n 
       Base price : ${quote.basePrice} \n 
