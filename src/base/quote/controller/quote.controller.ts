@@ -52,6 +52,12 @@ export class QuoteController {
     return {
       message:
         'Answer a few questions a get a first quote simulation for your spaceship.',
+      spaceshipClasses: QuoteSimulator.SPACESHIP_CLASSES,
+      spaceshipModelsFighter: QuoteSimulator.SPACESHIP_MODELS_FIGHTER,
+      spaceshipModelsCruiserBattleship:
+        QuoteSimulator.SPACESHIP_MODELS_CRUISER_BATTLESHIP,
+      spaceshipModelsShuttleCargo:
+        QuoteSimulator.SPACESHIP_MODELS_SHUTTLE_CARGO,
     };
   }
 
@@ -63,6 +69,12 @@ export class QuoteController {
       message:
         'Answer a few questions a get a first quote simulation for your spaceship.',
       simulatedQuote: simulatedQuote,
+      spaceshipClasses: QuoteSimulator.SPACESHIP_CLASSES,
+      spaceshipModelsFighter: QuoteSimulator.SPACESHIP_MODELS_FIGHTER,
+      spaceshipModelsCruiserBattleship:
+        QuoteSimulator.SPACESHIP_MODELS_CRUISER_BATTLESHIP,
+      spaceshipModelsShuttleCargo:
+        QuoteSimulator.SPACESHIP_MODELS_SHUTTLE_CARGO,
     };
   }
 
