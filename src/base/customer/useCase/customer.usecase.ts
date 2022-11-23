@@ -6,15 +6,16 @@ import {
   CreateCustomerCommand,
   UpdateCustomerCommand,
 } from '../command/customer.command';
+import { UUID } from '../../../shared/type';
 
 @Injectable()
 export class CustomerUseCase {
   @InjectRepository(Customer)
   private readonly repository: Repository<Customer>;
 
-  async findOneById(id: string): Promise<Customer> {
+  async findOneById(customerId: UUID): Promise<Customer> {
     return await this.repository.findOneBy({
-      id,
+      id: customerId,
     });
   }
 
@@ -48,7 +49,7 @@ export class CustomerUseCase {
 
   async update(
     body: UpdateCustomerCommand,
-    customerId: string,
+    customerId: UUID,
   ): Promise<Customer> {
     await this.repository
       .createQueryBuilder()

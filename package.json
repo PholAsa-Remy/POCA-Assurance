@@ -59,6 +59,7 @@
     "@types/jest": "^28.1.4",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.7.13",
+    "@types/nodemailer": "^6.4.6",
     "@types/passport-jwt": "^3.0.7",
     "@types/passport-local": "^1.0.34",
     "@types/supertest": "^2.0.12",
@@ -111,7 +112,9 @@
       "<rootDir>/common/helper/env.helper.ts",
       "<rootDir>/shared/typeorm/typeorm.service.ts",
       "<rootDir>/auth/local/local.strategy.ts",
-      "<rootDir>/auth/jwt/jwt.strategy.ts"
+      "<rootDir>/auth/jwt/jwt.strategy.ts",
+      "<rootDir>/base/pdf/pdf.module.ts",
+      "<rootDir>/shared/decorators/parse.boolean.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

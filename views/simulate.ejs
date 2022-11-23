@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Super Insurance</title>
   </head>
+  <body>
     <%- include('partials/navbar.ejs') %>
     <%= message %>
     <form action=/quote/simulate method="post">
@@ -40,7 +41,8 @@
                value="false" />
         <label for="no">No</label>
       </fieldset>
-      <input type="submit">
+      <br/>
+      <input type="submit" value="simulate">
     </form>
     <% if (typeof simulatedQuote !== 'undefined') { %>
       <h3>Base price</h3>
@@ -81,9 +83,8 @@
       </p>
     <% } %>
   <% if (typeof simulatedQuote !== 'undefined') { %>
-    <label for="subscribe_now">Subscribe</label>
-    <input type="checkbox" id="subscribe_now">
     <button id="save_quote">Save quote</button>
+    <button id="save_and_subscribe">Subscribe directly</button>
     <span id="basePrice" hidden><%= simulatedQuote.baseMonthlyPrice %></span>
     <span id="includeDamageFromThirdParty" hidden><%= simulatedQuote.damageToThirdParty.included%></span>
     <span id="deductionDamageFromThirdParty" hidden><%=simulatedQuote.damageToThirdParty.deductible%></span>
@@ -97,13 +98,15 @@
 
 <script>
   const saveButton = document.getElementById("save_quote");
+  const saveAndSubscribeDirectly = document.getElementById("save_and_subscribe")
+
   saveButton.addEventListener("click", async (e) => {
     e.preventDefault();
     let customerId;
     let isConnected = false;
 
     /* Check if user is already connected */
-    const response = await fetch("/profile", {
+    await fetch("/profile", {
       method: 'GET',
       headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
     }).then(async response => {
@@ -128,7 +131,6 @@
         "deductionDamageToSelf":parseInt(document.getElementById("deductionDamageToSelf").innerHTML),
         "includeBreakDownAndRescue":document.getElementById("includeBreakDownAndRescue").innerHTML,
         "priceBreakDownAndRescue":parseInt(document.getElementById("priceBreakDownAndRescue").innerHTML),
-        "isSubscribe": document.getElementById("subscribe_now").checked.toString(),
       }),
       headers: { "Content-Type": "application/json" }
     });
@@ -136,6 +138,48 @@
       alert("Quote registered");
     }else{
       alert("Error");
+    }
+  })
+
+  saveAndSubscribeDirectly.addEventListener("click", async (e) => {
+    e.preventDefault();
+    let customerId;
+    let isConnected = false;
+
+    /* Check if user is already connected */
+    await fetch("/profile", {
+      method: 'GET',
+      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+    }).then(async response => {
+      if(response.ok){
+        isConnected = true;
+        const data = await response.json()
+        customerId = data.id;
+      }else{
+        alert("Please, load into your account to save this quote.");
+      }
+    });
+    if(!isConnected){
+      return;
+    }
+    const response = await fetch("/quote/createAndSubscribe", {
+      method: 'POST',
+      body: JSON.stringify({
+        "basePrice":parseInt(document.getElementById("basePrice").innerHTML),
+        "includeDamageFromThirdParty":document.getElementById("includeDamageFromThirdParty").innerHTML,
+        "deductionDamageFromThirdParty":parseInt(document.getElementById("deductionDamageFromThirdParty").innerHTML),
+        "includeDamageToSelf":document.getElementById("includeDamageToSelf").innerHTML,
+        "deductionDamageToSelf":parseInt(document.getElementById("deductionDamageToSelf").innerHTML),
+        "includeBreakDownAndRescue":document.getElementById("includeBreakDownAndRescue").innerHTML,
+        "priceBreakDownAndRescue":parseInt(document.getElementById("priceBreakDownAndRescue").innerHTML),
+      }),
+      headers: { "Content-Type": "application/json" }
+    })
+    if (response.ok) {
+      const data = await response.json()
+      const quoteId = data.id;
+      alert("You will be redirected to payment page. \n Your quote has been automatically save in your user home if you want to continue later")
+      location.href = `/payment/${quoteId}`
     }
   })
 </script>

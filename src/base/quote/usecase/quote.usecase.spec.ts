@@ -67,7 +67,7 @@ describe('QuoteUseCase', () => {
   describe('findAllQuotesFromCustomer', () => {
     it('it should return 2 items', async () => {
       jest.spyOn(quoteRepository, 'findBy').mockResolvedValueOnce(ITEMS);
-      const result = await quoteUseCase.findAllQuotesFromCustomer(1);
+      const result = await quoteUseCase.findAllQuotesFromCustomer('1');
       expect(result.length).toEqual(2);
     });
   });
@@ -75,7 +75,7 @@ describe('QuoteUseCase', () => {
   describe('findAllSubscribeQuotesFromCustomer', () => {
     it('it should return 1 items', async () => {
       jest.spyOn(quoteRepository, 'findBy').mockResolvedValueOnce(ITEMS);
-      const result = await quoteUseCase.findAllSubscribeQuotesFromCustomer(1);
+      const result = await quoteUseCase.findAllSubscribeQuotesFromCustomer('1');
       expect(result.length).toEqual(2);
     });
   });
@@ -83,7 +83,9 @@ describe('QuoteUseCase', () => {
   describe('findAllUnsubscribeQuotesFromCustomer', () => {
     it('it should return 0 items', async () => {
       jest.spyOn(quoteRepository, 'findBy').mockResolvedValueOnce([]);
-      const result = await quoteUseCase.findAllUnsubscribeQuotesFromCustomer(1);
+      const result = await quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
+        '1',
+      );
       expect(result.length).toEqual(0);
     });
   });
@@ -100,9 +102,8 @@ describe('QuoteUseCase', () => {
           deductionDamageToSelf: 1,
           includeBreakDownAndRescue: true,
           priceBreakDownAndRescue: 1,
-          isSubscribe: true,
         },
-        1,
+        '1',
       );
       expect(result).toBeDefined();
     });
@@ -113,7 +114,7 @@ const ITEMS: Quote[] = [
   {
     id: 'a',
     customer: null,
-    customerId: 1,
+    customerId: '1',
     basePrice: 1,
     includeDamageFromThirdParty: true,
     deductionDamageFromThirdParty: 1,
@@ -128,7 +129,7 @@ const ITEMS: Quote[] = [
   {
     id: 'b',
     customer: null,
-    customerId: 1,
+    customerId: '1',
     basePrice: 1,
     includeDamageFromThirdParty: true,
     deductionDamageFromThirdParty: 1,

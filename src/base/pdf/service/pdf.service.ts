@@ -10,7 +10,7 @@ export class PdfService {
   public generateContract(customer: Customer, quote: Quote): string {
     const text = `\n\n\n\n\n
     Your subscription contains :\n 
-    Contract Number: ${quote.id} \n 
+    Contract ID: ${quote.id} \n 
     Base price : ${quote.basePrice} \n 
     Deduction damage from third party : ${quote.deductionDamageFromThirdParty}\n
     Deduction damage to self : ${quote.deductionDamageToSelf} \n

@@ -1,14 +1,6 @@
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ParseBoolean } from '../../../shared/decorators/parse.boolean';
-import { Column } from 'typeorm';
-import { ParseIntPipe } from '@nestjs/common';
 
 export class CreateQuoteCommand {
   @IsNumber()
@@ -41,11 +33,6 @@ export class CreateQuoteCommand {
   @IsNumber()
   @IsNotEmpty()
   public priceBreakDownAndRescue: number;
-
-  @ParseBoolean()
-  @IsBoolean()
-  @IsNotEmpty()
-  public isSubscribe: boolean;
 }
 
 export class SimulateQuoteCommand {

@@ -3,39 +3,40 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateQuoteCommand } from '../command/quote.command';
 import { Quote } from '../entity/quote.entity';
+import { UUID } from '../../../shared/type';
 
 @Injectable()
 export class QuoteUseCase {
   @InjectRepository(Quote)
   private readonly repository: Repository<Quote>;
 
-  public async get(id: string): Promise<Quote> {
-    return await this.repository.findOneBy({ id });
+  public async get(quoteId: UUID): Promise<Quote> {
+    return await this.repository.findOneBy({ id: quoteId });
   }
 
   public async findAll(): Promise<Quote[]> {
     return await this.repository.find();
   }
 
-  public async findAllQuotesFromCustomer(customerId: number): Promise<Quote[]> {
+  public async findAllQuotesFromCustomer(customerId: UUID): Promise<Quote[]> {
     return await this.repository.findBy({ customerId });
   }
 
   public async findAllSubscribeQuotesFromCustomer(
-    customerId: number,
+    customerId: UUID,
   ): Promise<Quote[]> {
     return await this.repository.findBy({ customerId, isSubscribe: true });
   }
 
   public async findAllUnsubscribeQuotesFromCustomer(
-    customerId: number,
+    customerId: UUID,
   ): Promise<Quote[]> {
     return await this.repository.findBy({ customerId, isSubscribe: false });
   }
 
   public async create(
     body: CreateQuoteCommand,
-    customerId: number,
+    customerId: UUID,
   ): Promise<Quote> {
     const quote: Quote = new Quote();
     quote.basePrice = body.basePrice;
@@ -45,12 +46,12 @@ export class QuoteUseCase {
     quote.deductionDamageToSelf = body.deductionDamageToSelf;
     quote.includeBreakDownAndRescue = body.includeBreakDownAndRescue;
     quote.priceBreakDownAndRescue = body.priceBreakDownAndRescue;
-    quote.isSubscribe = body.isSubscribe;
     quote.customerId = customerId;
+    quote.isSubscribe = false;
     return await this.repository.save(quote);
   }
 
-  public async subscribeQuote(quoteId: string): Promise<Quote> {
+  public async subscribeQuote(quoteId: UUID): Promise<Quote> {
     await this.repository
       .createQueryBuilder()
       .update(Quote)

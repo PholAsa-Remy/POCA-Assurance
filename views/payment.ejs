@@ -9,18 +9,18 @@
 
 <h1><%= message %></h1>
 
-<form id="payment-form"  action="/payment/upload" method="post" enctype="multipart/form-data">
+<form id="payment-form"  action="/payment/upload/<%= quoteId %>" method="post" enctype="multipart/form-data">
     <label for="contract">Your signed contract (png, jpg, pdf): </label>
     <input type="file" id="contract" name="contract" accept="image/png, image/jpeg, image/jpg, .pdf" required>
     </br>
     <label for="rib">Your rib (png, jpg, pdf): </label>
     <input type="file" id="rib" name="rib" accept="image/png, image/jpeg, image/jpg, .pdf" required>
     </br>
+    <input name="quoteId" value="<%= quoteId %>" hidden>
     <input type="submit" id="submit">
 </form>
 
 <script>
-
   const response = fetch("/profile", {
     method: 'GET',
     headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
