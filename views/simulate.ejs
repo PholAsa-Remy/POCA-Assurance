@@ -11,6 +11,19 @@
       <label for="ageSpaceship">How old is your spaceship :
       <input type="number" name="ageSpaceship" min="1" required><br>
       </label><br>
+      <label for="spaceshipClass">Select the class of your spaceship :
+        <select name="spaceshipClass" id="spaceshipClass" required>
+          <option disabled selected value> -- select an option -- </option>
+          <% for (let spaceshipClass of spaceshipClasses){ %>
+            <option value="<%= spaceshipClass.name%>"><%= spaceshipClass.name%></option>
+          <%}%>
+        </select>
+      </label><br><br>
+      <label for="spaceshipModel">Select the model of your spaceship :
+        <select name="spaceshipModel" id="spaceshipModel" required>
+          <option disabled selected value> -- select an option -- </option>
+        </select>
+      </label><br>
       <fieldset>
         <legend>Usage of lightspeed travel :</legend>
         <input type="radio"  name="lightspeed"  id="regular"
@@ -95,6 +108,33 @@
   <% } %>
   </body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+  const spaceshipModelsFighter = JSON.parse('<%- JSON.stringify(spaceshipModelsFighter); %>');
+  const spaceshipModelsCruiserBattleship = JSON.parse('<%- JSON.stringify(spaceshipModelsCruiserBattleship); %>');
+  const spaceshipModelsShuttleCargo = JSON.parse('<%- JSON.stringify(spaceshipModelsShuttleCargo); %>');
+
+  $('#spaceshipClass').on('change', function() {
+  const selectedClass = $(this).val();
+
+  $('#spaceshipModel').empty();
+  if(selectedClass === 'Fighter'){
+    for(let fighter of spaceshipModelsFighter){
+      $('#spaceshipModel').append("<option value='" + fighter.name + "'>" + fighter.name + "</option>");
+    }
+  } else if(selectedClass === 'Cruiser/Battleship'){
+    for(let cruiserBattleship of spaceshipModelsCruiserBattleship){
+      $('#spaceshipModel').append("<option value='" + cruiserBattleship.name + "'>" + cruiserBattleship.name + "</option>");
+    }
+  } else if(selectedClass === 'Shuttle/Cargo'){
+      for(let shuttleCargo of spaceshipModelsShuttleCargo){
+        $('#spaceshipModel').append("<option value='" + shuttleCargo.name + "'>" + shuttleCargo.name + "</option>");
+      }
+  }
+})
+</script>
 
 <script>
   const saveButton = document.getElementById("save_quote");

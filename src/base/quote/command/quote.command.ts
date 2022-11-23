@@ -43,6 +43,14 @@ export class SimulateQuoteCommand {
 
   @IsNotEmpty()
   @IsString()
+  public spaceshipClass: string;
+
+  @IsNotEmpty()
+  @IsString()
+  public spaceshipModel: string;
+
+  @IsNotEmpty()
+  @IsString()
   public lightspeed: string;
 
   @IsNotEmpty()

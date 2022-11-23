@@ -15,16 +15,18 @@ const SIMULATE_PARAMETERS: {
       lightspeed: 'nohyperdrive',
       outerRimTravel: true,
       strandedOuterRim: true,
+      spaceshipClass: 'Fighter',
+      spaceshipModel: 'TIE Fighter',
     },
     expectedResult: {
-      baseMonthlyPrice: 300,
+      baseMonthlyPrice: 306,
       damageToThirdParty: {
         included: true,
-        deductible: 300,
+        deductible: 349,
       },
       damageToSelf: {
         included: true,
-        deductible: 450,
+        deductible: 509,
       },
       strandedOuterRimGuarantee: {
         included: true,
@@ -38,16 +40,18 @@ const SIMULATE_PARAMETERS: {
       lightspeed: 'nohyperdrive',
       outerRimTravel: false,
       strandedOuterRim: true,
+      spaceshipClass: 'Fighter',
+      spaceshipModel: 'TIE Fighter',
     },
     expectedResult: {
-      baseMonthlyPrice: 300,
+      baseMonthlyPrice: 306,
       damageToThirdParty: {
         included: true,
-        deductible: 300,
+        deductible: 349,
       },
       damageToSelf: {
         included: true,
-        deductible: 1000,
+        deductible: 1130,
       },
       strandedOuterRimGuarantee: {
         included: true,

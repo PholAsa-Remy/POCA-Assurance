@@ -95,11 +95,13 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/app.module.ts",
       "<rootDir>/main.ts",
+      "<rootDir>/shared/valueobjects/ValueObject.ts",
       "<rootDir>/auth/auth.module.ts",
       "<rootDir>/migrations/MigrationCustomer.ts",
       "<rootDir>/migrations/MigrationQuote.ts",
       "<rootDir>/auth/jwt/jwt.constants.ts",
       "<rootDir>/auth/jwt/jwt-auth.guard.ts",
+      "<rootDir>/auth/command/auth.command.ts",
       "<rootDir>/auth/local/local-auth.guard.ts",
       "<rootDir>/base/base.module.ts",
       "<rootDir>/base/aboutus/aboutus.module.ts",
