@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateQuoteCommand } from '../command/quote.command';
 import { Quote } from '../entity/quote.entity';
 import { UUID } from '../../../shared/type';
@@ -49,6 +49,10 @@ export class QuoteUseCase {
     quote.customerId = customerId;
     quote.isSubscribe = false;
     return await this.repository.save(quote);
+  }
+
+  public async delete(quoteId: UUID): Promise<DeleteResult>  {
+    return await this.repository.delete({ id: quoteId })
   }
 
   public async subscribeQuote(quoteId: UUID): Promise<Quote> {

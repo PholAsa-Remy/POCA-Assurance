@@ -47,6 +47,10 @@
         <input name="id" value="<%= quote.id %>" hidden>
         <button type="submit">Subscribe</button>
       </form>
+      <form action="/quote/delete" method="post">
+        <input name="id" value="<%= quote.id %>" hidden>
+        <button type="submit">Delete</button>
+      </form>
 <% } %>
 </div>
 <!-- FIXME wait function get list sinister -->

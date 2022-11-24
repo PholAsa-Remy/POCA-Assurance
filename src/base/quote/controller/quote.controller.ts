@@ -23,8 +23,9 @@ import { CustomerUseCase } from '../../customer/useCase/customer.usecase';
 import { join } from 'path';
 import { Response } from 'express';
 import { UUID } from '../../../shared/type';
+import {DeleteResult} from "typeorm";
 
-interface SubscribeParams {
+interface IdParams {
   id: string;
 }
 
@@ -80,7 +81,7 @@ export class QuoteController {
 
   @Post('subscribe')
   async subscribe(
-    @Body() body: SubscribeParams,
+    @Body() body: IdParams,
     @Session() session: Record<string, any>,
     @Res() res: Response,
   ) {
@@ -105,6 +106,14 @@ export class QuoteController {
     @Session() session: Record<string, any>,
   ) {
     return await this.quoteUseCase.create(body, session.customerId);
+  }
+
+  @Post('delete')
+  @Redirect('back')
+  async delete(
+      @Body() body: IdParams
+  ) : Promise<DeleteResult> {
+    return await this.quoteUseCase.delete(body.id)
   }
 
   @Post('createAndSubscribe')
