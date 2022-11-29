@@ -15,7 +15,7 @@
   function profileApiCall() {
     return fetch("/profile", {
       method: 'GET',
-      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+      headers: { "Authorization": "Bearer " + getCookie("team_galaxy_access_token") }
     });
   }
   async function modifyMenuFromConnection() {
@@ -35,4 +35,13 @@
     }
   }
   modifyMenuFromConnection();
+
+  function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+      let [key,value] = el.split('=');
+      cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+  }
 </script>

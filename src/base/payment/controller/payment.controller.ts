@@ -28,14 +28,13 @@ export class PaymentController {
   async paymentForm(
     @Req() req: Request,
     @Res() res: Response,
-    @Session() session: Record<string, any>,
     @Param('quoteId') quoteId: UUID,
   ) {
     try {
       const quote = await this.quoteUseCase.get(quoteId);
       const QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid =
         !quote ||
-        (quote && quote.customerId !== session.customerId) ||
+        (quote && quote.customerId !== req.cookies.customerId) ||
         quote.isSubscribe;
 
       if (QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid) {
@@ -63,7 +62,7 @@ export class PaymentController {
         storage: diskStorage({
           destination: './customers',
           filename: (req, file, callback) => {
-            const customerId: UUID = (req.session as any).customerId as string;
+            const customerId: UUID = (req.cookies as any).customerId as string;
             const quoteId: UUID = req.params.quoteId as string;
             let filename: string;
             if (file.fieldname === 'contract') {

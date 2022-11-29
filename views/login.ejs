@@ -26,7 +26,7 @@
   /* If user is already connected, redirect to user profile */
   const response = fetch("/profile", {
     method: 'GET',
-    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+    headers: { "Authorization": "Bearer " + getCookie("team_galaxy_access_token") }
   }).then(response => {
     if(response.ok){
       location.href = "/userhome";
@@ -47,8 +47,6 @@
       headers: { "Content-Type": "application/json" }
     });
     if (response.ok) {
-      const data = await response.json()
-      sessionStorage.setItem("team_galaxy_access_token",data.access_token);
       location.href = "/userhome";
     }else{
       alert("The username or the password is wrong");

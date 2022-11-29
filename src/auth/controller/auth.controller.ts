@@ -6,6 +6,7 @@ import {
   UseGuards,
   Render,
   Inject,
+  Res,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../jwt/jwt-auth.guard';
 import { LocalAuthGuard } from '../local/local-auth.guard';
@@ -32,13 +33,14 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
+  async login(@Request() req, @Res({ passthrough: true }) res) {
     const login = await this.authUseCase.login(req.user);
-    req.session.customerId = login.id;
-    req.session.username = login.username;
-    req.session.email = login.email;
-    req.session.address = login.address;
-    req.session.phoneNumber = login.phoneNumber;
+    res.cookie('team_galaxy_access_token', login.access_token);
+    res.cookie('customerId', login.id);
+    res.cookie('username', login.username);
+    res.cookie('email', login.email);
+    res.cookie('address', login.address);
+    res.cookie('phoneNumber', login.phoneNumber);
     return login;
   }
 
