@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Redirect,
+  Request,
   Session,
 } from '@nestjs/common';
 import { CustomerUseCase } from '../useCase/customer.usecase';
@@ -61,9 +62,9 @@ export class CustomerController {
   @Redirect('/logout')
   public async update(
     @Body() customer: UpdateCustomerCommand,
-    @Session() session: Record<string, any>,
+    @Request() req,
   ): Promise<Customer> {
-    return await this.customerUseCase.update(customer, session.customerId);
+    return await this.customerUseCase.update(customer, req.cookies.customerId);
   }
 
   private sendConfirmationNewAccountEmail(

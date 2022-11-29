@@ -1,4 +1,11 @@
-import { Controller, Get, Inject, Render, Session } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Render,
+  Request,
+  Session,
+} from '@nestjs/common';
 import { UserHomeService } from '../service/userhome.service';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 
@@ -10,23 +17,26 @@ export class UserHomeController {
   public quoteUseCase: QuoteUseCase;
   @Render('userhome')
   @Get()
-  async index(@Session() session: Record<string, any>) {
+  async index(@Request() req) {
     const promise_subscribe =
-      this.quoteUseCase.findAllSubscribeQuotesFromCustomer(session.customerId);
+      this.quoteUseCase.findAllSubscribeQuotesFromCustomer(
+        req.cookies.customerId,
+      );
     const promise_unsubscribe =
       this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
-        session.customerId,
+        req.cookies.customerId,
       );
     const promise_sinister =
       //FIXME wait function get list sinister
       this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
-        session.customerId,
+        req.cookies.customerId,
       );
     const [subscribe, unsubscribe, list_sinister] = await Promise.all([
       promise_subscribe,
       promise_unsubscribe,
       promise_sinister,
     ]);
+
     return {
       subscribe_quote: subscribe,
       unsubscribe_quote: unsubscribe,

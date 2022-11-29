@@ -148,7 +148,7 @@
     /* Check if user is already connected */
     await fetch("/profile", {
       method: 'GET',
-      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+      headers: { "Authorization": "Bearer " + getCookie("team_galaxy_access_token") }
     }).then(async response => {
       if(response.ok){
         isConnected = true;
@@ -189,7 +189,7 @@
     /* Check if user is already connected */
     await fetch("/profile", {
       method: 'GET',
-      headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+      headers: { "Authorization": "Bearer " + getCookie("team_galaxy_access_token") }
     }).then(async response => {
       if(response.ok){
         isConnected = true;

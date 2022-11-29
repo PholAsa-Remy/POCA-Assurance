@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { join } from 'path';
 import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -21,6 +22,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
     }),
+    cookieParser(),
   );
   await app.listen(port, () => {
     console.log('[WEB]', config.get<string>('BASE_URL'));

@@ -11,7 +11,12 @@
 </body>
 </html>
 <script>
-  sessionStorage.removeItem("team_galaxy_access_token");
+  let allCookies = document.cookie.split(';');
+  // The "expire" attribute of every cookie is
+  // Set to "Thu, 01 Jan 1970 00:00:00 GMT"
+  for (let i = 0; i < allCookies.length; i++)
+    document.cookie = allCookies[i] + "=;expires="
+            + new Date(0).toUTCString();
   alert("You have been disconnected !");
   location.href = "/";
 </script>

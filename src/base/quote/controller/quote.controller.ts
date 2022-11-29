@@ -7,6 +7,7 @@ import {
   Post,
   Redirect,
   Render,
+  Request,
   Res,
   Session,
 } from '@nestjs/common';
@@ -23,7 +24,7 @@ import { CustomerUseCase } from '../../customer/useCase/customer.usecase';
 import { join } from 'path';
 import { Response } from 'express';
 import { UUID } from '../../../shared/type';
-import {DeleteResult} from "typeorm";
+import { DeleteResult } from 'typeorm';
 
 interface IdParams {
   id: string;
@@ -82,11 +83,11 @@ export class QuoteController {
   @Post('subscribe')
   async subscribe(
     @Body() body: IdParams,
-    @Session() session: Record<string, any>,
+    @Request() req,
     @Res() res: Response,
   ) {
     const customerPromise = this.customerUseCase.findOneById(
-      session.customerId,
+      req.cookies.customerId,
     );
     const quotePromise = this.quoteUseCase.get(body.id);
     const [customer, quote] = await Promise.all([
@@ -94,43 +95,38 @@ export class QuoteController {
       quotePromise,
     ]);
     this.pdfService.generateContract(customer, quote);
-    this.sendConfirmationSubscriptionMail(session, quote);
+    this.sendConfirmationSubscriptionMail(req.cookies, quote);
     res.redirect(`/payment/${quote.id}`);
     return quote;
   }
 
   @Post('create')
   @Redirect('back')
-  async create(
-    @Body() body: CreateQuoteCommand,
-    @Session() session: Record<string, any>,
-  ) {
-    return await this.quoteUseCase.create(body, session.customerId);
+  async create(@Body() body: CreateQuoteCommand, @Request() req) {
+    return await this.quoteUseCase.create(body, req.cookies.customerId);
   }
 
   @Post('delete')
   @Redirect('back')
-  async delete(
-      @Body() body: IdParams
-  ) : Promise<DeleteResult> {
-    return await this.quoteUseCase.delete(body.id)
+  async delete(@Body() body: IdParams): Promise<DeleteResult> {
+    return await this.quoteUseCase.delete(body.id);
   }
 
   @Post('createAndSubscribe')
   async createAndSubscribe(
     @Body() body: CreateQuoteCommand,
-    @Session() session: Record<string, any>,
+    @Request() req,
   ): Promise<Quote> {
     const customerPromise = this.customerUseCase.findOneById(
-      session.customerId,
+      req.cookies.customerId,
     );
-    const quotePromise = this.quoteUseCase.create(body, session.customerId);
+    const quotePromise = this.quoteUseCase.create(body, req.cookies.customerId);
     const [customer, createdQuote] = await Promise.all([
       customerPromise,
       quotePromise,
     ]);
     this.pdfService.generateContract(customer, createdQuote);
-    this.sendConfirmationSubscriptionMail(session, createdQuote);
+    this.sendConfirmationSubscriptionMail(req.cookies, createdQuote);
     return createdQuote;
   }
 
@@ -147,11 +143,11 @@ export class QuoteController {
   }
 
   private sendConfirmationSubscriptionMail(
-    session: Record<string, any>,
+    cookies: Record<string, any>,
     quote: Quote,
   ) {
     this.mailerService.sendMail({
-      to: session.email,
+      to: cookies.email,
       from: '"Galaxy Support" <kevin.dang01@proton.me>',
       subject: 'Your new contract',
       text: `Hi, we are glad that you want subscribe to our insurance. \n
@@ -167,10 +163,10 @@ export class QuoteController {
         {
           path: join(
             './',
-            `customers/${session.customerId}/${quote.id}`,
-            `${session.customerId}_${quote.id}.pdf`,
+            `customers/${cookies.customerId}/${quote.id}`,
+            `${cookies.customerId}_${quote.id}.pdf`,
           ),
-          filename: `${session.customerId}_${quote.id}.pdf`,
+          filename: `${cookies.customerId}_${quote.id}.pdf`,
           contentDisposition: 'attachment',
         },
       ],

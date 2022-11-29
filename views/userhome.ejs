@@ -65,7 +65,7 @@
 <script>
   const response = fetch("/profile", {
     method: 'GET',
-    headers: { "Authorization": "Bearer " + sessionStorage.getItem("team_galaxy_access_token") }
+    headers: { "Authorization": "Bearer " + getCookie("team_galaxy_access_token") }
   }).then(response => {
     if(!response.ok){
       location.href = "/";
