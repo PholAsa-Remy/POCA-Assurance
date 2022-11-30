@@ -52,6 +52,10 @@ export class SimulateQuoteCommand {
 
   @IsNotEmpty()
   @IsString()
+  public planet: string;
+
+  @IsNotEmpty()
+  @IsString()
   public lightspeed: string;
 
   @IsNotEmpty()

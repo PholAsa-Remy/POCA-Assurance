@@ -23,7 +23,15 @@
         <select name="spaceshipModel" id="spaceshipModel" required>
           <option disabled selected value> -- select an option -- </option>
         </select>
-      </label><br>
+      </label><br><br>
+      <label for="planet">Select your planet system of residence :
+        <select name="planet" id="planet" required>
+          <option disabled selected value> -- select an option -- </option>
+          <% for (let planet of planets){ %>
+            <option value="<%= planet.name%>"><%= planet.name%></option>
+          <%}%>
+        </select>
+      </label><br><br>
       <fieldset>
         <legend>Usage of lightspeed travel :</legend>
         <input type="radio"  name="lightspeed"  id="regular"

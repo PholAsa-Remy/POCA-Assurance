@@ -17,9 +17,10 @@ const SIMULATE_PARAMETERS: {
       strandedOuterRim: true,
       spaceshipClass: 'Fighter',
       spaceshipModel: 'TIE Fighter',
+      planet: 'Alderaan',
     },
     expectedResult: {
-      baseMonthlyPrice: 306,
+      baseMonthlyPrice: 326,
       damageToThirdParty: {
         included: true,
         deductible: 349,
@@ -42,9 +43,10 @@ const SIMULATE_PARAMETERS: {
       strandedOuterRim: true,
       spaceshipClass: 'Fighter',
       spaceshipModel: 'TIE Fighter',
+      planet: 'Alderaan',
     },
     expectedResult: {
-      baseMonthlyPrice: 306,
+      baseMonthlyPrice: 326,
       damageToThirdParty: {
         included: true,
         deductible: 349,
@@ -76,31 +78,78 @@ describe('QuoteSimulator', () => {
     expect(quoteSimulator).toBeDefined();
   });
 
-  describe.each(SIMULATE_PARAMETERS)('simulateQuote', (parameters) => {
-    it('it should return propoer simulated quote according to simulator logic', async () => {
-      const result = await quoteSimulator.simulateQuote(parameters.input);
-      expect(result.baseMonthlyPrice).toEqual(
-        parameters.expectedResult.baseMonthlyPrice,
-      );
-      expect(result.damageToThirdParty.included).toEqual(
-        parameters.expectedResult.damageToThirdParty.included,
-      );
-      expect(result.damageToThirdParty.deductible).toEqual(
-        parameters.expectedResult.damageToThirdParty.deductible,
-      );
-      expect(result.damageToSelf.included).toEqual(
-        parameters.expectedResult.damageToSelf.included,
-      );
-      expect(result.damageToSelf.deductible).toEqual(
-        parameters.expectedResult.damageToSelf.deductible,
-      );
-      expect(result.strandedOuterRimGuarantee.included).toEqual(
-        parameters.expectedResult.strandedOuterRimGuarantee.included,
-      );
-      expect(result.strandedOuterRimGuarantee.supplementMonthlyPrice).toEqual(
-        parameters.expectedResult.strandedOuterRimGuarantee
-          .supplementMonthlyPrice,
-      );
+  describe.each(SIMULATE_PARAMETERS)(
+    'parameterized simulateQuote',
+    (parameters) => {
+      it('it should return proper simulated quote according to simulator logic', async () => {
+        const result = await quoteSimulator.simulateQuote(parameters.input);
+        expect(result.baseMonthlyPrice).toEqual(
+          parameters.expectedResult.baseMonthlyPrice,
+        );
+        expect(result.damageToThirdParty.included).toEqual(
+          parameters.expectedResult.damageToThirdParty.included,
+        );
+        expect(result.damageToThirdParty.deductible).toEqual(
+          parameters.expectedResult.damageToThirdParty.deductible,
+        );
+        expect(result.damageToSelf.included).toEqual(
+          parameters.expectedResult.damageToSelf.included,
+        );
+        expect(result.damageToSelf.deductible).toEqual(
+          parameters.expectedResult.damageToSelf.deductible,
+        );
+        expect(result.strandedOuterRimGuarantee.included).toEqual(
+          parameters.expectedResult.strandedOuterRimGuarantee.included,
+        );
+        expect(result.strandedOuterRimGuarantee.supplementMonthlyPrice).toEqual(
+          parameters.expectedResult.strandedOuterRimGuarantee
+            .supplementMonthlyPrice,
+        );
+      });
+    },
+  );
+
+  describe('simulateQuote fine grained tests', () => {
+    it('should take regular lightspeed usage into account', async () => {
+      const input: SimulateQuoteCommand = {
+        ageSpaceship: 30,
+        lightspeed: 'regular',
+        outerRimTravel: true,
+        strandedOuterRim: true,
+        spaceshipClass: 'Fighter',
+        spaceshipModel: 'TIE Fighter',
+        planet: 'Alderaan',
+      };
+      const result = await quoteSimulator.simulateQuote(input);
+      expect(result.damageToThirdParty.deductible).toEqual(698);
+    });
+    it('should take exceptional lightspeed usage into account', async () => {
+      const input: SimulateQuoteCommand = {
+        ageSpaceship: 30,
+        lightspeed: 'exceptional',
+        outerRimTravel: true,
+        strandedOuterRim: true,
+        spaceshipClass: 'Fighter',
+        spaceshipModel: 'TIE Fighter',
+        planet: 'Alderaan',
+      };
+      const result = await quoteSimulator.simulateQuote(input);
+      expect(result.damageToThirdParty.deductible).toEqual(465);
+    });
+    it('should take cruiser/battleship class into account', async () => {
+      const input: SimulateQuoteCommand = {
+        ageSpaceship: 30,
+        lightspeed: 'nohyperdrive',
+        outerRimTravel: true,
+        strandedOuterRim: true,
+        spaceshipClass: 'Cruiser/Battleship',
+        spaceshipModel: 'Imperial Star Destroyer',
+        planet: 'Alderaan',
+      };
+      const result = await quoteSimulator.simulateQuote(input);
+      expect(result.damageToThirdParty.deductible).toEqual(338);
+      expect(result.damageToSelf.deductible).toEqual(495);
+      expect(result.baseMonthlyPrice).toEqual(326);
     });
   });
 });
