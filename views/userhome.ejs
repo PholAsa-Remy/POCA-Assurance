@@ -17,7 +17,7 @@
 
 <H2>Your quotes : </H2>
 <div id="subscribe_quotes">
-    <h3>Subscribed Quotes :</h3>
+    <h3>Contracts :</h3>
 <% for (quote of subscribe_quote) { %>
   <li>
       ID N°: <%= quote.id %>, <br/>
@@ -28,12 +28,16 @@
       Created at : <%= quote.createdAt %><br/>
       Paid at: <%= quote.updatedAt %>
   </li>
+    <form action="/contract/download" method="post">
+        <input name="id" value="<%= quote.id %>" hidden>
+        <button type="submit">Download contract</button>
+    </form>
 <% } %>
 
 </div>
 
 <div id="unsubscribe_quotes">
-    <h3>Unsubscribed Quotes :</h3>
+    <h3>Quotes :</h3>
 <% for (quote of unsubscribe_quote) { %>
         <li>
             ID N°: <%= quote.id %>, <br/>

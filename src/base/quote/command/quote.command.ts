@@ -1,6 +1,7 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ParseBoolean } from '../../../shared/decorators/parse.boolean';
+import { UUID } from '../../../shared/type';
 
 export class CreateQuoteCommand {
   @IsNumber()
@@ -75,4 +76,16 @@ export class SimulatedQuoteCommand {
     included: boolean;
     supplementMonthlyPrice: number;
   };
+}
+
+export class SubscribeQuoteCommand {
+  @IsNotEmpty()
+  @IsString()
+  public id: UUID;
+}
+
+export class DeleteQuoteCommand {
+  @IsNotEmpty()
+  @IsString()
+  public id: UUID;
 }
