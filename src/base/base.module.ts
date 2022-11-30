@@ -7,6 +7,7 @@ import { ContactModule } from './contact/contact.module';
 import { PaymentModule } from './payment/payment.module';
 import { reportsinisterModule } from './reportsinister/reportsinister.module';
 import { PdfModule } from './pdf/pdf.module';
+import { ContractModule } from './contract/contract.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PdfModule } from './pdf/pdf.module';
     PaymentModule,
     reportsinisterModule,
     PdfModule,
+    ContractModule,
   ],
   controllers: [],
 })

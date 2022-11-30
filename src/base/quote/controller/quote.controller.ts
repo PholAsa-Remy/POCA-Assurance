@@ -7,13 +7,15 @@ import {
   Post,
   Redirect,
   Render,
-  Request,
+  Req,
   Res,
-  Session,
 } from '@nestjs/common';
 import {
   CreateQuoteCommand,
+  DeleteQuoteCommand,
+  SimulatedQuoteCommand,
   SimulateQuoteCommand,
+  SubscribeQuoteCommand,
 } from '../command/quote.command';
 import { Quote } from '../entity/quote.entity';
 import { QuoteUseCase } from '../usecase/quote.usecase';
@@ -22,13 +24,11 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { PdfService } from '../../pdf/service/pdf.service';
 import { CustomerUseCase } from '../../customer/useCase/customer.usecase';
 import { join } from 'path';
-import { Response } from 'express';
 import { UUID } from '../../../shared/type';
 import { DeleteResult } from 'typeorm';
-
-interface IdParams {
-  id: string;
-}
+import { Request, Response } from 'express';
+import { SpaceshipClass } from '../../../shared/valueobjects/SpaceshipClass';
+import { SpaceshipModel } from '../../../shared/valueobjects/SpaceshipModel';
 
 @Controller('quote')
 export class QuoteController {
@@ -50,7 +50,13 @@ export class QuoteController {
 
   @Get('simulate')
   @Render('simulate')
-  async simulateForm() {
+  async simulateForm(): Promise<{
+    message: string;
+    spaceshipClasses: SpaceshipClass[];
+    spaceshipModelsFighter: SpaceshipModel[];
+    spaceshipModelsCruiserBattleship: SpaceshipModel[];
+    spaceshipModelsShuttleCargo: SpaceshipModel[];
+  }> {
     return {
       message:
         'Answer a few questions a get a first quote simulation for your spaceship.',
@@ -65,7 +71,14 @@ export class QuoteController {
 
   @Post('simulate')
   @Render('simulate')
-  async computeSimulation(@Body() data: SimulateQuoteCommand) {
+  async computeSimulation(@Body() data: SimulateQuoteCommand): Promise<{
+    message: string;
+    simulatedQuote: SimulatedQuoteCommand;
+    spaceshipClasses: SpaceshipClass[];
+    spaceshipModelsFighter: SpaceshipModel[];
+    spaceshipModelsCruiserBattleship: SpaceshipModel[];
+    spaceshipModelsShuttleCargo: SpaceshipModel[];
+  }> {
     const simulatedQuote = await this.quoteSimulator.simulateQuote(data);
     return {
       message:
@@ -82,10 +95,10 @@ export class QuoteController {
 
   @Post('subscribe')
   async subscribe(
-    @Body() body: IdParams,
-    @Request() req,
+    @Body() body: SubscribeQuoteCommand,
+    @Req() req: Request,
     @Res() res: Response,
-  ) {
+  ): Promise<Quote> {
     const customerPromise = this.customerUseCase.findOneById(
       req.cookies.customerId,
     );
@@ -102,20 +115,23 @@ export class QuoteController {
 
   @Post('create')
   @Redirect('back')
-  async create(@Body() body: CreateQuoteCommand, @Request() req) {
+  async create(
+    @Body() body: CreateQuoteCommand,
+    @Req() req: Request,
+  ): Promise<Quote> {
     return await this.quoteUseCase.create(body, req.cookies.customerId);
   }
 
   @Post('delete')
   @Redirect('back')
-  async delete(@Body() body: IdParams): Promise<DeleteResult> {
+  async delete(@Body() body: DeleteQuoteCommand): Promise<DeleteResult> {
     return await this.quoteUseCase.delete(body.id);
   }
 
   @Post('createAndSubscribe')
   async createAndSubscribe(
     @Body() body: CreateQuoteCommand,
-    @Request() req,
+    @Req() req: Request,
   ): Promise<Quote> {
     const customerPromise = this.customerUseCase.findOneById(
       req.cookies.customerId,
@@ -132,9 +148,9 @@ export class QuoteController {
 
   @Get('list')
   @Render('list')
-  async list() {
+  async list(): Promise<{ quotes: Quote[] }> {
     const quotes = await this.quoteUseCase.findAll();
-    return { quotes: quotes };
+    return { quotes };
   }
 
   @Get(':id')
@@ -145,7 +161,7 @@ export class QuoteController {
   private sendConfirmationSubscriptionMail(
     cookies: Record<string, any>,
     quote: Quote,
-  ) {
+  ): void {
     this.mailerService.sendMail({
       to: cookies.email,
       from: '"Galaxy Support" <kevin.dang01@proton.me>',

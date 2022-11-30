@@ -118,6 +118,7 @@
       "<rootDir>/auth/local/local.strategy.ts",
       "<rootDir>/auth/jwt/jwt.strategy.ts",
       "<rootDir>/base/pdf/pdf.module.ts",
+      "<rootDir>/base/contract/contract.module.ts",
       "<rootDir>/shared/decorators/parse.boolean.ts"
     ],
     "coverageDirectory": "../coverage",

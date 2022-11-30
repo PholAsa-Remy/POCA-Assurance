@@ -6,18 +6,16 @@ import {
   Post,
   Req,
   Res,
-  Session,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { Request } from 'express';
-import { Response } from 'express';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 import { Quote } from '../../quote/entity/quote.entity';
 import { UUID } from '../../../shared/type';
 import * as path from 'path';
+import { Request, Response } from 'express';
 
 @Controller('payment')
 export class PaymentController {
@@ -29,7 +27,7 @@ export class PaymentController {
     @Req() req: Request,
     @Res() res: Response,
     @Param('quoteId') quoteId: UUID,
-  ) {
+  ): Promise<void> {
     try {
       const quote = await this.quoteUseCase.get(quoteId);
       const QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid =

@@ -7,7 +7,6 @@ import {
   Post,
   Redirect,
   Request,
-  Session,
 } from '@nestjs/common';
 import { CustomerUseCase } from '../useCase/customer.usecase';
 import { Customer } from '../entity/customer.entity';
@@ -70,7 +69,7 @@ export class CustomerController {
   private sendConfirmationNewAccountEmail(
     customer: CreateCustomerCommand,
     createdCustomer: Customer,
-  ) {
+  ): void {
     this.mailerService.sendMail({
       to: customer.email,
       from: '"Galaxy Support" <kevin.dang01@proton.me>',
