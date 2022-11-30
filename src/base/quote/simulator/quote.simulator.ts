@@ -5,26 +5,134 @@ import {
 } from '../command/quote.command';
 import { SpaceshipModel } from '../../../shared/valueobjects/SpaceshipModel';
 import { SpaceshipClass } from '../../../shared/valueobjects/SpaceshipClass';
+import { Planet } from '../../../shared/valueobjects/Planet';
 
 @Injectable()
 export class QuoteSimulator {
   public async simulateQuote(
     body: SimulateQuoteCommand,
   ): Promise<SimulatedQuoteCommand> {
-    const { spaceshipClass, spaceshipModel } =
+    const { spaceshipClass, spaceshipModel, planet } =
       this.convertModelInfoToValueObjects(body);
 
     const simulatedQuote = new SimulatedQuoteCommand();
 
-    simulatedQuote.baseMonthlyPrice =
-      300 + Math.ceil((300 * spaceshipModel.riskFactor) / 100);
+    this.computeBasePrice(simulatedQuote, spaceshipModel, planet);
+    this.initSimulatedQuoteGuarantees(simulatedQuote);
+    this.computeStrandedOuterRimGuarantee(body, simulatedQuote);
+    this.computeDamageToSelfGuarantee(body, simulatedQuote, spaceshipClass);
+    this.computeDamageToThirdPartyGuarantee(
+      body,
+      simulatedQuote,
+      spaceshipClass,
+    );
+
+    return simulatedQuote;
+  }
+
+  private computeBasePrice(
+    simulatedQuote: SimulatedQuoteCommand,
+    spaceshipModel,
+    planet,
+  ) {
+    this.applySpaceshipModelRiskToBasePrice(simulatedQuote, spaceshipModel);
+    this.applyPlanetRiskToBasePrice(simulatedQuote, planet);
+  }
+
+  private applyPlanetRiskToBasePrice(
+    simulatedQuote: SimulatedQuoteCommand,
+    planet,
+  ) {
+    simulatedQuote.baseMonthlyPrice += planet.riskFactor * 10;
+  }
+
+  private computeDamageToSelfGuarantee(
+    body: SimulateQuoteCommand,
+    simulatedQuote: SimulatedQuoteCommand,
+    spaceshipClass,
+  ) {
+    this.applyAgeSpaceshipRiskToDamageToSelfGuarantee(body, simulatedQuote);
+    this.applySpaceshipClassRiskToDamageToSelfGuarantee(
+      simulatedQuote,
+      spaceshipClass,
+    );
+  }
+
+  private computeDamageToThirdPartyGuarantee(
+    body: SimulateQuoteCommand,
+    simulatedQuote: SimulatedQuoteCommand,
+    spaceshipClass,
+  ) {
+    this.applyLightspeedUsageToDamageToThirdPartyGuarantee(
+      body,
+      simulatedQuote,
+    );
+    this.applySpaceshipClassRiskToDamageToThirdPartyGuarantee(
+      simulatedQuote,
+      spaceshipClass,
+    );
+  }
+
+  private applySpaceshipClassRiskToDamageToThirdPartyGuarantee(
+    simulatedQuote: SimulatedQuoteCommand,
+    spaceshipClass,
+  ) {
+    simulatedQuote.damageToThirdParty.deductible += Math.ceil(
+      (simulatedQuote.damageToThirdParty.deductible *
+        spaceshipClass.riskFactor) /
+        80,
+    );
+  }
+
+  private applyLightspeedUsageToDamageToThirdPartyGuarantee(
+    body: SimulateQuoteCommand,
+    simulatedQuote: SimulatedQuoteCommand,
+  ) {
+    if (body.lightspeed == 'nohyperdrive') {
+      simulatedQuote.damageToThirdParty.deductible = 300;
+    } else if (body.lightspeed == 'regular') {
+      simulatedQuote.damageToThirdParty.deductible = 600;
+    } else if (body.lightspeed == 'exceptional') {
+      simulatedQuote.damageToThirdParty.deductible = 400;
+    }
+  }
+
+  private applySpaceshipClassRiskToDamageToSelfGuarantee(
+    simulatedQuote: SimulatedQuoteCommand,
+    spaceshipClass,
+  ) {
+    simulatedQuote.damageToSelf.deductible += Math.ceil(
+      (simulatedQuote.damageToSelf.deductible * spaceshipClass.riskFactor) /
+        100,
+    );
+  }
+
+  private applyAgeSpaceshipRiskToDamageToSelfGuarantee(
+    body: SimulateQuoteCommand,
+    simulatedQuote: SimulatedQuoteCommand,
+  ) {
+    if (body.ageSpaceship > 50) {
+      simulatedQuote.damageToSelf.deductible = 1000;
+    } else {
+      simulatedQuote.damageToSelf.deductible = 450;
+    }
+  }
+
+  private initSimulatedQuoteGuarantees(simulatedQuote: SimulatedQuoteCommand) {
     simulatedQuote.damageToSelf = { included: false, deductible: 0 };
     simulatedQuote.damageToThirdParty = { included: false, deductible: 0 };
     simulatedQuote.strandedOuterRimGuarantee = {
       included: false,
       supplementMonthlyPrice: 0,
     };
+    simulatedQuote.damageToSelf.included = true;
+    simulatedQuote.damageToThirdParty.included = true;
+  }
 
+  private computeStrandedOuterRimGuarantee(
+    body: SimulateQuoteCommand,
+    simulatedQuote: SimulatedQuoteCommand,
+  ) {
     if (body.strandedOuterRim) {
       simulatedQuote.strandedOuterRimGuarantee.included = true;
       if (body.outerRimTravel) {
@@ -33,38 +141,24 @@ export class QuoteSimulator {
         simulatedQuote.strandedOuterRimGuarantee.supplementMonthlyPrice = 40;
       }
     }
-
-    simulatedQuote.damageToSelf.included = true;
-    if (body.ageSpaceship > 50) {
-      simulatedQuote.damageToSelf.deductible = 1000;
-    } else {
-      simulatedQuote.damageToSelf.deductible = 450;
-    }
-    simulatedQuote.damageToSelf.deductible += Math.ceil(
-      (simulatedQuote.damageToSelf.deductible * spaceshipClass.riskFactor) /
-        100,
-    );
-
-    simulatedQuote.damageToThirdParty.included = true;
-    if (body.lightspeed == 'nohyperdrive') {
-      simulatedQuote.damageToThirdParty.deductible = 300;
-    } else if (body.lightspeed == 'regular') {
-      simulatedQuote.damageToThirdParty.deductible = 600;
-    } else if (body.lightspeed == 'exceptional') {
-      simulatedQuote.damageToThirdParty.deductible = 400;
-    }
-    simulatedQuote.damageToThirdParty.deductible += Math.ceil(
-      (simulatedQuote.damageToThirdParty.deductible *
-        spaceshipClass.riskFactor) /
-        80,
-    );
-
-    return simulatedQuote;
   }
 
-  private convertModelInfoToValueObjects(body: SimulateQuoteCommand) {
+  private applySpaceshipModelRiskToBasePrice(
+    simulatedQuote: SimulatedQuoteCommand,
+    spaceshipModel,
+  ) {
+    simulatedQuote.baseMonthlyPrice =
+      300 + Math.ceil((300 * spaceshipModel.riskFactor) / 100);
+  }
+
+  private convertModelInfoToValueObjects(body: SimulateQuoteCommand): {
+    spaceshipClass;
+    spaceshipModel;
+    planet;
+  } {
     let spaceshipClass = null;
     let spaceshipModel = null;
+    const planet = this.convertStringToPlanetValueObjet(body.planet);
 
     for (const item of QuoteSimulator.SPACESHIP_CLASSES) {
       if (item.name === body.spaceshipClass) {
@@ -114,8 +208,180 @@ export class QuoteSimulator {
         break;
       }
     }
-    return { spaceshipClass, spaceshipModel };
+    return { spaceshipClass, spaceshipModel, planet };
   }
+
+  private convertStringToPlanetValueObjet(planet: string): Planet {
+    for (const item of QuoteSimulator.PLANETS) {
+      if (item.name === planet) {
+        return item;
+      }
+    }
+
+    return Planet.createFromProps({
+      name: 'Not defined',
+      riskFactor: 0,
+    });
+  }
+
+  static readonly PLANETS: Planet[] = [
+    Planet.createFromProps({
+      name: 'Abafar',
+      riskFactor: 13,
+    }),
+    Planet.createFromProps({
+      name: 'Agamar ',
+      riskFactor: 7,
+    }),
+    Planet.createFromProps({
+      name: 'Ahch-To',
+      riskFactor: 45,
+    }),
+    Planet.createFromProps({
+      name: 'Alderaan',
+      riskFactor: 2,
+    }),
+    Planet.createFromProps({
+      name: 'Aaleen',
+      riskFactor: 1,
+    }),
+    Planet.createFromProps({
+      name: 'Batuu',
+      riskFactor: 5,
+    }),
+    Planet.createFromProps({
+      name: 'Bespin',
+      riskFactor: 39,
+    }),
+    Planet.createFromProps({
+      name: 'Cantonica',
+      riskFactor: 37,
+    }),
+    Planet.createFromProps({
+      name: 'Castilon',
+      riskFactor: 7,
+    }),
+    Planet.createFromProps({
+      name: 'Cato Neimoidia',
+      riskFactor: 41,
+    }),
+    Planet.createFromProps({
+      name: 'Corellia',
+      riskFactor: 23,
+    }),
+    Planet.createFromProps({
+      name: 'Coruscant',
+      riskFactor: 19,
+    }),
+    Planet.createFromProps({
+      name: "D'Qar",
+      riskFactor: 2,
+    }),
+    Planet.createFromProps({
+      name: 'Dagobah',
+      riskFactor: 44,
+    }),
+    Planet.createFromProps({
+      name: 'Dantooine',
+      riskFactor: 22,
+    }),
+    Planet.createFromProps({
+      name: 'Dathomir',
+      riskFactor: 31,
+    }),
+    Planet.createFromProps({
+      name: 'Endor',
+      riskFactor: 12,
+    }),
+    Planet.createFromProps({
+      name: 'Exegol',
+      riskFactor: 66,
+    }),
+    Planet.createFromProps({
+      name: 'Felucia',
+      riskFactor: 13,
+    }),
+    Planet.createFromProps({
+      name: 'Geonosis',
+      riskFactor: 29,
+    }),
+    Planet.createFromProps({
+      name: 'Hosnian Prime',
+      riskFactor: 10,
+    }),
+    Planet.createFromProps({
+      name: 'Hoth',
+      riskFactor: 45,
+    }),
+    Planet.createFromProps({
+      name: 'Jakku',
+      riskFactor: 41,
+    }),
+    Planet.createFromProps({
+      name: 'Jedha',
+      riskFactor: 15,
+    }),
+    Planet.createFromProps({
+      name: 'Kamino',
+      riskFactor: 4,
+    }),
+    Planet.createFromProps({
+      name: 'Kashyyyk',
+      riskFactor: 14,
+    }),
+    Planet.createFromProps({
+      name: 'Kessel',
+      riskFactor: 7,
+    }),
+    Planet.createFromProps({
+      name: 'Malastare',
+      riskFactor: 8,
+    }),
+    Planet.createFromProps({
+      name: 'Mandalore',
+      riskFactor: 36,
+    }),
+    Planet.createFromProps({
+      name: 'Mon Cala',
+      riskFactor: 12,
+    }),
+    Planet.createFromProps({
+      name: 'Mortis',
+      riskFactor: 17,
+    }),
+    Planet.createFromProps({
+      name: 'Mustafar',
+      riskFactor: 35,
+    }),
+    Planet.createFromProps({
+      name: 'Naboo',
+      riskFactor: 2,
+    }),
+    Planet.createFromProps({
+      name: 'Nal Hutta',
+      riskFactor: 24,
+    }),
+    Planet.createFromProps({
+      name: 'Polis Massa',
+      riskFactor: 6,
+    }),
+    Planet.createFromProps({
+      name: 'Scarif',
+      riskFactor: 5,
+    }),
+    Planet.createFromProps({
+      name: 'Tatooine',
+      riskFactor: 28,
+    }),
+    Planet.createFromProps({
+      name: 'Utapau',
+      riskFactor: 7,
+    }),
+    Planet.createFromProps({
+      name: 'Yavin',
+      riskFactor: 20,
+    }),
+  ];
 
   static readonly SPACESHIP_CLASSES: SpaceshipClass[] = [
     SpaceshipClass.createFromProps({

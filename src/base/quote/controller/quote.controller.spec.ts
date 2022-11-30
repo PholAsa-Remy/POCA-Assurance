@@ -123,6 +123,7 @@ const SIMULATE_PARAMETERS: {
     strandedOuterRim: true,
     spaceshipClass: 'Fighter',
     spaceshipModel: 'TIE Fighter',
+    planet: 'Alderaan',
   },
   expectedResult: {
     baseMonthlyPrice: 306,

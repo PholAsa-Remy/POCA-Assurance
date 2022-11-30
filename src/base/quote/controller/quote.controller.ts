@@ -29,6 +29,7 @@ import { DeleteResult } from 'typeorm';
 import { Request, Response } from 'express';
 import { SpaceshipClass } from '../../../shared/valueobjects/SpaceshipClass';
 import { SpaceshipModel } from '../../../shared/valueobjects/SpaceshipModel';
+import { Planet } from '../../../shared/valueobjects/Planet';
 
 @Controller('quote')
 export class QuoteController {
@@ -56,6 +57,7 @@ export class QuoteController {
     spaceshipModelsFighter: SpaceshipModel[];
     spaceshipModelsCruiserBattleship: SpaceshipModel[];
     spaceshipModelsShuttleCargo: SpaceshipModel[];
+    planets: Planet[];
   }> {
     return {
       message:
@@ -66,6 +68,7 @@ export class QuoteController {
         QuoteSimulator.SPACESHIP_MODELS_CRUISER_BATTLESHIP,
       spaceshipModelsShuttleCargo:
         QuoteSimulator.SPACESHIP_MODELS_SHUTTLE_CARGO,
+      planets: QuoteSimulator.PLANETS,
     };
   }
 
@@ -78,6 +81,7 @@ export class QuoteController {
     spaceshipModelsFighter: SpaceshipModel[];
     spaceshipModelsCruiserBattleship: SpaceshipModel[];
     spaceshipModelsShuttleCargo: SpaceshipModel[];
+    planets: Planet[];
   }> {
     const simulatedQuote = await this.quoteSimulator.simulateQuote(data);
     return {
@@ -90,6 +94,7 @@ export class QuoteController {
         QuoteSimulator.SPACESHIP_MODELS_CRUISER_BATTLESHIP,
       spaceshipModelsShuttleCargo:
         QuoteSimulator.SPACESHIP_MODELS_SHUTTLE_CARGO,
+      planets: QuoteSimulator.PLANETS,
     };
   }
 
