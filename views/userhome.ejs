@@ -25,21 +25,34 @@
       Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,<br/>
       Deduction damage to self : <%= quote.deductionDamageToSelf %>,<br/>
       Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,<br/>
-      Created at : <%= quote.createdAt %><br/>
-      Paid at: <%= quote.updatedAt %>
+      Created at : <%= quote.createdAt %>,<br/>
+      Paid at: <%= quote.updatedAt %>,<br/>
+      Expired at : <%= quote.expiredAt %><br/>
+      Renewal : <%= quote.renewal %><br/>
   </li>
     <form action="/contract/download" method="post">
         <input name="id" value="<%= quote.id %>" hidden>
         <button type="submit">Download contract</button>
     </form>
+        <% if(quote.renewal){ %>
+            <form action=/quote/renewal method="post">
+                <input name="id" value="<%= quote.id %>" hidden>
+                <button type="submit">Desactivate renewal</button>
+            </form>
+        <% } else{ %>
+            <form action=/quote/renewal method="post">
+                <input name="id" value="<%= quote.id %>" hidden>
+                <button type="submit">Activate renewal</button>
+            </form>
+        <% } %>
   <% if(Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24)) < 14) {%>
-      <br>
       <form action="/quote/delete" method="post">
           <input name="id" value="<%= quote.id %>" hidden>
           <label for="renounce">You have <%= 14 - Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24))%> days left to renounce:</label>
           <button id="renounce" type="submit">Renounce</button>
       </form>
   <% } %>
+        <br/>
 <% } %>
 
 </div>

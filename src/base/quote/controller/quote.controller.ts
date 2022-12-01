@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import {
   CreateQuoteCommand,
-  DeleteQuoteCommand,
+  DeleteQuoteCommand, RenewalContractCommand,
   SimulatedQuoteCommand,
   SimulateQuoteCommand,
-  SubscribeQuoteCommand,
-} from '../command/quote.command';
+  SubscribeQuoteCommand
+} from "../command/quote.command";
 import { Quote } from '../entity/quote.entity';
 import { QuoteUseCase } from '../usecase/quote.usecase';
 import { QuoteSimulator } from '../simulator/quote.simulator';
@@ -192,5 +192,13 @@ export class QuoteController {
         },
       ],
     });
+  }
+
+  @Post('renewal')
+  @Redirect('back')
+  async switchRenewalStatement(
+    @Body() body: RenewalContractCommand,
+  ): Promise<Quote> {
+    return await this.quoteUseCase.switchRenewalStatement(body.id);
   }
 }

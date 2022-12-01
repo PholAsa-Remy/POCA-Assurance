@@ -28,6 +28,8 @@ describe('UserHomeService', () => {
     isSubscribe: true,
     createdAt: null,
     updatedAt: null,
+    expiredAt: null,
+    renewal: true,
     sinisters: [],
   };
   beforeEach(async () => {
