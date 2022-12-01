@@ -28,6 +28,7 @@ describe('UserHomeService', () => {
     isSubscribe: true,
     createdAt: null,
     updatedAt: null,
+    sinisters: [],
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

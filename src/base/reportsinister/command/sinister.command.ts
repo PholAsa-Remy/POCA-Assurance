@@ -1,16 +1,20 @@
-import { IsNumber, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsNumber,
+  IsNotEmpty,
+  IsString,
+  IsDate,
+  isDate,
+} from 'class-validator';
 
 export class CreateSinisterReportCommand {
-
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  public quoteId: number;
+  public quoteId: string;
 
   @IsString()
   @IsNotEmpty()
-  public description: string;
+  public sinisterMessage: string;
 
-  @IsString()
   @IsNotEmpty()
-  public accidentDate: Date;
+  public sinisterDate: Date;
 }

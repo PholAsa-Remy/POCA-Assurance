@@ -125,6 +125,7 @@ const ITEMS: Quote[] = [
     isSubscribe: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    sinisters: [],
   },
   {
     id: 'b',
@@ -140,5 +141,6 @@ const ITEMS: Quote[] = [
     isSubscribe: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+    sinisters: [],
   },
 ];

@@ -1,10 +1,25 @@
-import { Body, Controller, Get, Post, Render } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Render,
+  Req,
+  Session,
+} from '@nestjs/common';
 import { CreateSinisterReportCommand } from '../command/sinister.command';
+import { SinisterUseCase } from '../usecase/sinister.usecase';
+import { Request } from 'express';
 import { MailerService } from '@nestjs-modules/mailer';
+import { Sinister } from '../entity/sinister.entity';
 
 @Controller('report_sinister')
 export class reportsinisterController {
-  @Get('')
+  @Inject(SinisterUseCase)
+  private readonly sinisterUseCase: SinisterUseCase;
+
+  @Get()
   @Render('reportsinister')
   async contactForm() {
     return {
@@ -15,16 +30,26 @@ export class reportsinisterController {
 
   @Post('report')
   @Render('reportsinister')
+  async createReportSinister(
+    @Body() sinister: CreateSinisterReportCommand,
+    @Req() req: Request,
+  ) {
+    try {
+      const createdSinister = await this.sinisterUseCase.create(
+        sinister,
+        req.cookies.customerId,
+      );
 
-  async checkvalidity(@Body() data: CreateSinisterReportCommand) {
-
-    //console.log(data)
-    
-    return {
-      message: 'Please fill this form to report us a sinister',
-      notification:
-        'This type of sinister is covered by our services !' +
-        'If you have an account a notification has been transmitted to our services.',
-    };
+      return {
+        message: 'Please fill this form to report us a sinister',
+        notification: 'Your sinister was successfully reported !',
+      };
+    } catch {
+      return {
+        message: 'Please fill this form to report us a sinister',
+        notification:
+          "We're sorry, an error occured during your sinister reporting",
+      };
+    }
   }
 }

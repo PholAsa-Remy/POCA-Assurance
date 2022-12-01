@@ -1,7 +1,15 @@
 import { Module } from '@nestjs/common';
 import { reportsinisterController } from './controller/reportsinister.controller';
-/* istanbul ignore next */
+import { SinisterUseCase } from './usecase/sinister.usecase';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Sinister } from './entity/sinister.entity';
+import { QuoteModule } from '../quote/quote.module';
+import { Repository } from 'typeorm';
+
 @Module({
+  imports: [TypeOrmModule.forFeature([Sinister]), QuoteModule],
   controllers: [reportsinisterController],
+  providers: [SinisterUseCase],
+  exports: [SinisterUseCase],
 })
 export class reportsinisterModule {}

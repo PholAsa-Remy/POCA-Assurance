@@ -18,10 +18,10 @@ export class Quote {
 
   @ManyToOne(() => Customer, (customer) => customer.quotes)
   public customer: Customer;
-  /*
+
   @OneToMany(() => Sinister, (sinister) => sinister.quoteId)
-  public sinisters:Sinister[];
-*/
+  public sinisters: Sinister[];
+
   @Column()
   public customerId: UUID;
 
