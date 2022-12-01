@@ -58,4 +58,10 @@ export class Quote {
 
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt!: Date;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  public expiredAt!: Date;
+
+  @Column()
+  public renewal: boolean;
 }

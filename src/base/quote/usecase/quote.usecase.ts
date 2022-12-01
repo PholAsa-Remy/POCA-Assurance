@@ -48,6 +48,7 @@ export class QuoteUseCase {
     quote.priceBreakDownAndRescue = body.priceBreakDownAndRescue;
     quote.customerId = customerId;
     quote.isSubscribe = false;
+    quote.renewal = true;
     return await this.repository.save(quote);
   }
 
@@ -56,10 +57,30 @@ export class QuoteUseCase {
   }
 
   public async subscribeQuote(quoteId: UUID): Promise<Quote> {
+    const expiredAt = new Date();
+    expiredAt.setFullYear(expiredAt.getFullYear() + 1);
+    expiredAt.setHours(expiredAt.getHours() - 1);
     await this.repository
       .createQueryBuilder()
       .update(Quote)
-      .set({ isSubscribe: true })
+      .set({
+        isSubscribe: true,
+        expiredAt: expiredAt,
+      })
+      .where('id = :id', { id: quoteId })
+      .execute();
+    return this.repository.findOneBy({ id: quoteId });
+  }
+
+  public async switchRenewalStatement(quoteId: UUID): Promise<Quote> {
+    const quote = await this.get(quoteId);
+    const renewal = !quote.renewal;
+    await this.repository
+      .createQueryBuilder()
+      .update(Quote)
+      .set({
+        renewal: renewal,
+      })
       .where('id = :id', { id: quoteId })
       .execute();
     return this.repository.findOneBy({ id: quoteId });
