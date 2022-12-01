@@ -32,6 +32,14 @@
         <input name="id" value="<%= quote.id %>" hidden>
         <button type="submit">Download contract</button>
     </form>
+  <% if(Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24)) < 14) {%>
+      <br>
+      <form action="/quote/delete" method="post">
+          <input name="id" value="<%= quote.id %>" hidden>
+          <label for="renounce">You have <%= 14 - Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24))%> days left to renounce:</label>
+          <button id="renounce" type="submit">Renounce</button>
+      </form>
+  <% } %>
 <% } %>
 
 </div>
@@ -90,6 +98,11 @@
     e.preventDefault();
     location.href = 'userhome/modification/profile';
   }
+
+  const renounceButton = document.getElementById("renounce");
+  renounceButton.addEventListener("click", async (e) => {
+      alert("You have renounced to this quote ")
+  })
 </script>
 
 </body>
