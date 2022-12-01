@@ -65,11 +65,16 @@
       </form>
 <% } %>
 </div>
-<!-- FIXME wait function get list sinister -->
+
 <div id="sinister">
     <h3>List sinister :</h3>
     <% for (sinister of list_sinister) { %>
         <li>
+          QuoteId : <%= sinister.quoteId %><br/>
+          description : <%=sinister.description %> <br/>
+          accident date : <%=sinister.accidentDate %><br/>
+          report date : <%=sinister.reportedDate %><br/>
+          <br/>
         </li>
     <% } %>
 </div>

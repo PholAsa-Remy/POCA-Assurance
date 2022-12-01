@@ -11,19 +11,20 @@
 
 <form action=/report_sinister/report method="post">
     <label>
-        Email:
-        <input type="text" name="email" required>
+        related quote Id :
+        <input id="quoteId" type="text" name="quoteId" required>
     </label><br>
     <label>
-        Subject:
-        <input type="text" name="subject" required>
+        Date of the sinister :
+        <input id="sinisterDate" type="date" name="sinisterDate" required>
     </label><br>
     <label>
         Sinister description:
-        <textarea id="message" name="message" required></textarea>
+        <textarea id="sinisterMessage" name="sinisterMessage" required></textarea>
     </label><br>
     <input type="submit">
 </form>
+
 </body>
 
 </html>

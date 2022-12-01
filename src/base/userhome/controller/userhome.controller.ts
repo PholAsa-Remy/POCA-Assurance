@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { UserHomeService } from '../service/userhome.service';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
+import { SinisterUseCase } from '../../reportsinister/usecase/sinister.usecase';
 
 @Controller('userhome')
 export class UserHomeController {
@@ -15,6 +16,8 @@ export class UserHomeController {
   public userHomeService: UserHomeService;
   @Inject(QuoteUseCase)
   public quoteUseCase: QuoteUseCase;
+  @Inject(SinisterUseCase)
+  public sinisterUseCase: SinisterUseCase;
   @Render('userhome')
   @Get()
   async index(@Request() req) {
@@ -26,11 +29,9 @@ export class UserHomeController {
       this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
         req.cookies.customerId,
       );
-    const promise_sinister =
-      //FIXME wait function get list sinister
-      this.quoteUseCase.findAllUnsubscribeQuotesFromCustomer(
-        req.cookies.customerId,
-      );
+    const promise_sinister = this.sinisterUseCase.findAllSinisterFromUser(
+      req.cookies.customerId,
+    );
     const [subscribe, unsubscribe, list_sinister] = await Promise.all([
       promise_subscribe,
       promise_unsubscribe,
