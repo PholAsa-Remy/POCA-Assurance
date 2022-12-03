@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/controller/auth.controller';
 import { BaseModule } from './base/base.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { ScheduleModule } from '@nestjs/schedule';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -24,6 +25,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
         },
       },
     }),
+    ScheduleModule.forRoot(),
     BaseModule,
     AuthModule,
   ],

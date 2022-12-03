@@ -90,4 +90,18 @@ export class QuoteUseCase {
       .execute();
     return this.repository.findOneBy({ id: quoteId });
   }
+
+  public async renewAllDesiredContracts(): Promise<void> {
+    const expiredAt = new Date();
+    expiredAt.setFullYear(expiredAt.getFullYear() + 1);
+    expiredAt.setHours(expiredAt.getHours() - 1);
+    await this.repository
+      .createQueryBuilder()
+      .update(Quote)
+      .set({
+        expiredAt,
+      })
+      .where('renewal = true and expiredAt < Now()')
+      .execute();
+  }
 }
