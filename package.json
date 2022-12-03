@@ -122,7 +122,8 @@
       "<rootDir>/base/pdf/pdf.module.ts",
       "<rootDir>/base/contract/contract.module.ts",
       "<rootDir>/shared/decorators/parse.boolean.ts",
-      "<rootDir>/base/quote/service/quote.service.ts"
+      "<rootDir>/base/quote/service/quote.service.ts",
+      "<rootDir>/base/backoffice/backoffice.module.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

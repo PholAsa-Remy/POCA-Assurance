@@ -4,9 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
-  Timestamp,
 } from 'typeorm';
 import { Quote } from '../../quote/entity/quote.entity';
 
