@@ -17,6 +17,12 @@
     <input type="file" id="rib" name="rib" accept="image/png, image/jpeg, image/jpg, .pdf" required>
     </br>
     <input name="quoteId" value="<%= quoteId %>" hidden>
+    <div>
+        <label for="annually"> Annually </label>
+        <input type="radio" id="annually" name="paymentPeriod" value="annually" checked>
+        <label for="monthly"> Monthly </label>
+        <input type="radio" id="monthly" name="paymentPeriod" value="monthly">
+    </div>
     <input type="submit" id="submit">
 </form>
 

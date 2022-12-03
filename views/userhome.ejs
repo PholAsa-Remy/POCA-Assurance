@@ -29,6 +29,7 @@
       Paid at: <%= quote.updatedAt %>,<br/>
       Expired at : <%= quote.expiredAt %><br/>
       Renewal : <%= quote.renewal %><br/>
+      Payment period : <%= quote.paymentPeriod %>
   </li>
     <form action="/contract/download" method="post">
         <input name="id" value="<%= quote.id %>" hidden>

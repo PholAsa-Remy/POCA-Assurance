@@ -25,13 +25,13 @@ export class QuoteUseCase {
   public async findAllSubscribeQuotesFromCustomer(
     customerId: UUID,
   ): Promise<Quote[]> {
-    return await this.repository.findBy({ customerId, isSubscribe: true });
+    return await this.repository.findBy({ customerId, state: 'active' });
   }
 
   public async findAllUnsubscribeQuotesFromCustomer(
     customerId: UUID,
   ): Promise<Quote[]> {
-    return await this.repository.findBy({ customerId, isSubscribe: false });
+    return await this.repository.findBy({ customerId, state: 'pending' });
   }
 
   public async create(
@@ -47,8 +47,9 @@ export class QuoteUseCase {
     quote.includeBreakDownAndRescue = body.includeBreakDownAndRescue;
     quote.priceBreakDownAndRescue = body.priceBreakDownAndRescue;
     quote.customerId = customerId;
-    quote.isSubscribe = false;
+    quote.state = 'pending';
     quote.renewal = true;
+    quote.paymentPeriod = 'undefined';
     return await this.repository.save(quote);
   }
 
@@ -56,7 +57,10 @@ export class QuoteUseCase {
     return await this.repository.delete({ id: quoteId });
   }
 
-  public async subscribeQuote(quoteId: UUID): Promise<Quote> {
+  public async subscribeQuote(
+    quoteId: UUID,
+    paymentPeriod: 'annually' | 'monthly',
+  ): Promise<Quote> {
     const expiredAt = new Date();
     expiredAt.setFullYear(expiredAt.getFullYear() + 1);
     expiredAt.setHours(expiredAt.getHours() - 1);
@@ -64,8 +68,9 @@ export class QuoteUseCase {
       .createQueryBuilder()
       .update(Quote)
       .set({
-        isSubscribe: true,
-        expiredAt: expiredAt,
+        state: 'active',
+        expiredAt,
+        paymentPeriod,
       })
       .where('id = :id', { id: quoteId })
       .execute();

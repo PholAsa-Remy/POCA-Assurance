@@ -25,12 +25,13 @@ describe('UserHomeService', () => {
     deductionDamageToSelf: 1,
     deductionDamageFromThirdParty: 1,
     priceBreakDownAndRescue: 1,
-    isSubscribe: true,
+    state: 'active',
     createdAt: null,
     updatedAt: null,
     expiredAt: null,
     renewal: true,
     sinisters: [],
+    paymentPeriod: 'annually',
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
