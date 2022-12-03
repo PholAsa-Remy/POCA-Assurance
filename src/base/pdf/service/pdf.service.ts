@@ -14,8 +14,10 @@ export class PdfService {
     Base price : ${quote.basePrice} \n 
     Deduction damage from third party : ${quote.deductionDamageFromThirdParty}\n
     Deduction damage to self : ${quote.deductionDamageToSelf} \n
-    Price breakdown and rescue : ${quote.priceBreakDownAndRescue}\n\n
-    As ${customer.username}, you accept the terms and conditions by signing this document.\n\n
+    Price breakdown and rescue : ${quote.priceBreakDownAndRescue}\n
+    Expired At : ${quote.expiredAt}\n\n
+    As ${customer.username}, you accept the terms and conditions by signing this document.\n
+    Your contract will be automatically renew unless you choose otherwise \n
     Please sign here `;
 
     //Create path
@@ -31,7 +33,7 @@ export class PdfService {
     const pdfPath = `customers/${customer.id}/${quote.id}/${customer.id}_${quote.id}.pdf`;
     const doc = new jsPDF('p', 'mm', [297, 210]);
     doc.text(doc.splitTextToSize(text, 200), 0, 0);
-    doc.rect(15, 155, 70, 20);
+    doc.rect(15, 190, 70, 20);
     doc.addImage(nosferaptiImg, 'png', 170, 10, 30, 30);
     doc.save(pdfPath);
     return pdfPath;

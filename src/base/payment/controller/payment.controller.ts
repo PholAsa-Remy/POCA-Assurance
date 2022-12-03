@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   Inject,
@@ -16,6 +17,8 @@ import { Quote } from '../../quote/entity/quote.entity';
 import { UUID } from '../../../shared/type';
 import * as path from 'path';
 import { Request, Response } from 'express';
+import { DeleteQuoteCommand } from '../../quote/command/quote.command';
+import { CompleteSubscriptionCommand } from '../command/payment.command';
 
 @Controller('payment')
 export class PaymentController {
@@ -33,7 +36,7 @@ export class PaymentController {
       const QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid =
         !quote ||
         (quote && quote.customerId !== req.cookies.customerId) ||
-        quote.isSubscribe;
+        quote.state === 'active';
 
       if (QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsAlreadyPaid) {
         return res.redirect('/userhome');
@@ -83,6 +86,7 @@ export class PaymentController {
       rib: Express.Multer.File[];
     },
     @Param('quoteId') quoteId: UUID,
+    @Body() body: CompleteSubscriptionCommand,
     @Res() res: Response,
   ): Promise<{
     subscribedQuote: Quote;
@@ -92,7 +96,10 @@ export class PaymentController {
     };
   }> {
     console.log(files);
-    const subscribedQuote = await this.quoteUseCase.subscribeQuote(quoteId);
+    const subscribedQuote = await this.quoteUseCase.subscribeQuote(
+      quoteId,
+      body.paymentPeriod,
+    );
     res.redirect('/userhome');
     return { subscribedQuote, files };
   }

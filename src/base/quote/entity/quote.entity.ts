@@ -47,7 +47,10 @@ export class Quote {
   public priceBreakDownAndRescue: number;
 
   @Column()
-  public isSubscribe: boolean;
+  public state: 'active' | 'pending' | 'inactive';
+
+  @Column()
+  public paymentPeriod: 'annually' | 'monthly' | 'undefined';
 
   /*
    * Create and Update Date Columns
