@@ -30,16 +30,9 @@ export class reportsinisterController {
 
   @Post('report')
   @Render('reportsinister')
-  async createReportSinister(
-    @Body() sinister: CreateSinisterReportCommand,
-    @Req() req: Request,
-  ) {
+  async createReportSinister(@Body() sinister: CreateSinisterReportCommand) {
     try {
-      const createdSinister = await this.sinisterUseCase.create(
-        sinister,
-        req.cookies.customerId,
-      );
-
+      await this.sinisterUseCase.create(sinister);
       return {
         message: 'Please fill this form to report us a sinister',
         notification: 'Your sinister was successfully reported !',

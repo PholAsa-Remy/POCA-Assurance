@@ -20,7 +20,10 @@ export class SinisterUseCase {
   }
 
   public async findAll(): Promise<Sinister[]> {
-    return await this.repository.find();
+    return await this.repository
+      .createQueryBuilder('sinister')
+      .innerJoinAndSelect('sinister.quote', 'quote')
+      .getMany();
   }
 
   public async findAllSinisterFromUser(
@@ -28,7 +31,7 @@ export class SinisterUseCase {
   ): Promise<Sinister[]> {
     const quoteIda: Quote[] =
       await this.quoteUseCase.findAllSubscribeQuotesFromCustomer(customerId);
-    let theSinisterArray: Array<Sinister> = new Array<Sinister>();
+    let theSinisterArray: Sinister[] = [];
     for (const aQuoteId of quoteIda) {
       const temp = await this.findAllSinisterFromQuote(aQuoteId.id);
       theSinisterArray = theSinisterArray.concat(temp);
@@ -41,10 +44,7 @@ export class SinisterUseCase {
     return await this.repository.findBy({ quoteId });
   }
 
-  public async create(
-    body: CreateSinisterReportCommand,
-    quoteId: string,
-  ): Promise<Sinister> {
+  public async create(body: CreateSinisterReportCommand): Promise<Sinister> {
     const sinister: Sinister = new Sinister();
     sinister.accidentDate = body.sinisterDate;
     sinister.description = body.sinisterMessage;

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Galaxy Insurance</title>
+    <link href="/css/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%= message %>
+<div id="sinister">
+    <h3>List sinister :</h3>
+    <% for (sinister of sinisters) { %>
+        <li>
+            Quote : <%= sinister.quote.basePrice %><br/>
+            description : <%=sinister.description %> <br/>
+            accident date : <%=sinister.accidentDate %><br/>
+            report date : <%=sinister.reportedDate %><br/>
+            <br/>
+        </li>
+    <form action="/backoffice/refund" method="post">
+        <label for="amount">Refund Amount</label>
+        <input type="number" name="amount" id="amount" required>
+        <label for="sinisterId"></label>
+        <input type="text" name="sinisterId" id="sinisterId" value="<%= sinister.id %>" hidden>
+        <br>
+        <input type="submit" value="Refund">
+    </form>
+    <% } %>
+</div>
+</body>
+</html>
