@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { PaymentController } from './payment.controller';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
+import { PremiumUseCase } from '../../transaction/premium/usecase/premium.usecase';
 
 describe('Payment', () => {
   let paymentController: PaymentController;
@@ -10,11 +11,19 @@ describe('Payment', () => {
       controllers: [PaymentController],
       providers: [
         QuoteUseCase,
+        PremiumUseCase,
         {
           provide: QuoteUseCase,
           useValue: {
             get: jest.fn(),
             subscribeQuote: jest.fn(),
+          },
+        },
+        {
+          provide: PremiumUseCase,
+          useValue: {
+            registerYearlyPremium: jest.fn(),
+            registerMonthlyPremiums: jest.fn(),
           },
         },
       ],
