@@ -9,6 +9,7 @@ import { reportsinisterModule } from './reportsinister/reportsinister.module';
 import { PdfModule } from './pdf/pdf.module';
 import { ContractModule } from './contract/contract.module';
 import { BackOfficeModule } from './backoffice/backoffice.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BackOfficeModule } from './backoffice/backoffice.module';
     PdfModule,
     ContractModule,
     BackOfficeModule,
+    TransactionModule,
   ],
   controllers: [],
 })

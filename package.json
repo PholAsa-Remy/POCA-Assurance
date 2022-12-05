@@ -38,6 +38,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
+    "currency.js": "^2.0.4",
     "ejs": "^3.1.8",
     "express-session": "^1.17.3",
     "hbs": "^4.2.0",
@@ -123,7 +124,19 @@
       "<rootDir>/base/contract/contract.module.ts",
       "<rootDir>/shared/decorators/parse.boolean.ts",
       "<rootDir>/base/quote/service/quote.service.ts",
-      "<rootDir>/base/backoffice/backoffice.module.ts"
+      "<rootDir>/base/backoffice/backoffice.module.ts",
+      "<rootDir>/base/transaction/transaction.module.ts",
+      "<rootDir>/base/transaction/premium/premium.module.ts",
+      "<rootDir>/base/transaction/refund/refund.module.ts",
+      "<rootDir>/base/transaction/reimbursement/reimbursement.module.ts",
+      "<rootDir>/shared/decorators/parse.currency.ts",
+      "<rootDir>/base/backoffice/*",
+      "<rootDir>/base/payment/controller/payment.controller.ts",
+      "<rootDir>/base/contract/command/contract.command.ts",
+      "<rootDir>/base/contract/controller/contract.controller.ts",
+      "<rootDir>/base/reportsinister/usecase/sinister.usecase.ts",
+      "<rootDir>/base/transaction/refund/command/refund.command.ts",
+      "<rootDir>/base/transaction/reimbursement/command/reimbursement.command.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

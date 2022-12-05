@@ -17,13 +17,17 @@ import { Quote } from '../../quote/entity/quote.entity';
 import { UUID } from '../../../shared/type';
 import * as path from 'path';
 import { Request, Response } from 'express';
-import { DeleteQuoteCommand } from '../../quote/command/quote.command';
 import { CompleteSubscriptionCommand } from '../command/payment.command';
+import { PremiumUseCase } from '../../transaction/premium/usecase/premium.usecase';
+import { Premium } from '../../transaction/premium/entity/premium.entity';
 
 @Controller('payment')
 export class PaymentController {
   @Inject(QuoteUseCase)
   private readonly quoteUseCase: QuoteUseCase;
+
+  @Inject(PremiumUseCase)
+  private readonly premiumUseCase: PremiumUseCase;
 
   @Get('/:quoteId')
   async paymentForm(
@@ -90,17 +94,27 @@ export class PaymentController {
     @Res() res: Response,
   ): Promise<{
     subscribedQuote: Quote;
-    files: {
-      contract: Express.Multer.File[];
-      rib: Express.Multer.File[];
-    };
+    premiums: Premium[] | Premium;
+    files: { contract: Express.Multer.File[]; rib: Express.Multer.File[] };
   }> {
     console.log(files);
     const subscribedQuote = await this.quoteUseCase.subscribeQuote(
       quoteId,
       body.paymentPeriod,
     );
+    let premiums: Premium[] | Premium;
+    if (subscribedQuote.paymentPeriod === 'monthly') {
+      premiums = await this.premiumUseCase.registerMonthlyPremiums(
+        subscribedQuote.id,
+        subscribedQuote.basePrice,
+      );
+    } else if (subscribedQuote.paymentPeriod === 'annually') {
+      premiums = await this.premiumUseCase.registerYearlyPremium(
+        subscribedQuote.id,
+        subscribedQuote.basePrice,
+      );
+    }
     res.redirect('/userhome');
-    return { subscribedQuote, files };
+    return { subscribedQuote, premiums, files };
   }
 }
