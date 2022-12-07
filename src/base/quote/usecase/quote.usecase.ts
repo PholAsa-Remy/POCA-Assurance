@@ -104,4 +104,15 @@ export class QuoteUseCase {
       .where('renewal = true and expiredAt < Now()')
       .execute();
   }
+
+  public async updateContractState(): Promise<void> {
+    await this.repository
+      .createQueryBuilder()
+      .update(Quote)
+      .set({
+        state: 'inactive',
+      })
+      .where('renewal = false and expiredAt < Now()')
+      .execute();
+  }
 }
