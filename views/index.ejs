@@ -15,7 +15,6 @@
       <button id="quote_btn" onClick = "redirect(event, '/quote/simulate')">Quote Generator</button>
       <button id="about_btn" onClick = "redirect(event, '/about')">About Us</button>
       <button id="contact_btn" onClick = "redirect(event, '/contact')">Contact Us</button>
-      <button id="report_btn" onClick = "redirect(event, '/report_sinister')">REPORT A SINISTER</button>
     </div>
 
     <script>
@@ -35,7 +34,6 @@
           // User is not connected
           document.getElementById('login_btn').style.display = 'block';
           document.getElementById('userhome_btn').style.display = 'none';
-          document.getElementById('report_btn').style.display = 'none';
         }
       }
       hideLogin()
