@@ -10,8 +10,8 @@ import { Quote } from '../../quote/entity/quote.entity';
 
 @Entity()
 export class Sinister {
-  @PrimaryGeneratedColumn()
-  public id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id!: UUID;
 
   @ManyToOne(() => Quote, (quote) => quote.sinisters)
   public quote: Quote;
@@ -21,6 +21,9 @@ export class Sinister {
 
   @Column({ type: 'text' })
   public description!: string;
+
+  @Column()
+  public damageValue!: number;
 
   @Column({ type: 'timestamp' })
   public accidentDate!: Date;

@@ -15,7 +15,7 @@ export class SinisterUseCase {
   @InjectRepository(Sinister)
   private readonly repository: Repository<Sinister>;
 
-  public async get(id: number): Promise<Sinister> {
+  public async get(id: UUID): Promise<Sinister> {
     return await this.repository.findOneBy({ id });
   }
 
@@ -49,6 +49,7 @@ export class SinisterUseCase {
     sinister.accidentDate = body.sinisterDate;
     sinister.description = body.sinisterMessage;
     sinister.reportedDate = new Date(Date.now());
+    sinister.damageValue = body.damageValue;
     sinister.quoteId = body.quoteId;
     return await this.repository.save(sinister);
   }

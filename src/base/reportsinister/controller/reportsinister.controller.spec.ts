@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { reportsinisterController } from './reportsinister.controller';
+import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 import { SinisterUseCase } from '../usecase/sinister.usecase';
-
+import { reportSinisterController } from './reportsinister.controller';
+import { Request, Response } from 'express';
 describe('reportsinisterController', () => {
-  let controller: reportsinisterController;
+  let controller: reportSinisterController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      //imports: [reportsinisterModule],
-      controllers: [reportsinisterController],
+      controllers: [reportSinisterController],
       providers: [
         SinisterUseCase,
         {
@@ -21,24 +21,34 @@ describe('reportsinisterController', () => {
             create: jest.fn(),
           },
         },
+        QuoteUseCase,
+        {
+          provide: QuoteUseCase,
+          useValue: {
+            get: jest.fn(),
+            findAll: jest.fn(),
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
-    controller = module.get<reportsinisterController>(reportsinisterController);
+    controller = module.get<reportSinisterController>(reportSinisterController);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should return a message for contact form"', async () => {
-    await expect(controller.contactForm()).resolves.toHaveProperty(
+ /* it('should return a message for contact form"', async () => {
+    await expect(
+      controller.reportSinisterForm(new Request({},{},{},{},),{},'fakeuiid'),
+    ).resolves.toHaveProperty(
       'message',
       'Please fill this form to report us a sinister',
     );
-    await expect(controller.contactForm()).resolves.toHaveProperty(
-      'notification',
-      '',
-    );
-  });
+    await expect(
+      controller.reportSinisterForm({},{},'fakeuiid'),
+    ).resolves.toHaveProperty('notification', '');
+  });*/
 });

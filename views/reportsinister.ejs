@@ -9,11 +9,8 @@
 <%= message %><br>
 <%= notification %>
 
-<form action=/report_sinister/report method="post">
-    <label>
-        related quote Id :
-        <input id="quoteId" type="text" name="quoteId" required>
-    </label><br>
+<form action=<%=`/report_sinister/report/${quote.id}`%> method="post">
+    <br>
     <label>
         Date of the sinister :
         <input id="sinisterDate" type="date" name="sinisterDate" required>
@@ -22,6 +19,11 @@
         Sinister description:
         <textarea id="sinisterMessage" name="sinisterMessage" required></textarea>
     </label><br>
+    <label>
+        Sinister Cost as calculated by the pundit:
+        <input type="number" id="damageValue"  name="damageValue" required>
+    </label><br>
+
     <input type="submit">
 </form>
 

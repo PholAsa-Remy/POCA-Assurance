@@ -54,6 +54,7 @@
       </form>
   <% } %>
         <br/>
+        <a  href=<%=`/report_sinister/${quote.id}` %> > Report a sinister</a>
 <% } %>
 
 </div>
@@ -88,6 +89,7 @@
           description : <%=sinister.description %> <br/>
           accident date : <%=sinister.accidentDate %><br/>
           report date : <%=sinister.reportedDate %><br/>
+          damage Value : <%=sinister.damageValue %>
           <br/>
         </li>
     <% } %>
