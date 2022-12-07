@@ -8,8 +8,8 @@ export class QuoteService {
   private readonly quoteUseCase: QuoteUseCase;
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
-  renewAllDesiredContracts() {
-    console.log('log renewal');
+  dailyUpdateContract() {
     this.quoteUseCase.renewAllDesiredContracts();
+    this.quoteUseCase.updateContractState();
   }
 }
