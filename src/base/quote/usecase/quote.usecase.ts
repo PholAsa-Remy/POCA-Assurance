@@ -77,6 +77,22 @@ export class QuoteUseCase {
     return this.repository.findOneBy({ id: quoteId });
   }
 
+  public async unsubscribeQuote(
+      quoteId: UUID,
+  ): Promise<Quote> {
+    await this.repository
+        .createQueryBuilder()
+        .update(Quote)
+        .set({
+          state: 'inactive',
+          renewal: false,
+          expiredAt: new Date()
+        })
+        .where('id = :id', { id: quoteId })
+        .execute();
+    return this.repository.findOneBy({ id: quoteId });
+  }
+
   public async switchRenewalStatement(quoteId: UUID): Promise<Quote> {
     const quote = await this.get(quoteId);
     const renewal = !quote.renewal;
