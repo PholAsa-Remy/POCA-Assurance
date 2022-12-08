@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UUID } from '../../../../shared/type';
 import { Premium } from '../entity/premium.entity';
 import {
   CreatePremiumCommand,
-  CreatePremiumCommandWithSetDate,
+  CreatePremiumCommandWithSetDate, DeletePremiumAfterNowCommand,
 } from '../command/premium.command';
 import { GALACTIC_CREDIT } from '../../../../shared/typeorm/typeorm.currency.valuetransformer';
+import {Quote} from "../../../quote/entity/quote.entity";
 
 @Injectable()
 export class PremiumUseCase {
@@ -38,6 +39,17 @@ export class PremiumUseCase {
     premium.date = body.date;
     premium.amount = body.amount;
     return await this.repository.save(premium);
+  }
+
+  public async deleteAllAfterNow(
+      body: DeletePremiumAfterNowCommand
+  ): Promise<DeleteResult> {
+    const quoteId = body.id;
+    return await this.repository
+        .createQueryBuilder()
+        .delete()
+        .where('id = :id and date > Now()', { id: quoteId })
+        .execute();
   }
 
   async registerYearlyPremium(

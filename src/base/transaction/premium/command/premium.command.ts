@@ -28,3 +28,9 @@ export class CreatePremiumCommandWithSetDate {
   @IsNotEmpty()
   public date: Date;
 }
+
+export class DeletePremiumAfterNowCommand {
+  @IsNotEmpty()
+  @IsString()
+  public id: UUID;
+}

@@ -11,7 +11,7 @@ import { QuoteService } from './service/quote.service';
 @Module({
   controllers: [QuoteController],
   providers: [QuoteUseCase, QuoteSimulator, QuoteService],
-  exports: [QuoteUseCase],
+  exports: [QuoteUseCase, TypeOrmModule.forFeature([Quote])],
   imports: [TypeOrmModule.forFeature([Quote]), PdfModule, CustomerModule],
 })
 export class QuoteModule {}
