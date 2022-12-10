@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, MoreThan, Repository } from 'typeorm';
 import { UUID } from '../../../../shared/type';
 import { Premium } from '../entity/premium.entity';
 import {
   CreatePremiumCommand,
-  CreatePremiumCommandWithSetDate, DeletePremiumAfterNowCommand,
+  CreatePremiumCommandWithSetDate,
+  DeletePremiumAfterNowCommand,
+  FindFuturePremiumByQuoteCommand,
 } from '../command/premium.command';
 import { GALACTIC_CREDIT } from '../../../../shared/typeorm/typeorm.currency.valuetransformer';
-import {Quote} from "../../../quote/entity/quote.entity";
+import { Quote } from '../../../quote/entity/quote.entity';
 
 @Injectable()
 export class PremiumUseCase {
@@ -42,14 +44,13 @@ export class PremiumUseCase {
   }
 
   public async deleteAllAfterNow(
-      body: DeletePremiumAfterNowCommand
+    body: DeletePremiumAfterNowCommand,
   ): Promise<DeleteResult> {
     const quoteId = body.id;
-    return await this.repository
-        .createQueryBuilder()
-        .delete()
-        .where('id = :id and date > Now()', { id: quoteId })
-        .execute();
+    return await this.repository.delete({
+      quoteId: quoteId,
+      date: MoreThan(new Date()),
+    });
   }
 
   async registerYearlyPremium(
@@ -85,5 +86,15 @@ export class PremiumUseCase {
     }
 
     return premiums;
+  }
+
+  public async findFuturePremiumByQuote(
+    body: FindFuturePremiumByQuoteCommand,
+  ): Promise<Premium[]> {
+    const quoteId = body.id;
+    return await this.repository.findBy({
+      quoteId: quoteId,
+      date: MoreThan(new Date()),
+    });
   }
 }

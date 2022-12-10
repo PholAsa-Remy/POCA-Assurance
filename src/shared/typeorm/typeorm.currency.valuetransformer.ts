@@ -8,6 +8,6 @@ export const currencyTransformer: ValueTransformer = {
     return GALACTIC_CREDIT(value);
   },
   to(value: currency): string {
-    return value.intValue.toString();
+    return value.value.toString();
   },
 };
