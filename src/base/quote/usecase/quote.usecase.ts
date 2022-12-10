@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, LessThan, Repository } from 'typeorm';
 import { CreateQuoteCommand } from '../command/quote.command';
 import { Quote } from '../entity/quote.entity';
 import { UUID } from '../../../shared/type';
@@ -105,10 +105,15 @@ export class QuoteUseCase {
     return this.repository.findOneBy({ id: quoteId });
   }
 
-  public async renewAllDesiredContracts(): Promise<void> {
+  public async renewAllDesiredContracts(): Promise<Quote[]> {
     const expiredAt = new Date();
     expiredAt.setFullYear(expiredAt.getFullYear() + 1);
     expiredAt.setHours(expiredAt.getHours() - 1);
+    const renewedContracts = this.repository.findBy({
+      state: 'active',
+      renewal: true,
+      expiredAt: LessThan(new Date()),
+    });
     await this.repository
       .createQueryBuilder()
       .update(Quote)
@@ -117,6 +122,7 @@ export class QuoteUseCase {
       })
       .where('renewal = true and expiredAt < Now()')
       .execute();
+    return renewedContracts;
   }
 
   public async updateContractState(): Promise<void> {
