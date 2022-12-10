@@ -34,3 +34,9 @@ export class DeletePremiumAfterNowCommand {
   @IsString()
   public id: UUID;
 }
+
+export class FindFuturePremiumByQuoteCommand {
+  @IsNotEmpty()
+  @IsString()
+  public id: UUID;
+}

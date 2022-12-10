@@ -94,6 +94,12 @@ export class DeleteQuoteCommand {
   public id: UUID;
 }
 
+export class TerminateContractCommand {
+  @IsNotEmpty()
+  @IsString()
+  public id: UUID;
+}
+
 export class RenewalContractCommand {
   @IsNotEmpty()
   @IsString()

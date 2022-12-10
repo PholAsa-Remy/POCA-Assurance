@@ -52,10 +52,17 @@
           <label for="renounce">You have <%= 14 - Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24))%> days left to renounce:</label>
           <button id="renounce" type="submit">Renounce</button>
       </form>
-  <% } %>
+  <% } else { %>
+            <form action="/contract/terminate" method="post">
+                <label>
+                    <input name="id" value="<%= quote.id %>" hidden>
+                </label>
+                <button id="terminate" type="submit">Terminate</button>
+            </form>
+
         <br/>
         <a  href=<%=`/report_sinister/${quote.id}` %> > Report a sinister</a>
-<% } %>
+<% } } %>
 
 </div>
 
