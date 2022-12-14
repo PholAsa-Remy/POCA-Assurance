@@ -30,26 +30,27 @@ export class reportSinisterController {
   async reportSinisterForm(
     @Req() req: Request,
     @Res() res: Response,
-    @Param('quoteId') quoteId: UUID):Promise<void>{
-      try {
-        const quote = await this.quoteUseCase.get(quoteId);
-        const QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsNotActive =
-          !quote ||
-          (quote && quote.customerId !== req.cookies.customerId) ||
-          quote.state === 'inactive';
-  
-        if (QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsNotActive) {
-          return res.redirect('/userhome');
-        }
-        return res.render(`reportsinister`, {
-          message: 'Please fill this form to report us a sinister',
-          notification: '',
-          quote : quote
-        });
-      } catch (e) {
-        console.log(e);
+    @Param('quoteId') quoteId: UUID,
+  ): Promise<void> {
+    try {
+      const quote = await this.quoteUseCase.get(quoteId);
+      const QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsNotActive =
+        !quote ||
+        (quote && quote.customerId !== req.cookies.customerId) ||
+        quote.state === 'inactive';
+
+      if (QuoteDoesntExistOrDoesntOwnByCurrentCustomerOrItIsNotActive) {
         return res.redirect('/userhome');
       }
+      return res.render(`reportsinister`, {
+        message: 'Please fill this form to report us a sinister',
+        notification: '',
+        quote: quote,
+      });
+    } catch (e) {
+      console.log(e);
+      return res.redirect('/userhome');
+    }
   }
 
   @Post('report/:quoteId')

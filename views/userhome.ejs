@@ -61,9 +61,9 @@
             </form>
 
         <br/>
-        <a  href=<%=`/report_sinister/${quote.id}` %> > Report a sinister</a>
-<% } } %>
-
+<% }  %>
+<a  href=<%=`/report_sinister/${quote.id}` %> > Report a sinister</a>
+<% }%>
 </div>
 
 <div id="unsubscribe_quotes">
@@ -97,9 +97,21 @@
           accident date : <%=sinister.accidentDate %><br/>
           report date : <%=sinister.reportedDate %><br/>
           damage Value : <%=sinister.damageValue %>
-          <br/>
         </li>
+        <br/>
     <% } %>
+</div>
+
+<div id="reimbursement">
+  <h3>List reimbursement :</h3>
+  <% for (reimbursement of list_reimbursement) { %>
+      <li>
+        SinisterId : <%= reimbursement.sinisterId %><br/>
+        amount : <%=reimbursement.amount %> <br/>
+        reimbursementdate : <%=reimbursement.date %><br/>
+        <br/>
+      </li>
+  <% } %>
 </div>
 
 <script>

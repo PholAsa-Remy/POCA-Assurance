@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { CreateSinisterReportCommand } from '../command/sinister.command';
 import { Sinister } from '../entity/sinister.entity';
 import { Quote } from '../../quote/entity/quote.entity';
@@ -24,6 +24,15 @@ export class SinisterUseCase {
       .createQueryBuilder('sinister')
       .innerJoinAndSelect('sinister.quote', 'quote')
       .getMany();
+  }
+
+  public async findAllwithIdnotIn(idArray: UUID[]): Promise<Sinister[]> {
+    const theresult = await this.repository.createQueryBuilder('sinister');
+    if (idArray.length > 0) {
+      theresult.where('sinister.id NOT IN  (:...array)', { array: idArray });
+    }
+    theresult.innerJoinAndSelect('sinister.quote', 'quote');
+    return await theresult.getMany();
   }
 
   public async findAllSinisterFromUser(
