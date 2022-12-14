@@ -2,25 +2,37 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ReimbursementUseCase } from './reimbursement.usecase';
+import { SinisterUseCase } from '../../../reportsinister/usecase/sinister.usecase';
 import { Reimbursement } from '../entity/reimbursement.entity';
 import { GALACTIC_CREDIT } from '../../../../shared/typeorm/typeorm.currency.valuetransformer';
 
 describe('ReimbursementUseCase', () => {
   let reimbursementUseCase: ReimbursementUseCase;
   let reimbursementRepository: Repository<Reimbursement>;
-
+  let sinisterUseCase: SinisterUseCase;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
       providers: [
         ReimbursementUseCase,
+        SinisterUseCase,
         {
           provide: getRepositoryToken(Reimbursement),
           useClass: Repository,
         },
+        {
+          provide: SinisterUseCase,
+          useValue: {
+            findAllwithIdnotIn: jest.fn(),
+            findAllSinisterFromUser: jest.fn(),
+            findAllSinisterFromQuote: jest.fn(),
+            create: jest.fn(),
+            get: jest.fn(),
+          },
+        },
       ],
     }).compile();
-
+    sinisterUseCase = module.get<SinisterUseCase>(SinisterUseCase);
     reimbursementUseCase =
       module.get<ReimbursementUseCase>(ReimbursementUseCase);
     reimbursementRepository = module.get<Repository<Reimbursement>>(

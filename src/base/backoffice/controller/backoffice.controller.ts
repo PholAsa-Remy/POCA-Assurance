@@ -7,14 +7,20 @@ import {
   Redirect,
   Render,
 } from '@nestjs/common';
+
 import { SinisterUseCase } from '../../reportsinister/usecase/sinister.usecase';
 import { Sinister } from '../../reportsinister/entity/sinister.entity';
-import { RefundCommand } from '../command/backoffice.command';
+import { CreateReimbursementCommand } from 'src/base/transaction/reimbursement/command/reimbursement.command';
+import { ReimbursementUseCase } from 'src/base/transaction/reimbursement/usecase/reimbursement.usecase';
+import { Reimbursement } from 'src/base/transaction/reimbursement/entity/reimbursement.entity';
 
 @Controller('backoffice')
 export class BackOfficeController {
   @Inject(SinisterUseCase)
   public sinisterUseCase: SinisterUseCase;
+
+  @Inject(ReimbursementUseCase)
+  public reimbursementUseCase: ReimbursementUseCase;
 
   @Get('')
   @Render('backoffice')
@@ -22,7 +28,8 @@ export class BackOfficeController {
     message: string;
     sinisters: Sinister[];
   }> {
-    const sinisters = await this.sinisterUseCase.findAll();
+    const sinisters =
+      await this.reimbursementUseCase.findNotReimbursedSinister();
     return {
       message: 'Welcome to the back office',
       sinisters,
@@ -30,17 +37,12 @@ export class BackOfficeController {
   }
 
   @Post('refund')
-  @Render('backoffice')
   @Redirect('back')
-  async refund(@Body() body: RefundCommand): Promise<{
-    message: string;
-    sinisters: Sinister[];
-  }> {
-    console.log(body);
-    const sinisters = await this.sinisterUseCase.findAll();
-    return {
-      message: 'Welcome to the back office',
-      sinisters,
-    };
+  async refund(
+    @Body() body: CreateReimbursementCommand,
+  ): Promise<Reimbursement> {
+    const sinisters =
+      await this.reimbursementUseCase.findNotReimbursedSinister();
+    return await this.reimbursementUseCase.create(body);
   }
 }
