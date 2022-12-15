@@ -5,6 +5,8 @@ import { PremiumUseCase } from './premium.usecase';
 import { Premium } from '../entity/premium.entity';
 import { GALACTIC_CREDIT } from '../../../../shared/typeorm/typeorm.currency.valuetransformer';
 import { CreatePremiumCommandWithSetDate } from '../command/premium.command';
+import { QuoteUseCase } from '../../../quote/usecase/quote.usecase';
+import { Quote } from '../../../quote/entity/quote.entity';
 
 describe('PremiumUseCase', () => {
   let premiumUseCase: PremiumUseCase;
@@ -14,6 +16,11 @@ describe('PremiumUseCase', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
       providers: [
+        QuoteUseCase,
+        {
+          provide: getRepositoryToken(Quote),
+          useClass: Repository,
+        },
         PremiumUseCase,
         {
           provide: getRepositoryToken(Premium),

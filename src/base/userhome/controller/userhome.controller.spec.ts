@@ -4,6 +4,10 @@ import { UserHomeService } from '../service/userhome.service';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 import { SinisterUseCase } from '../../reportsinister/usecase/sinister.usecase';
 import { ReimbursementUseCase } from '../../../base/transaction/reimbursement/usecase/reimbursement.usecase';
+import { PremiumUseCase } from '../../transaction/premium/usecase/premium.usecase';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Premium } from '../../transaction/premium/entity/premium.entity';
 
 describe('UserHomeController', () => {
   let userHomeController: UserHomeController;
@@ -20,6 +24,11 @@ describe('UserHomeController', () => {
         QuoteUseCase,
         SinisterUseCase,
         ReimbursementUseCase,
+        PremiumUseCase,
+        {
+          provide: getRepositoryToken(Premium),
+          useClass: Repository,
+        },
         {
           provide: QuoteUseCase,
           useValue: {

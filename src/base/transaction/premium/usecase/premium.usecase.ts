@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, MoreThan, Repository } from 'typeorm';
 import { UUID } from '../../../../shared/type';
@@ -10,12 +10,16 @@ import {
   FindFuturePremiumByQuoteCommand,
 } from '../command/premium.command';
 import { GALACTIC_CREDIT } from '../../../../shared/typeorm/typeorm.currency.valuetransformer';
+import { QuoteUseCase } from '../../../quote/usecase/quote.usecase';
 import { Quote } from '../../../quote/entity/quote.entity';
 
 @Injectable()
 export class PremiumUseCase {
   @InjectRepository(Premium)
   private readonly repository: Repository<Premium>;
+
+  @Inject(QuoteUseCase)
+  private quoteUseCase: QuoteUseCase;
 
   async findOneById(premiumId: UUID): Promise<Premium> {
     return await this.repository.findOneBy({ id: premiumId });
@@ -31,6 +35,10 @@ export class PremiumUseCase {
     premium.date = new Date();
     premium.amount = body.amount;
     return await this.repository.save(premium);
+  }
+
+  async findAllPremiumFromQuote(quoteId: UUID): Promise<Premium[]> {
+    return await this.repository.findBy({ quoteId: quoteId });
   }
 
   async createWithSetDate(
@@ -96,5 +104,16 @@ export class PremiumUseCase {
       quoteId: quoteId,
       date: MoreThan(new Date()),
     });
+  }
+
+  public async findAllPremiumFromUser(customerId: string): Promise<Premium[]> {
+    const quoteArray: Quote[] =
+      await this.quoteUseCase.findAllSubscribeQuotesFromCustomer(customerId);
+    let thePremiumArray: Premium[] = [];
+    for (const aQuote of quoteArray) {
+      const temp = await this.findAllPremiumFromQuote(aQuote.id);
+      thePremiumArray = thePremiumArray.concat(temp);
+    }
+    return thePremiumArray;
   }
 }

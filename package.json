@@ -139,7 +139,8 @@
       "<rootDir>/base/transaction/reimbursement/command/reimbursement.command.ts",
       "<rootDir>/base/transaction/premium/command/premium.command.ts",
       "<rootDir>/base/transaction/refund/controller/refund.controller.ts",
-      "<rootDir>/base/transaction/reimbursement/controller/reimbursement.controller.ts"
+      "<rootDir>/base/transaction/reimbursement/controller/reimbursement.controller.ts",
+      "<rootDir>/base/transaction/premium/controller/premium.controller.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

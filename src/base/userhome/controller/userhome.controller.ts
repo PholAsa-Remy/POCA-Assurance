@@ -1,15 +1,9 @@
-import {
-  Controller,
-  Get,
-  Inject,
-  Render,
-  Request,
-  Session,
-} from '@nestjs/common';
+import { Controller, Get, Inject, Render, Request } from '@nestjs/common';
 import { UserHomeService } from '../service/userhome.service';
 import { QuoteUseCase } from '../../quote/usecase/quote.usecase';
 import { SinisterUseCase } from '../../reportsinister/usecase/sinister.usecase';
 import { ReimbursementUseCase } from '../../transaction/reimbursement/usecase/reimbursement.usecase';
+import { PremiumUseCase } from '../../transaction/premium/usecase/premium.usecase';
 
 @Controller('userhome')
 export class UserHomeController {
@@ -24,6 +18,9 @@ export class UserHomeController {
 
   @Inject(ReimbursementUseCase)
   public reimbursementUseCase: ReimbursementUseCase;
+
+  @Inject(PremiumUseCase)
+  public premiumUseCase: PremiumUseCase;
 
   @Render('userhome')
   @Get()
@@ -44,19 +41,30 @@ export class UserHomeController {
         req.cookies.customerId,
       );
 
-    const [subscribe, unsubscribe, list_sinister, list_reimbursement] =
-      await Promise.all([
-        promise_subscribe,
-        promise_unsubscribe,
-        promise_sinister,
-        promise_reimbursment,
-      ]);
+    const promise_premium = this.premiumUseCase.findAllPremiumFromUser(
+      req.cookies.customerId,
+    );
+
+    const [
+      subscribe,
+      unsubscribe,
+      list_sinister,
+      list_reimbursement,
+      list_premium,
+    ] = await Promise.all([
+      promise_subscribe,
+      promise_unsubscribe,
+      promise_sinister,
+      promise_reimbursment,
+      promise_premium,
+    ]);
 
     return {
       subscribe_quote: subscribe,
       unsubscribe_quote: unsubscribe,
       list_sinister: list_sinister,
       list_reimbursement: list_reimbursement,
+      list_premium: list_premium,
     };
   }
 
