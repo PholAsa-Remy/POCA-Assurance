@@ -4,11 +4,18 @@ import { UserHomeController } from './controller/userhome.controller';
 import { QuoteModule } from '../quote/quote.module';
 import { reportsinisterModule } from '../reportsinister/reportsinister.module';
 import { ReimbursementModule } from '../transaction/reimbursement/reimbursement.module';
+import { PremiumUseCase } from '../transaction/premium/usecase/premium.usecase';
+import { PremiumModule } from '../transaction/premium/premium.module';
 
 @Module({
-  providers: [UserHomeService],
+  providers: [UserHomeService, PremiumUseCase],
   controllers: [UserHomeController],
   exports: [UserHomeService],
-  imports: [QuoteModule, reportsinisterModule, ReimbursementModule],
+  imports: [
+    QuoteModule,
+    reportsinisterModule,
+    ReimbursementModule,
+    PremiumModule,
+  ],
 })
 export class UserHomeModule {}

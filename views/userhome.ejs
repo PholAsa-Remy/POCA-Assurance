@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Super Insurance</title>
+    <link href="/css/userhome.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <%- include('partials/navbar.ejs') %>
@@ -15,106 +16,153 @@
   <button onClick = "modification (event)">Modification profile</button>
 </div>
 
-<H2>Your quotes : </H2>
-<div id="subscribe_quotes">
-    <h3>Contracts :</h3>
-<% for (quote of subscribe_quote) { %>
-  <li>
-      ID N°: <%= quote.id %>, <br/>
-      Base price : <%= quote.basePrice %>,<br/>
-      Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,<br/>
-      Deduction damage to self : <%= quote.deductionDamageToSelf %>,<br/>
-      Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,<br/>
-      Created at : <%= quote.createdAt %>,<br/>
-      Paid at: <%= quote.updatedAt %>,<br/>
-      Expired at : <%= quote.expiredAt %><br/>
-      Renewal : <%= quote.renewal %><br/>
-      Payment period : <%= quote.paymentPeriod %>
-  </li>
-    <form action="/contract/download" method="post">
-        <input name="id" value="<%= quote.id %>" hidden>
-        <button type="submit">Download contract</button>
-    </form>
-        <% if(quote.renewal){ %>
-            <form action=/quote/renewal method="post">
+<button type="button" class="collapsible">Your contracts</button>
+<div class="content">
+    <div id="subscribe_quotes">
+        <% for (quote of subscribe_quote) { %>
+            <li>
+                ID N°: <%= quote.id %>, <br/>
+                Base price : <%= quote.basePrice %>,<br/>
+                Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>,<br/>
+                Deduction damage to self : <%= quote.deductionDamageToSelf %>,<br/>
+                Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %>,<br/>
+                Created at : <%= quote.createdAt %>,<br/>
+                Paid at: <%= quote.updatedAt %>,<br/>
+                Expired at : <%= quote.expiredAt %><br/>
+                Renewal : <%= quote.renewal %><br/>
+                Payment period : <%= quote.paymentPeriod %>
+            </li>
+            <form action="/contract/download" method="post">
                 <input name="id" value="<%= quote.id %>" hidden>
-                <button type="submit">Desactivate renewal</button>
+                <button type="submit">Download contract</button>
             </form>
-        <% } else{ %>
-            <form action=/quote/renewal method="post">
-                <input name="id" value="<%= quote.id %>" hidden>
-                <button type="submit">Activate renewal</button>
-            </form>
-        <% } %>
-  <% if(Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24)) < 14) {%>
-      <form action="/contract/renounce" method="post">
-          <input name="id" value="<%= quote.id %>" hidden>
-          <label for="renounce">You have <%= 14 - Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24))%> days left to renounce:</label>
-          <button id="renounce" type="submit">Renounce</button>
-      </form>
-  <% } else { %>
-            <form action="/contract/terminate" method="post">
-                <label>
+            <% if(quote.renewal){ %>
+                <form action=/quote/renewal method="post">
                     <input name="id" value="<%= quote.id %>" hidden>
-                </label>
-                <button id="terminate" type="submit">Terminate</button>
-            </form>
+                    <button type="submit">Desactivate renewal</button>
+                </form>
+            <% } else{ %>
+                <form action=/quote/renewal method="post">
+                    <input name="id" value="<%= quote.id %>" hidden>
+                    <button type="submit">Activate renewal</button>
+                </form>
+            <% } %>
+            <% if(Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24)) < 14) {%>
+                <form action="/contract/renounce" method="post">
+                    <input name="id" value="<%= quote.id %>" hidden>
+                    <label for="renounce">You have <%= 14 - Math.floor((new Date().getTime() - quote.updatedAt.getTime() )/ (1000 * 3600 * 24))%> days left to renounce:</label>
+                    <button id="renounce" type="submit">Renounce</button>
+                </form>
+            <% } else { %>
+                <form action="/contract/terminate" method="post">
+                    <label>
+                        <input name="id" value="<%= quote.id %>" hidden>
+                    </label>
+                    <button id="terminate" type="submit">Terminate</button>
+                </form>
 
         <br/>
 <% }  %>
 <a  href=<%=`/report_sinister/${quote.id}` %> > Report a sinister</a>
 <% }%>
 </div>
-
-<div id="unsubscribe_quotes">
-    <h3>Quotes :</h3>
-<% for (quote of unsubscribe_quote) { %>
-        <li>
-            ID N°: <%= quote.id %>, <br/>
-            Base price : <%= quote.basePrice %>, <br/>
-            Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>, <br/>
-            Deduction damage to self : <%= quote.deductionDamageToSelf %>, <br/>
-            Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %> <br/>
-            Created at : <%= quote.createdAt %>
-        </li>
-      <form action=/quote/subscribe method="post">
-        <input name="id" value="<%= quote.id %>" hidden>
-        <button type="submit">Subscribe</button>
-      </form>
-      <form action="/quote/delete" method="post">
-        <input name="id" value="<%= quote.id %>" hidden>
-        <button type="submit">Delete</button>
-      </form>
-<% } %>
+</div>
+<button type="button" class="collapsible">Your quotes</button>
+<div class="content">
+    <div id="unsubscribe_quotes">
+        <% for (quote of unsubscribe_quote) { %>
+            <li>
+                ID N°: <%= quote.id %>, <br/>
+                Base price : <%= quote.basePrice %>, <br/>
+                Deduction damage from third party : <%= quote.deductionDamageFromThirdParty %>, <br/>
+                Deduction damage to self : <%= quote.deductionDamageToSelf %>, <br/>
+                Price breakdown and rescue : <%= quote.priceBreakDownAndRescue %> <br/>
+                Created at : <%= quote.createdAt %>
+            </li>
+            <form action=/quote/subscribe method="post">
+                <input name="id" value="<%= quote.id %>" hidden>
+                <button type="submit">Subscribe</button>
+            </form>
+            <form action="/quote/delete" method="post">
+                <input name="id" value="<%= quote.id %>" hidden>
+                <button type="submit">Delete</button>
+            </form>
+        <% } %>
+    </div>
 </div>
 
-<div id="sinister">
-    <h3>List sinister :</h3>
-    <% for (sinister of list_sinister) { %>
-        <li>
-          QuoteId : <%= sinister.quoteId %><br/>
-          description : <%=sinister.description %> <br/>
-          accident date : <%=sinister.accidentDate %><br/>
-          report date : <%=sinister.reportedDate %><br/>
-          damage Value : <%=sinister.damageValue %>
-        </li>
-        <br/>
-    <% } %>
+
+<button type="button" class="collapsible">Your sinisters</button>
+<div class="content">
+    <div id="sinister">
+        <% for (sinister of list_sinister) { %>
+            <li>
+                QuoteId : <%= sinister.quoteId %><br/>
+                description : <%=sinister.description %> <br/>
+                accident date : <%=sinister.accidentDate %><br/>
+                report date : <%=sinister.reportedDate %><br/>
+                damage Value : <%=sinister.damageValue %>
+                <br/>
+            </li>
+        <% } %>
+    </div>
 </div>
 
-<div id="reimbursement">
-  <h3>List reimbursement :</h3>
-  <% for (reimbursement of list_reimbursement) { %>
-      <li>
-        SinisterId : <%= reimbursement.sinisterId %><br/>
-        amount : <%=reimbursement.amount %> <br/>
-        reimbursementdate : <%=reimbursement.date %><br/>
-        <br/>
-      </li>
-  <% } %>
+
+<button type="button" class="collapsible">Your reimbursements</button>
+<div class="content">
+    <div id="reimbursement">
+        <% for (reimbursement of list_reimbursement) { %>
+            <li>
+                SinisterId : <%= reimbursement.sinisterId %><br/>
+                amount : <%=reimbursement.amount %> <br/>
+                reimbursementdate : <%=reimbursement.date %><br/>
+                <br/>
+            </li>
+        <% } %>
+    </div>
 </div>
+
+
+<button type="button" class="collapsible">Your Premiums</button>
+<div class="content">
+    <div id="premium">
+        <% for (premium of list_premium) { %>
+            <li>
+                QuoteId : <%= premium.quoteId %><br/>
+                amount : <%= premium.amount %> <br/>
+                Premium date : <%=premium.date %><br/>
+                <br/>
+            </li>
+        <% } %>
+    </div>
+</div>
+<br>
+
+
+
+
+
+
+
 
 <script>
+
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+
   const response = fetch("/profile", {
     method: 'GET',
     headers: { "Authorization": "Bearer " + getCookie("team_galaxy_access_token") }
